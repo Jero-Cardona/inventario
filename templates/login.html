@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="../static/public/output.css">
+</head>
+<body class="bg-cover bg-opacity-20 min-h-screen flex items-center justify-center font-rubi"
+    style="background-image: url('/static/imagenes/img2.jpg'); height: 400px">
+    <form action="/login/" method="post"
+        class="backdrop-blur-sm bg-white/70 shadow-lg rounded-lg pt-14 pb-14 pl-14 pr-14 mx-auto m-8 w-full max-w-sm ">
+        <div class="flex justify-center mb-8">
+            <img src="/static/imagenes/imglogo2.png" alt="Logo" class="w-30 h-20">
+        </div>
+        <input class="font-rubi border border-gray-800 w-full px-3 py-2 mb-4 rounded-md  focus:outline-Andes "
+            type="text" name="username" required placeholder="Usuario">
+        <input
+            class="font-rubi border border-gray-800 w-full px-3 py-2 mb-4 rounded-md focus:outline-Andes invalid:focus:ring-red-400"
+            type="password" name="password" required placeholder="Contraseña">
+        <div class="flex items-center mb-4">
+            <input id="default-checkbox" type="checkbox" value=""
+                class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+            <label for="default-checkbox" class="ms-2 text-sm font-medium text-gray-900 dark:text-black">Recordar
+                Contraseña</label>
+        </div>
+        <button type="submit" class="font-rubi flex items-center justify-center text-white bg-Nac w-full p-2 hover:bg-Andes font-medium rounded-md dark:bg-Nac dark:hover:bg-Andes">Ingresar</button>
+        <p class="text-xs text-gray-600 text-center mt-8">&copy; 2024 AndesBPO</p>
+    </form>
+</body>
+</html>
