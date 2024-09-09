@@ -48,7 +48,7 @@ class Usuarios(Base):
     id_rol = Column(Integer, ForeignKey("roles.id"))
 
     rol = relationship("Roles", back_populates="usuarios")
-    mantenimiento = relationship("Mantenimiento", back_populates="usuario")
+    mantenimiento = relationship("Mantenimiento", back_populates="usuarios")
 
 # Modelo Proveedor
 class Proveedor(Base):
@@ -63,7 +63,7 @@ class Proveedor(Base):
 # Modelo Producto
 class Producto(Base):
     __tablename__ = "producto"
-    id = Column(Integer, primary_key=True, autoincrement=True)
+    id = Column(Integer, primary_key=True, autoincrement=True, index=True)
     id_responsable = Column(Integer, ForeignKey("responsable.id"))
     codigo = Column(String(200), nullable=False, index=True)
     id_sede = Column(Integer, ForeignKey("sede.id"))
@@ -72,10 +72,11 @@ class Producto(Base):
     estado = Column(String(100))
     fecha_mantenimiento = Column(Date)
     costo_inicial = Column(Float)
+    modo = Column(String(200))
     observacion = Column(Text)
     id_categoria = Column(Integer, ForeignKey("categoria.id"))
     id_proveedor = Column(Integer, ForeignKey("proveedor.id"))
-    modo = Column(String(200))
+    fecha_ingreso = Column(Date, nullable=False)
 
     responsable = relationship("Responsable", back_populates="productos")
     sede = relationship("Sede", back_populates="productos")
@@ -86,7 +87,7 @@ class Producto(Base):
 # Modelo Ubicacion
 class Ubicacion(Base):
     __tablename__ = "ubicacion"
-    id = Column(Integer, primary_key=True, autoincrement=True)
+    id = Column(Integer, primary_key=True, autoincrement=True, index=True)
     nombre = Column(String(200), nullable=False)
     id_sede = Column(Integer, ForeignKey("sede.id"))
 
@@ -123,5 +124,6 @@ class Mantenimiento(Base):
     id_usuarios = Column(Integer, ForeignKey("usuarios.id"))
     id_producto = Column(Integer, ForeignKey("producto.id"))
 
-    usuario = relationship("Usuarios", back_populates="mantenimiento")
+    usuarios = relationship("Usuarios", back_populates="mantenimiento")
     producto = relationship("Producto", back_populates="mantenimiento")
+
