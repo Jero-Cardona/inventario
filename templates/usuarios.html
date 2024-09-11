@@ -1,7 +1,10 @@
 {% extends 'base.html' %}
 {% block title %}
-  Usuarios
+    Usuarios
 {% endblock title %}
+{% block usuario %}
+   {{request.session['nombre']}}
+{% endblock %}
 <!-- contendio que varia del aplicativo -->
 {% block content %}
   <h2 class="font-bold text-xl">Seccion de Usuarios</h2>
@@ -35,27 +38,27 @@
                   </button>
               </div>
           
-              <!-- Div del botón Cargue masivo -->
-              <div class="flex items-center space-x-2 bg-gray-100 p-2 rounded-md shadow-md">
-                  <span class="text-sm font-semibold text-gray-800">Cargue masivo</span>
-                  <label class="flex items-center cursor-pointer group outline-none hover:rotate-90 duration-300">
-                    <input type="file" title="cargar archivos" class="hidden"/>
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="40px"
-                      height="40px"
-                      viewBox="0 0 24 24"
-                      class="stroke-zinc-400 fill-none group-hover:fill-zinc-800 group-active:stroke-zinc-200 group-active:fill-zinc-600 group-active:duration-0 duration-300"
-                    >
-                      <path
-                        d="M12 22C17.5 22 22 17.5 22 12C22 6.5 17.5 2 12 2C6.5 2 2 6.5 2 12C2 17.5 6.5 22 12 22Z"
-                        stroke-width="1.5"
-                      ></path>
-                      <path d="M8 12H16" stroke-width="1.5"></path>
-                      <path d="M12 16V8" stroke-width="1.5"></path>
-                    </svg>
-                  </label>
-              </div>
+        <!-- Div del botón Cargue masivo -->
+        <div class="flex items-center space-x-2 bg-gray-100 p-2 rounded-md shadow-md">
+            <span class="text-sm font-semibold text-gray-800">Cargue masivo</span>
+            <label class="flex items-center cursor-pointer px-2 group outline-none hover:rotate-90 duration-300">
+            <input type="file" title="cargar archivos" class="hidden" id="fileInput" data-endpoint="Usuarios"/>
+            <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="40px"
+                height="40px"
+                viewBox="0 0 24 24"
+                class="stroke-zinc-400 fill-none group-hover:fill-zinc-800 group-active:stroke-zinc-200 group-active:fill-zinc-600 group-active:duration-0 duration-300"
+            >
+                <path
+                d="M12 22C17.5 22 22 17.5 22 12C22 6.5 17.5 2 12 2C6.5 2 2 6.5 2 12C2 17.5 6.5 22 12 22Z"
+                stroke-width="1.5"
+                ></path>
+                <path d="M8 12H16" stroke-width="1.5"></path>
+                <path d="M12 16V8" stroke-width="1.5"></path>
+            </svg>
+            </label>
+        </div>
           
               <!-- Div del buscador -->
               <div class="flex border rounded-lg w-1/2 h-12 bg-white shadow-md">
@@ -83,30 +86,48 @@
                         <th class="px-2 py-3 border-b-2 border-gray-300 text-center text-sm leading-4 text-blue-500 tracking-wider">Estado</th>
                         <th class="px-2 py-3 border-b-2 border-gray-300 text-center text-sm leading-4 text-blue-500 tracking-wider">Fecha de creacion</th>
                         <th class="px-2 py-3 border-b-2 border-gray-300 text-center text-sm leading-4 text-blue-500 tracking-wider">Rol</th>
-                        <th class="px-2 py-3 border-b-2 border-gray-300 text-center text-sm leading-4 text-blue-500 tracking-wider">Acciones</th>
+                        <th class="px-2 py-3 border-b-2 border-gray-300 text-center text-sm leading-4 text-blue-500 tracking-wider">Acciones Administrador</th>
                     </tr>
                 </thead>
                 <tbody class="bg-white">
-                        {% for usuario in usuarios %}
+                    {% for usuario in usuarios %}
                         <tr class="odd:bg-gray-100">
                             <td class="px-2 py-4 text-center whitespace-no-wrap border-b border-gray-500">
                                 <div class="flex items-center">
                                     <div>
-                                        <div class="text-sm leading-5 text-gray-800">{{usuario.id}}</div>
+                                        <div class="text-sm font-bold leading-5 text-gray-800">{{usuario.id}}</div>
                                     </div>
                                 </div>
                             </td>
-                            <td class="px-2 py-4 text-center whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5">{{usuario.nombre}}</td>
-                            <td class="px-2 py-4 text-center whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5">{{usuario.correo}}</td>
-                            <td class="px-2 py-4 text-center whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5">{{usuario.estado}}</td>
-                            <td class="px-2 py-4 text-center whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5">{{usuario.fecha_creacion}}</td>
-                            <td class="px-2 py-4 text-center whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5">{{usuario.rol.nombre}}</td>
-                            <td class="px-0 py-4 whitespace-no-wrap border-b border-gray-500 text-sm leading-5">
-                                <button class="editar px-4 py-2 text-white bg-Andes rounded transition duration-300 hover:bg-green-800 hover:text-white focus:outline-none" data-href="../inicio">Editar</button>
-                                <button class="delete px-4 py-2  text-white bg-gray-500 rounded transition duration-400 hover:bg-orange-900 hover:text-white focus:outline-none" data-href="your-delete-url">Eliminar</button>
+                            <td class="px-1 py-4 text-center whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5">{{usuario.nombre}}</td>
+                            <td class="px-1 py-4 text-center whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5">{{usuario.correo}}</td>
+                            <td class="px-1 py-4 font-bold text-center whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5">{{usuario.estado}}</td>
+                            <td class="px-1 py-4 text-center whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5">{{usuario.fecha_creacion}}</td>
+                            <td class="px-1 py-4 text-center whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5">{{usuario.rol.nombre}}</td>
+                            <td class="px-1 py-4 m-auto place-items-center items-center whitespace-no-wrap border-b border-gray-500 text-sm leading-5">
+                                <button class="editar px-4 py-2 text-white bg-Andes rounded transition duration-300 hover:bg-green-800 hover:text-white focus:outline-none" data-endpoint="usuario" data-id="{{ usuario.id }}">Editar</button>
+                                <form id="delete-form-{{ usuario.id }}" class="inline-flex" action="/usuario-deleted/{{ usuario.id }}" method="post">
+                                    <input type="hidden" name="_method" value="DELETE">
+                                    <button type="submit" class="delete px-4 py-2 bg-gray-500 rounded text-white transition duration-400 hover:bg-orange-800 hover:text-white focus:outline-none">
+                                        Eliminar
+                                    </button>
+                                </form>
+                                {% if usuario.estado == "inactivo" %}
+                                <form id="active-user-{{ usuario.id }}" class="inline-flex" action="/activar-usuario/{{ usuario.id }}" method="post">
+                                    <button type="submit" class="estado px-4 py-2 bg-orange-500 rounded text-white transition duration-400 hover:bg-orange-800 hover:text-white focus:outline-none">
+                                        Activar
+                                    </button>
+                                </form>
+                                {% else %}
+                                <form id="desactivate-user-{{ usuario.id }}" class="inline-flex" action="/desactivar-usuario/{{ usuario.id }}" method="post">
+                                    <button type="submit" class="estado px-4 py-2 bg-blue-500 rounded text-white transition duration-400 hover:bg-blue-800 hover:text-white focus:outline-none">
+                                        Desactivar
+                                    </button>
+                                </form>
+                                {% endif %}
                             </td>
                         </tr>
-                        {% endfor %}
+                    {% endfor %}
                 </tbody>
             </table>
         <div class="sm:flex-1 sm:flex sm:items-center sm:justify-between mt-4 work-sans">
@@ -163,21 +184,35 @@
     <input placeholder="correo electronico" class="bg-gray-100 lg:w-96 text-gray-800 border-0 rounded-md p-2 mb-4 focus:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150" 
     type="email" required name="correo"/>
     <input placeholder="contraseña" class="bg-gray-100 lg:w-96 text-gray-800 border-0 rounded-md p-2 mb-4 focus:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150" 
-    type="password" required name="password"/>
-    <select name="estado" class="bg-gray-100 lg:w-96 text-gray-800 border-0 rounded-md p-2 mb-4 focus:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150" id="estados">
+    type="password" id="password" required name="hashed_password"/>
+    <button type="button" id="togglePassword" class="absolute right-14 bottom-44 top-40 text-gray-500 focus:outline-none">
+        <i class="fas fa-eye"></i>
+    </button>
+    <select required name="estado" class="bg-gray-100 lg:w-96 text-gray-800 border-0 rounded-md p-2 mb-4 focus:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150" id="estados">
         <option value="" disabled selected class="bg-white">Escoge un estado</option>
         <option value="activo">Activo</option>
         <option value="inactivo">Inactivo</option>
     </select>
-    <select name="id_rol" class="bg-gray-100 lg:w-96 text-gray-800 border-0 rounded-md p-2 mb-4 focus:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150" id="roles">
+    <select required name="id_rol" class="bg-gray-100 lg:w-96 text-gray-800 border-0 rounded-md p-2 mb-4 focus:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150" id="roles">
         <option value="" disabled selected class="bg-white">Escoge un rol</option>
         {% for rol in roles %}
             <option value="{{ rol.id }}">{{ rol.nombre }}</option>
         {% endfor %}
     </select>
-    <input class="" type="hidden" value="{{fecha_creacion}}" required name="fecha_creacion"/>
+    <input type="hidden" value="{{fecha_creacion}}" required name="fecha_creacion"/>
     <button class="bg-gradient-to-r from-indigo-500 to-blue-500 text-white font-bold py-2 px-4 rounded-md mt-4 hover:bg-indigo-600 hover:to-blue-600 transition ease-in-out duration-150" type="submit">
         Enviar Datos
     </button>
 </form>
+<script id="password">
+    const togglePassword = document.getElementById('togglePassword');
+        const passwordInput = document.getElementById('password');
+
+        togglePassword.addEventListener('click', function () {
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+
+            this.innerHTML = type === 'password' ? '<i class="fas fa-eye"></i>' : '<i class="fas fa-eye-slash"></i>';
+        });
+</script>
 {% endblock forms %}

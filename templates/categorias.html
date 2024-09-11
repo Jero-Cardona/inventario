@@ -2,6 +2,9 @@
 {% block title %}
     Categorias
 {% endblock %}
+{% block usuario %}
+   {{request.session['nombre']}}
+{% endblock %}
 {% block content %}
     
 <h1 class="font-bold text-xl">Seccion de Categorias</h1>
@@ -11,66 +14,66 @@
         <div class="align-middle rounded-tl-lg rounded-tr-lg w-full py-4 overflow-hidden bg-white shadow-lg px-8">
             <!-- div del buscador y la secion de arriba -->
             <div class="flex justify-between items-center w-full px-8">
-              <!-- Div del botón Agregar -->
-              <div class="flex items-center space-x-2 bg-gray-100 p-2 mx-4 rounded-md shadow-md">
-                  <span class="text-sm font-semibold text-gray-800">Agregar</span>
-                  <button
+                <!-- Div del botón Agregar -->
+                <div class="flex items-center space-x-2 bg-gray-100 p-2 mx-4 rounded-md shadow-md">
+                    <span class="text-sm font-semibold text-gray-800">Agregar</span>
+                    <button
                     title="Add New"
                     class="open_modal px-2 group cursor-pointer outline-none hover:rotate-90 duration-300"
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="40px"
-                      height="40px"
-                      viewBox="0 0 24 24"
-                      class="stroke-zinc-400 fill-none group-hover:fill-zinc-800 group-active:stroke-zinc-200 group-active:fill-zinc-600 group-active:duration-0 duration-300"
                     >
-                      <path
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="40px"
+                        height="40px"
+                        viewBox="0 0 24 24"
+                        class="stroke-zinc-400 fill-none group-hover:fill-zinc-800 group-active:stroke-zinc-200 group-active:fill-zinc-600 group-active:duration-0 duration-300"
+                    >
+                        <path
                         d="M12 22C17.5 22 22 17.5 22 12C22 6.5 17.5 2 12 2C6.5 2 2 6.5 2 12C2 17.5 6.5 22 12 22Z"
                         stroke-width="1.5"
-                      ></path>
-                      <path d="M8 12H16" stroke-width="1.5"></path>
-                      <path d="M12 16V8" stroke-width="1.5"></path>
+                        ></path>
+                        <path d="M8 12H16" stroke-width="1.5"></path>
+                        <path d="M12 16V8" stroke-width="1.5"></path>
                     </svg>
-                  </button>
-              </div>
-          
-              <!-- Div del botón Cargue masivo -->
-              <div class="flex items-center space-x-2 bg-gray-100 p-2 mx-4 rounded-md shadow-md">
-                  <span class="text-sm font-semibold text-gray-800">Cargue masivo</span>
-                  <label class="flex items-center cursor-pointer px-2 group outline-none hover:rotate-90 duration-300">
-                    <input type="file" title="cargar archivos" class="hidden"/>
+                    </button>
+                </div>
+            
+                <!-- Div del botón Cargue masivo -->
+                <div class="flex items-center space-x-2 bg-gray-100 p-2 rounded-md shadow-md">
+                    <span class="text-sm font-semibold text-gray-800">Cargue masivo</span>
+                    <label class="flex items-center cursor-pointer px-2 group outline-none hover:rotate-90 duration-300">
+                    <input type="file" title="cargar archivos" class="hidden" id="fileInput" data-endpoint="Categoria"/>
                     <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="40px"
-                      height="40px"
-                      viewBox="0 0 24 24"
-                      class="stroke-zinc-400 fill-none group-hover:fill-zinc-800 group-active:stroke-zinc-200 group-active:fill-zinc-600 group-active:duration-0 duration-300"
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="40px"
+                        height="40px"
+                        viewBox="0 0 24 24"
+                        class="stroke-zinc-400 fill-none group-hover:fill-zinc-800 group-active:stroke-zinc-200 group-active:fill-zinc-600 group-active:duration-0 duration-300"
                     >
-                      <path
+                        <path
                         d="M12 22C17.5 22 22 17.5 22 12C22 6.5 17.5 2 12 2C6.5 2 2 6.5 2 12C2 17.5 6.5 22 12 22Z"
                         stroke-width="1.5"
-                      ></path>
-                      <path d="M8 12H16" stroke-width="1.5"></path>
-                      <path d="M12 16V8" stroke-width="1.5"></path>
+                        ></path>
+                        <path d="M8 12H16" stroke-width="1.5"></path>
+                        <path d="M12 16V8" stroke-width="1.5"></path>
                     </svg>
-                  </label>
-              </div>
-          
-              <!-- Div del buscador -->
-              <div class="flex border mx-2 rounded-lg w-1/2 h-12 bg-white shadow-md">
-                  <div class="flex items-center w-full h-full bg-white px-4">
-                      <span class="flex items-center leading-normal bg-transparent rounded-l-lg text-grey-dark text-lg">
-                          <svg width="18" height="18" class="w-4 lg:w-auto" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                              <path d="M8.11086 15.2217C12.0381 15.2217 15.2217 12.0381 15.2217 8.11086C15.2217 4.18364 12.0381 1 8.11086 1C4.18364 1 1 4.18364 1 8.11086C1 12.0381 4.18364 15.2217 8.11086 15.2217Z" stroke="#455A64" stroke-linecap="round" stroke-linejoin="round" />
-                              <path d="M16.9993 16.9993L13.1328 13.1328" stroke="#455A64" stroke-linecap="round" stroke-linejoin="round" />
-                          </svg>
-                      </span>
-                      <input type="text" class="flex-shrink flex-1 leading-normal tracking-wide border-none rounded-r-lg px-3 focus:outline-none text-xs text-gray-500" placeholder="Buscar una categoria">
-                  </div>
-              </div>
-          </div>
-          
+                    </label>
+                </div>
+            
+                <!-- Div del buscador -->
+                <div class="flex border mx-2 rounded-lg w-1/2 h-12 bg-white shadow-md">
+                    <div class="flex items-center w-full h-full bg-white px-4">
+                        <span class="flex items-center leading-normal bg-transparent rounded-l-lg text-grey-dark text-lg">
+                            <svg width="18" height="18" class="w-4 lg:w-auto" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M8.11086 15.2217C12.0381 15.2217 15.2217 12.0381 15.2217 8.11086C15.2217 4.18364 12.0381 1 8.11086 1C4.18364 1 1 4.18364 1 8.11086C1 12.0381 4.18364 15.2217 8.11086 15.2217Z" stroke="#455A64" stroke-linecap="round" stroke-linejoin="round" />
+                                <path d="M16.9993 16.9993L13.1328 13.1328" stroke="#455A64" stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                        </span>
+                        <input type="text" class="flex-shrink flex-1 leading-normal tracking-wide border-none rounded-r-lg px-3 focus:outline-none text-xs text-gray-500" placeholder="Buscar una categoria">
+                    </div>
+                </div>
+            </div>
+            
         </div>
         <div class="align-middle w-full flex flex-col shadow overflow-hidden bg-white shadow-dashboard px-8 pt-3 rounded-bl-lg rounded-br-lg">
             <table class="max-w-full">
@@ -93,8 +96,13 @@
                         </td>
                         <td class="px-6 py-4 whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5">{{categoria.nombre}}</td>
                         <td class="px-0 py-4 whitespace-no-wrap border-b border-gray-500 text-sm leading-5">
-                            <button class="editar px-4 py-2 border-black border bg-Andes text-white rounded transition duration-300 hover:bg-green-800 hover:text-white focus:outline-none" data-href="#">Editar</button>
-                            <button class="delete px-4 py-2 bg-gray-500 text-white rounded transition duration-400 hover:bg-orange-700 hover:text-white focus:outline-none" data-href="your-delete-url">Eliminar</button>
+                            <button class="editar px-4 py-2 border-black border bg-Andes text-white rounded transition duration-300 hover:bg-green-800 hover:text-white focus:outline-none" data-endpoint="categoria" data-id="{{ categoria.id }}">Editar</button>
+                            <form id="delete-form-{{ categoria.id }}" class="inline-flex" action="/categoria-deleted/{{ categoria.id }}" method="post">
+                                <input type="hidden" name="_method" value="DELETE">
+                                <button type="submit" class="delete px-4 py-2 bg-gray-500 rounded text-white transition duration-400 hover:bg-orange-800 hover:text-white focus:outline-none">
+                                    Eliminar
+                                </button>
+                            </form>
                         </td>
                         </tr>
                 {% endfor %}
@@ -149,12 +157,8 @@
 {% block forms %}
 <h2 class="text-2xl font-bold text-gray-800 mb-4">Agregar nueva categoria</h2>
 <form id="form-categoria" action="/crear-categoria" method="post" class="flex flex-col">
-    <input
-    placeholder="Nombre categoria"
-    name="nombre"
-    required
-    class="bg-gray-100 text-gray-800 border-0 lg:w-96 rounded-md p-2 mb-4 focus:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150"
-    type="text"/>
+    <input placeholder="Nombre categoria" name="nombre" required type="text"
+    class="bg-gray-100 text-gray-800 border-0 lg:w-96 rounded-md p-2 mb-4 focus:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150"/>
   <button class="bg-gradient-to-r from-indigo-500 to-blue-500 text-white font-bold py-2 px-4 rounded-md mt-4 hover:bg-indigo-600 hover:to-blue-600 transition ease-in-out duration-150"
   type="submit">
   Enviar Datos

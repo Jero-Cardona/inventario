@@ -2,6 +2,9 @@
 {% block title %}
 Mantenimiento
 {% endblock title %}
+{% block usuario %}
+   {{request.session['nombre']}}
+{% endblock %}
 <!-- contenidp que varia del aplicativo -->
 {% block content %}
 <h2 class="font-bold text-xl">Seccion de Mantenimiento</h2>
@@ -34,29 +37,27 @@ Mantenimiento
                     </svg>
                   </button>
               </div>
-          
-              <!-- Div del botón Cargue masivo -->
-              <div class="flex items-center space-x-2 bg-gray-100 p-2 rounded-md shadow-md">
-                  <span class="text-sm font-semibold text-gray-800">Cargue masivo</span>
-                  <label class="flex items-center cursor-pointer px-2 group outline-none hover:rotate-90 duration-300">
-                    <input type="file" title="cargar archivos" class="hidden"/>
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="40px"
-                      height="40px"
-                      viewBox="0 0 24 24"
-                      class="stroke-zinc-400 fill-none group-hover:fill-zinc-800 group-active:stroke-zinc-200 group-active:fill-zinc-600 group-active:duration-0 duration-300"
-                    >
-                      <path
-                        d="M12 22C17.5 22 22 17.5 22 12C22 6.5 17.5 2 12 2C6.5 2 2 6.5 2 12C2 17.5 6.5 22 12 22Z"
-                        stroke-width="1.5"
-                      ></path>
-                      <path d="M8 12H16" stroke-width="1.5"></path>
-                      <path d="M12 16V8" stroke-width="1.5"></path>
-                    </svg>
-                  </label>
-              </div>
-          
+            <!-- Div del botón Cargue masivo -->
+            <div class="flex items-center space-x-2 bg-gray-100 p-2 rounded-md shadow-md">
+              <span class="text-sm font-semibold text-gray-800">Cargue masivo</span>
+              <label class="flex items-center cursor-pointer px-2 group outline-none hover:rotate-90 duration-300">
+              <input type="file" title="cargar archivos" class="hidden" id="fileInput" data-endpoint="Mantenimiento"/>
+              <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="40px"
+                  height="40px"
+                  viewBox="0 0 24 24"
+                  class="stroke-zinc-400 fill-none group-hover:fill-zinc-800 group-active:stroke-zinc-200 group-active:fill-zinc-600 group-active:duration-0 duration-300"
+              >
+                  <path
+                  d="M12 22C17.5 22 22 17.5 22 12C22 6.5 17.5 2 12 2C6.5 2 2 6.5 2 12C2 17.5 6.5 22 12 22Z"
+                  stroke-width="1.5"
+                  ></path>
+                  <path d="M8 12H16" stroke-width="1.5"></path>
+                  <path d="M12 16V8" stroke-width="1.5"></path>
+              </svg>
+              </label>
+          </div>
               <!-- Div del buscador -->
               <div class="flex border rounded-lg w-1/2 h-12 bg-white shadow-md">
                   <div class="flex items-center w-full h-full bg-white px-4">
@@ -94,12 +95,16 @@ Mantenimiento
                         <div class="text-sm leading-5 text-blue-900">{{mantenimiento.fecha_mantenimiento}}</div>
                     </td>
                     <td class="descripcion ver-menos w-1/4 text-center py-4 whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5">{{mantenimiento.observacion}}</td>
-                    <td class="px-2 text-center py-4 whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5">{{mantenimiento.usuario.nombre}}</td>
+                    <td class="px-2 text-center py-4 whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5">{{mantenimiento.usuarios.nombre}}</td>
                     <td class="px-2 text-center py-4 whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5">{{mantenimiento.producto.codigo}}</td>
                     <td class="px-0 py-4 whitespace-no-wrap border-b border-gray-500 text-sm leading-5">
-                      <button class="editar px-4 py-2 border-black border bg-Andes text-white rounded transition duration-300 hover:bg-green-800 hover:text-white focus:outline-none" data-href="#">Editar</button>
-                      <button class="delete px-4 py-2 bg-gray-500 text-white rounded transition duration-400 hover:bg-orange-700 hover:text-white focus:outline-none" data-href="your-delete-url">Eliminar</button>
-                  </td>
+                      <button class="editar px-4 py-2 border-black border bg-Andes text-white rounded transition duration-300 hover:bg-green-800 hover:text-white focus:outline-none" data-endpoint="mantenimiento" data-id="{{ mantenimiento.id }}">Editar</button>
+                      <form id="delete-form-{{ mantenimiento.id }}" class="inline-flex" action="/mantenimiento-deleted/{{ mantenimiento.id }}" method="post">
+                        <input type="hidden" name="_method" value="DELETE">
+                        <button type="submit" class="delete px-4 py-2 bg-gray-500 rounded text-white transition duration-400 hover:bg-orange-800 hover:text-white focus:outline-none">
+                            Eliminar
+                        </button>
+                    </form>                  </td>
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -158,18 +163,18 @@ Mantenimiento
      Fecha Mantenimiento
    </label>
   <input
-    id="fecha" name="fecha_mantenimiento"
+    id="fecha" name="fecha_mantenimiento" required
     class="bg-gray-200 text-gray-800 border-0 lg:w-96 rounded-md p-2 mb-4 focus:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150"
     type="date"
   />
- <textarea placeholder="Observacion" class="bg-gray-200 text-gray-800 border-0 lg:w-96 rounded-md p-2 mb-4 focus:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150" name="observacion"></textarea>
-  <select name="id_usuarios" class="bg-gray-200 text-gray-800 border-0 lg:w-96 rounded-md p-2 mb-4 focus:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150" id="usuarios">
+ <textarea required placeholder="Observacion" class="bg-gray-200 text-gray-800 border-0 lg:w-96 rounded-md p-2 mb-4 focus:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150" name="observacion"></textarea>
+  <select required name="id_usuarios" class="bg-gray-200 text-gray-800 border-0 lg:w-96 rounded-md p-2 mb-4 focus:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150" id="usuarios">
         <option value="" disabled selected class="bg-white ">Escoge un usuario</option>
         {% for usuario in usuarios %}
           <option value="{{ usuario.id }}">{{ usuario.nombre }}</option>
         {% endfor %}
     </select>
-  <select name="id_producto" class="bg-gray-200 text-gray-800 border-0 lg:w-96 rounded-md p-2 mb-4 focus:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150" id="product">
+  <select required name="id_producto" class="bg-gray-200 text-gray-800 border-0 lg:w-96 rounded-md p-2 mb-4 focus:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150" id="product">
      <option value="" disabled selected class="bg-white ">Escoge el Producto</option>
       {% for producto in productos %}
           <option value="{{ producto.id }}">{{ producto.codigo }}</option>

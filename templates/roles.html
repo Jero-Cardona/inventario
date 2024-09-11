@@ -2,6 +2,9 @@
 {% block title %}
     Roles
 {% endblock %}
+{% block usuario %}
+   {{request.session['nombre']}}
+{% endblock %}
 {% block content %}
 <h1 class="font-bold text-xl">Seccion de Roles del aplicativo</h1>
 <div class="flex justify-center items-center w-full">
@@ -32,10 +35,10 @@
                 </button>
             </div>
             <!-- Div del botón Cargue masivo -->
-            <div class="flex items-center space-x-2 bg-gray-100 p-2 mx-4 rounded-md shadow-md">
+            <div class="flex items-center space-x-2 bg-gray-100 p-2 rounded-md shadow-md">
                 <span class="text-sm font-semibold text-gray-800">Cargue masivo</span>
                 <label class="flex items-center cursor-pointer px-2 group outline-none hover:rotate-90 duration-300">
-                <input type="file" title="cargar archivos" class="hidden"/>
+                <input type="file" title="cargar archivos" class="hidden" id="fileInput" data-endpoint="Roles"/>
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="40px"
@@ -79,20 +82,23 @@
                     {% for rol in roles %}
                     <tr class="odd:bg-gray-100">
                         <td class="px-2 py-4 whitespace-no-wrap border-b border-gray-500">
-                            <div class="flex items-center">
-                                <div>
-                                    <div class="text-sm leading-5 text-gray-800">{{rol.id}}</div>
-                                </div>
-                            </div>
+                            <div class="text-sm leading-5 font-bold text-gray-800">{{rol.id}}</div>
                         </td>
                         <td class="px-2 py-4 whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5">{{rol.nombre}}</td>
                         <td class="px-2 py-4 whitespace-no-wrap border-b border-gray-500 text-sm leading-5">
                             <button class="open_modal px-4 py-2 border-black border bg-gray-700 text-white rounded transition duration-300 hover:bg-green-800 hover:text-white focus:outline-none" data-href="#">configurar</button>
                         </td>
-                        <td class="px-2 py-4 whitespace-no-wrap border-b border-gray-500 text-sm leading-5">
-                            <button class="editar px-4 py-2 border-black border bg-Andes text-white rounded transition duration-300 hover:bg-green-800 hover:text-white focus:outline-none" data-href="#">Editar</button>
-                            <button class="delete px-4 py-2 bg-gray-500 text-white rounded transition duration-400 hover:bg-orange-700 hover:text-white focus:outline-none" data-href="your-delete-url">Eliminar</button>
+                        {% if id_rol == 1 %}
+                            <td class="px-2 py-4 whitespace-no-wrap border-b border-gray-500 text-sm leading-5">
+                            <button class="editar px-4 py-2 border-black border bg-Andes text-white rounded transition duration-300 hover:bg-green-800 hover:text-white focus:outline-none" data-endpoint="rol" data-id="{{ rol.id }}">Editar</button>
+                            <form id="delete-form-{{ rol.id }}" class="inline-flex" action="/rol-deleted/{{ rol.id }}" method="post">
+                                <input type="hidden" name="_method" value="DELETE">
+                                <button type="submit" class="delete px-4 py-2 bg-gray-500 rounded text-white transition duration-400 hover:bg-orange-800 hover:text-white focus:outline-none">
+                                    Eliminar
+                                </button>
+                            </form>
                         </td>
+                        {% endif %}
                         </tr>
                 {% endfor %}
                 </tbody>
