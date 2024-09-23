@@ -7,62 +7,58 @@ Productos
 {% endblock %}
 <!-- contenidp que varia del aplicativo -->
 {% block content %}
-<a href="#" class="block items-start max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 ">
-    <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Inventario de producto</h5>
-    <p class="font-normal text-gray-700">Esta seccion permite la administración de productos en el inventario, ingresos, salidas, mantenimientos, etc..</p>
-</a>
-<div class="flex justify-center items-center w-full">
+<div class="flex px-4 h-auto space-x-4">
+    <a href="#mantenimientos" class="block max-w-screen-lg p-6 h-auto bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
+        <!-- incon font awsome por si acaso -->
+        <!-- <i class="fa-solid fa-circle-info fa-xl absolute right-20"></i> -->
+        <h1 class="font-bold text-black text-3xl mb-4">Inventario de <i>productos</i> ingresados en el sistema</h1>
+        <p class="font-normal text-gray-700 dark:text-gray-400 text-justify">
+            En esta sección del sistema, podrás visualizar los productos ingresados hasta el momento. Como administrador, tendrás la capacidad de ingresar, editar, eliminar y cargar productos en el sistema. Además, podrás ver el <strong>código QR</strong> de cada producto y descargar todos los códigos QR si así lo deseas. También podrás visualizar la cantidad de productos que cuentan con un proveedor y aquellos que no tienen proveedor.
+        </p>
+    </a>
+</div>
+<main class="flex justify-center items-center w-full">
     <!-- component -->
     <div class="w-full sm:px-2 overflow-x-auto sm:-mx-6 lg:px-8 flex-col justify-center items-center flex">
         <div class="align-middle rounded-tl-lg rounded-tr-lg w-full py-4 overflow-hidden bg-white shadow-lg px-2 lg:px-4">
         <!-- Responsive layout for the search bar and buttons -->
         <div class="flex flex-wrap justify-between items-center w-full px-2 space-y-4 md:space-y-0 md:flex-nowrap">
             <!-- Div del botón Agregar -->
-            <div class="flex items-center space-x-2 bg-gray-100 p-2 rounded-md shadow-md w-full md:w-auto">
+            <div class="flex items-center mx-4 space-x-2 bg-gray-100 p-2 rounded-md shadow-md w-auto sm:w-1/2">
                 <span class="text-sm font-semibold text-gray-800">Agregar</span>
-                <button
-                    title="Add New"
-                    class="open_modal px-2 group cursor-pointer outline-none hover:rotate-90 duration-300"
-                >
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="30px"
-                        height="30px"
-                        viewBox="0 0 24 24"
-                        class="stroke-zinc-400 fill-none group-hover:fill-zinc-800 group-active:stroke-zinc-200 group-active:fill-zinc-600 group-active:duration-0 duration-300"
-                    >
-                        <path
-                            d="M12 22C17.5 22 22 17.5 22 12C22 6.5 17.5 2 12 2C6.5 2 2 6.5 2 12C2 17.5 6.5 22 12 22Z"
-                            stroke-width="1.5"
-                        ></path>
+                <button title="Add New" class="open_modal px-2 group cursor-pointer outline-none hover:rotate-90 duration-300">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="30px" height="30px" viewBox="0 0 24 24" class="stroke-zinc-400 fill-none group-hover:fill-zinc-800 group-active:stroke-zinc-200 group-active:fill-zinc-600 group-active:duration-0 duration-300">
+                        <path d="M12 22C17.5 22 22 17.5 22 12C22 6.5 17.5 2 12 2C6.5 2 2 6.5 2 12C2 17.5 6.5 22 12 22Z" stroke-width="1.5"></path>
                         <path d="M8 12H16" stroke-width="1.5"></path>
                         <path d="M12 16V8" stroke-width="1.5"></path>
                     </svg>
                 </button>
             </div>
             <!-- Div del botón Cargue masivo -->
-            <div class="flex items-center space-x-2 bg-gray-100 p-2 rounded-md shadow-md w-full md:w-auto">
+            <div class="flex items-center mx-4 space-x-2 bg-gray-100 p-2 rounded-md shadow-md w-auto sm:w-1/2">
                 <span class="text-sm font-semibold text-gray-800">Cargue masivo</span>
                 <label class="flex items-center cursor-pointer px-2 group outline-none hover:rotate-90 duration-300">
                     <input type="file" title="cargar archivos" class="hidden" id="fileInput" data-endpoint="Producto"/>
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="30px"
-                        height="30px"
-                        viewBox="0 0 24 24"
-                        class="stroke-zinc-400 fill-none group-hover:fill-zinc-800 group-active:stroke-zinc-200 group-active:fill-zinc-600 group-active:duration-0 duration-300"
-                    >
-                        <path
-                            d="M12 22C17.5 22 22 17.5 22 12C22 6.5 17.5 2 12 2C6.5 2 2 6.5 2 12C2 17.5 6.5 22 12 22Z"
-                            stroke-width="1.5"
-                        ></path>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="30px" height="30px" viewBox="0 0 24 24" class="stroke-zinc-400 fill-none group-hover:fill-zinc-800 group-active:stroke-zinc-200 group-active:fill-zinc-600 group-active:duration-0 duration-300">
+                        <path d="M12 22C17.5 22 22 17.5 22 12C22 6.5 17.5 2 12 2C6.5 2 2 6.5 2 12C2 17.5 6.5 22 12 22Z" stroke-width="1.5"></path>
                         <path d="M8 12H16" stroke-width="1.5"></path>
                         <path d="M12 16V8" stroke-width="1.5"></path>
                     </svg>
                 </label>
             </div>
+            <!-- Div del botón descargar qrs -->
+            <div class="flex items-center space-x-2 p-2 w-auto sm:w-1/2">
+                <button id="downloadAllQrButton" class="px-4 bg-blue-500 py-2 border text-white rounded transition duration-300 hover:bg-blue-800 focus:outline-none">
+                    <i class="fa-regular fa-circle-down mr-2 fa-lg"></i> Descargar Qrs
+                </button>   
+            </div>
+            <div class="flex items-center space-x-2 p-2 w-auto sm:w-1/2">
+                <button id="Visualizar" class="mt-4 mb-4 px-2 py-2 bg-green-900 border-gray-800 border text-white rounded transition duration-400 hover:bg-Andes hover:text-white focus:outline-none md:block hidden">
+                    <i class="fa-solid fa-eye mr-2"></i>Ver más columnas
+                </button>   
+            </div>
             <!-- Formulario del buscador -->
-            <form id="form-buscador" class="flex w-full md:w-1/2 h-12 bg-white shadow-md rounded-lg border">
+            <form id="form-buscador" class="flex w-auto md:w-4/12 h-12 sm:w-1/2 bg-white shadow-md rounded-lg border">
                 <div class="flex items-center w-full h-full bg-white px-4">
                     <span class="flex items-center leading-normal bg-transparent rounded-l-lg text-grey-dark text-lg">
                         <svg width="18" height="18" class="w-4 lg:w-auto" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -70,17 +66,17 @@ Productos
                             <path d="M16.9993 16.9993L13.1328 13.1328" stroke="#455A64" stroke-linecap="round" stroke-linejoin="round"/>
                         </svg>
                     </span>
-                    <input type="text" class="flex-shrink flex-1 leading-normal tracking-wide border-none rounded-r-lg px-3 focus:outline-none text-xs text-gray-500" placeholder="Buscar productos en el inventario">
+                    <input type="text" class="flex-shrink flex-1 leading-normal tracking-wide border-none rounded-r-lg px-3 focus:outline-none text-xs text-gray-500" placeholder="Buscar productos">
                 </div>
             </form>
         </div>
         <!-- contenedor de la tabla -->
-        <div class="align-middle w-full flex-col shadow overflow-hidden bg-white shadow-dashboard px-8 pt-3 rounded-bl-lg rounded-br-lg hidden md:block">
+        <div class="align-middle w-full flex-col overflow-hidden bg-white shadow-dashboard px-4 pt-3 rounded-bl-lg rounded-br-lg hidden md:block">
             <table id="table-producto" class="max-w-full">
                 <thead>
                     <tr>
-                        <!-- Columna ID visible en todo momento -->
-                        <th class="px-2 py-3 border-b-2 border-gray-300 text-center leading-4 text-blue-500 tracking-wider">ID</th>
+                        <!-- Columna ID visible en todo momento  -->
+                        <th class="px-2 py-3 border-b-2 border-gray-300 text-center leading-6 text-blue-500 tracking-wider">ID</th>
                         <!-- Columnas visibles inicialmente -->
                         <th class="group1 px-2 py-3 border-b-2 border-gray-300 text-center text-sm leading-4 text-blue-500 tracking-wider">Fecha Ingreso</th>
                         <th class="group1 px-2 py-3 border-b-2 border-gray-300 text-center text-sm leading-4 text-blue-500 tracking-wider">Responsable</th>
@@ -107,22 +103,22 @@ Productos
                         <td class="px-2 py-4 whitespace-no-wrap border-b border-gray-500">
                             <div class="flex items-center">
                                 <div>
-                                    <div class="text-sm text-center font-bold leading-5 text-gray-800">#{{producto.id}}</div>
+                                    <div class="text-sm text-center font-extrabold leading-5 text-gray-800"> {{producto.id}}</div>
                                 </div>
                             </div>
                         </td>
                         <!-- Datos correspondientes a las columnas visibles inicialmente -->
                         <td class="group1 py-4 whitespace-no-wrap text-center border-b border-gray-500 text-sm leading-5 text-blue-900">{{producto.fecha_ingreso}}</td>
                         <td class="group1 py-4 whitespace-no-wrap text-center border-b border-gray-500 text-sm leading-5 text-blue-900">{{producto.responsable.nombre}}</td>
-                        <td class="group1 py-4 whitespace-no-wrap text-center border-b text-blue-900 border-gray-500 text-sm leading-5">{{producto.codigo}}</td>
+                        <td class="group1 py-4 whitespace-no-wrap text-center border-b text-blue-900 border-gray-500 text-sm font-semibold leading-5">{{producto.codigo}}</td>
                         <td class="group1 py-4 whitespace-no-wrap text-center border-b text-blue-900 border-gray-500 text-sm leading-5">{{producto.sede.nombre}}</td>
                         <td class="group1 py-4 whitespace-no-wrap text-center border-b text-blue-900 border-gray-500 text-sm leading-5">{{producto.cantidad}}</td>
                         <td class="group1 py-4 whitespace-no-wrap text-center border-b text-blue-900 border-gray-500 text-sm leading-5">{{producto.uso}}</td>
                         <td class="group1 py-4 whitespace-no-wrap text-center border-b text-blue-900 border-gray-500 text-sm leading-5">{{producto.estado}}</td>
                         <td class="group1 py-4 whitespace-no-wrap text-center border-b text-blue-900 border-gray-500 text-sm leading-5">{{producto.fecha_mantenimiento}}</td>
                         <!-- Datos correspondientes a las columnas ocultas inicialmente -->
-                        <td class="group1 py-4 whitespace-no-wrap text-center border-b text-blue-900 border-gray-500 text-sm leading-5">{{producto.costo_inicial}}</td>
-                        <td class="descripcion ver-menos group2 w-1/6 hidden py-4 whitespace-no-wrap text-center border-b text-blue-900 border-gray-500 text-sm leading-5">{{producto.observacion}}</td>
+                        <td class="group1 py-4 whitespace-no-wrap text-center border-b text-blue-900 border-gray-500 text-base font-semibold leading-5">$ {{producto.costo_inicial}}</td>
+                        <td class="descripcion ver-menos group2 w-1/4 hidden py-4 whitespace-no-wrap text-center border-b text-blue-900 border-gray-500 text-sm leading-5">{{producto.observacion}}</td>
                         <td class="group2 hidden py-4 whitespace-no-wrap text-center border-b text-blue-900 border-gray-500 text-sm leading-5">{{producto.categoria.nombre}}</td>
                         <td class="group2 hidden py-4 whitespace-no-wrap text-center border-b text-blue-900 border-gray-500 text-sm leading-5">{{producto.proveedor.nombre}}</td>
                         <td class="group2 hidden py-4 whitespace-no-wrap text-center border-b text-blue-900 border-gray-500 text-sm leading-5">{{producto.modo}}</td>
@@ -158,7 +154,6 @@ Productos
     </p>
     </div>
     <div>
-        <button id="Visualizar" class="mt-4 mb-4 px-2 py-2 bg-green-900 border-gray-800 border text-white rounded transition duration-400 hover:bg-Andes hover:text-white focus:outline-none">Mostrar más columnas</button>
     <nav class="relative p-4 z-0 inline-flex shadow-sm">
         <div>
             <a href="#" class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm leading-5 font-medium text-gray-500 hover:text-gray-400 focus:z-10 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-gray-100 active:text-gray-500 transition ease-in-out duration-150" aria-label="Previous" v-on:click.prevent="changePage(pagination.current_page - 1)">
@@ -193,10 +188,9 @@ Productos
             <div class="grid grid-cols-1 gap-6 md:hidden">
                 {% for producto in productos %}
                 <div class="bg-white p-6 rounded-lg shadow-lg border border-gray-200">
-                    <!-- Product Header with accent color -->
+                    <!-- Producto Header con color -->
                     <h2 class="text-2xl font-semibold text-indigo-600 mb-4">Producto ID: {{ producto.id }}</h2>
-
-                    <!-- Product Information -->
+                    <!-- Informacion del Producto -->
                     <div class="grid grid-cols-2 gap-2 text-sm">
                         <div class="flex flex-col">
                             <span class="text-gray-500 font-bold">Responsable</span>
@@ -269,14 +263,13 @@ Productos
                 </div>
                 {% endfor %}
             </div>
-
-
     </div>
     </div>
+</main>
     <!-- Modal para mostrar el QR -->
     <section id="qrModal" class="fixed inset-0 bg-[#111111bd] flex opacity-0 pointer-events-none z-50">
         <div class="m-auto w-9/10 max-w-[800px] max-h-[90%] bg-white rounded-[6px] p-6 grid gap-4 place-items-center shadow-md relative">
-            <button id="closeModalQR" class="absolute top-4 right-4 w-8 h-8 flex justify-center items-center cursor-pointer text-gray-600 hover:text-gray-900">
+            <button id="closeModalQR" class="absolute top-4 right-4 w-12 h-12 flex justify-center items-center cursor-pointer text-gray-600 hover:text-gray-900">
                 ✖
             </button>
             <h2 class="text-2xl font-bold text-gray-800">Código QR del Producto</h2>
@@ -288,12 +281,14 @@ Productos
             </div>
         </div>
     </section>
-
+    
+    <!-- script para las alertas del codigo qr -->
+    <script src="../static/js/codigo_qr.js"></script>
 {% endblock content %}
 <!-- bloque oara las modales -->
 {% block forms %}
-<h2 class="text-2xl font-bold text-gray-800 mb-4">Agregar nuevo Producto</h2>
-<form id="form-productos" method="post" action="/crear-producto" class="grid grid-cols-1 md:grid-cols-2 gap-2 w-full">
+<h2 class="text-2xl font-bold text-gray-800 lg:mb-2">Agregar nuevo Producto</h2>
+<form id="form-productos" method="post" action="/crear-producto" class="grid overscroll-contain grid-cols-1 md:grid-cols-2 gap-2 w-full">
     <select name="id_responsable" required class="bg-gray-200 text-gray-800 border-0 rounded-md p-2 focus:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150 col-span-1 md:col-span-2" id="responsable">
         <option value="" disabled selected class="bg-white">Escoge un Responsable</option>
         {% for responsable in responsables %}
@@ -312,10 +307,10 @@ Productos
     <input required placeholder="Cantidad" class="bg-gray-200 text-gray-800 border-0 rounded-md p-2 focus:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150" type="number" name="cantidad" />
     <input required placeholder="Uso" class="bg-gray-200 text-gray-800 border-0 rounded-md p-2 focus:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150" type="text" name="uso" />
     <input required placeholder="Estado" class="bg-gray-200 text-gray-800 border-0 rounded-md p-2 focus:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150" type="text" name="estado" />
-    <input required placeholder="Fecha Mantenimiento" class="bg-gray-200 text-gray-800 border-0 rounded-md p-2 focus:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150" type="date" name="fecha_mantenimiento" />
+    <input placeholder="Fecha Mantenimiento" class="bg-gray-200 text-gray-800 border-0 rounded-md p-2 focus:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150" type="date" name="fecha_mantenimiento" />
     <input required placeholder="Costo Inicial" class="bg-gray-200 text-gray-800 border-0 rounded-md p-2 focus:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150" type="text" name="costo_inicial" />
     <input required placeholder="Modo" class="bg-gray-200 text-gray-800 border-0 rounded-md p-2 focus:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150" type="text" name="modo" />
-    <textarea placeholder="Observación" class="bg-gray-200 text-gray-800 border-0 rounded-md p-2 focus:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150 col-span-1 md:col-span-2" name="observacion"></textarea>
+    <textarea required placeholder="Observación" class="bg-gray-200 text-gray-800 border-0 rounded-md p-2 focus:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150 col-span-1 md:col-span-2" name="observacion"></textarea>
     
     <select required name="id_categoria" class="bg-gray-200 text-gray-800 border-0 rounded-md p-2 focus:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150" id="categorias">
         <option value="" disabled selected class="bg-white">Escoge una Categoría</option>
@@ -324,7 +319,7 @@ Productos
         {% endfor %}
     </select>
     
-    <select required name="id_proveedor" class="bg-gray-200 text-gray-800 border-0 rounded-md p-2 focus:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150" id="proveedores">
+    <select name="id_proveedor" class="bg-gray-200 text-gray-800 border-0 rounded-md p-2 focus:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150" id="proveedores">
         <option value="" disabled selected class="bg-white">Escoge un Proveedor</option>
         {% for proveedor in proveedores %}
         <option value="{{ proveedor.id }}">{{ proveedor.nombre }}</option>

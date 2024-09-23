@@ -139,7 +139,7 @@ class ProductoBase(BaseModel):
     modo: Optional[str] = Field(None, alias="modo")
     observacion: Optional[str] = Field(None, alias="observacion")
     id_categoria: int = Field(..., alias="id_categoria")
-    id_proveedor: int = Field(..., alias="id_proveedor")
+    id_proveedor: Optional[int] = Field(None, alias="id_proveedor")
     fecha_ingreso: Optional[date] = Field(..., alias="fecha_ingreso")
     
 
@@ -157,7 +157,7 @@ class ProductoBase(BaseModel):
         modo: Optional[str] = Form(None),
         observacion: Optional[str] = Form(None),
         id_categoria: int = Form(...),
-        id_proveedor: int = Form(...),
+        id_proveedor: Optional[int] = Form(None),
         fecha_ingreso: Optional[date] = Form(...)
     ):
         return cls(
@@ -184,7 +184,7 @@ class Producto(ProductoBase):
     responsable: Responsable
     sede: Sede
     categoria: Categoria
-    proveedor: Proveedor
+    proveedor: Optional[Proveedor]
     
     class Config:
         from_attributes = True
@@ -231,7 +231,7 @@ class Proveedor_MBase(BaseModel):
 class Proveedor_MCreate(Proveedor_MBase):
     pass
 
-class Proveedor_M(Proveedor_MBase):
+class ProveedorMantenimiento(Proveedor_MBase):
     id: int
     producto: Producto
     

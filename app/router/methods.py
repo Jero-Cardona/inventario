@@ -5,6 +5,7 @@ from app.schemas import *
 from ..security import *
 from ..database import SessionLocal, engine
 from fastapi.responses import JSONResponse, HTMLResponse, RedirectResponse
+from typing import List, Optional
 
 models.Base.metadata.create_all(bind=engine)
 methods = APIRouter()
@@ -71,14 +72,24 @@ async def add_producto(request: Request, producto_data: schemas.ProductoCreate =
         verify_cod_producto = crud.get_cod_producto(db, codigo = producto_data.codigo)
         if verify_cod_producto:
             raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail = "Este codigo ya existe, por favor intenta otro")
-        producto = models.Producto(**producto_data.dict())
+        producto = models.Producto(**producto_data.dict(exclude_unset=True))
         db.add(producto)
         db.commit()
+
+        # si el producto cuenta con proveedor instanciar en otro modelo
+        if producto_data.id_proveedor is not None:
+            producto_proveeores = models.ProductoProveedores(
+                id_producto = producto.id,
+                id_proveedor = producto_data.id_proveedor
+            )
+            db.add(producto_proveeores)
+            db.commit()
+        
         return RedirectResponse(url="/producto-section", status_code=status.HTTP_303_SEE_OTHER)
     except Exception as e:
         db.rollback()
         raise HTTPException(status_code=400, detail=str(e))
-    
+
 
 @methods.post("/crear-Responsable", response_class=HTMLResponse, tags=['Routes Post'])
 async def add_responsable(request: Request, nombre: str = Form(...), correo: str = Form(...), telefono: str = Form(...),
@@ -87,6 +98,27 @@ async def add_responsable(request: Request, nombre: str = Form(...), correo: str
     db.add(responsable)
     db.commit()
     return RedirectResponse(url="responsable-section", status_code=status.HTTP_303_SEE_OTHER)
+
+@methods.post("/crear-proveedor-mantenimiento", response_class=HTMLResponse, tags=['Routes Post'])
+async def crear_proveedormantenimiento(
+    proveedor_id: int = Form(...), 
+    contacto: str = Form(...), 
+    db: Session = Depends(get_db)
+):
+    proveedor = crud.get_proveedor(proveedor_id, db)
+    
+    nuevo_mantenimiento = models.Proveedormantenimiento(
+        nombre=proveedor.nombre,
+        direccion=proveedor.direccion,
+        telefono=proveedor.telefono,
+        contacto=contacto,
+        id_producto=None  
+    )
+    db.add(nuevo_mantenimiento)
+    db.commit()
+    db.refresh(nuevo_mantenimiento)
+    
+    return {"message": "Registro creado exitosamente"}
 
 # Endpoints con el metodo PUT
 
@@ -103,16 +135,17 @@ def update_proveedor(proveedor_id: int, nombre: str, direccion: str, telefono: s
 @methods.put("/producto-update/{producto_id}", response_model=schemas.Producto, tags=['Routes Put'])
 def update_pro(producto_id: int, id_responsable: int, codigo: str, id_sede: int, cantidad: int, uso: str, 
             estado: str, fecha_mantenimiento: date, costo_inicial: float, modo: str, observacion: str,
-            id_categoria: int, id_proveedor: int, fecha_ingreso: date, db: Session = Depends(get_db)):
+            id_categoria: int, fecha_ingreso: date, db: Session = Depends(get_db), id_proveedor: Optional[int] = None):
     try:
         update_producto_id = crud.update_producto(db, producto_id, id_responsable, codigo, id_sede,
-                            cantidad, uso, estado, fecha_mantenimiento, costo_inicial, modo,
-                            observacion, id_categoria, id_proveedor, fecha_ingreso)
+                                                cantidad, uso, estado, fecha_mantenimiento, costo_inicial, modo,
+                                                observacion, id_categoria, fecha_ingreso, id_proveedor)
         if not update_producto_id:
             raise HTTPException(status_code=404, detail="No se encontró el producto")
         return update_producto_id
     except Exception as e:
-        raise HTTPException(status_code=500, detail="Error interno del servidor")
+        raise HTTPException(status_code=500, detail=str(e))
+
 
 @methods.put("/mantenimiento-update/{mantenimiento_id}", response_model=schemas.Mantenimiento, tags=['Routes Put'])
 def update_mantenimiento(mantenimiento_id: int, fecha_mantenimiento: date, observacion: str, id_usuarios: int, id_producto: int,  db: Session = Depends(get_db)):
@@ -144,13 +177,13 @@ def update_sede_id(sede_id: int, nombre: str, direccion: str, telefono: str, db:
     except Exception as e:
         raise HTTPException(status_code=500, detail="Error interno del servidor")
 
-@methods.put("/categoria-update/{categoria_id}", response_model=schemas.Categoria, tags=['Routes Put'])
-def update_categoria_id(categoria_id: int, nombre: str, db: Session = Depends(get_db)):
+@methods.put("/rol-update/{rol_id}", response_model=schemas.Roles, tags=['Routes Put'])
+def update_categoria_id(rol_id: int, nombre: str, db: Session = Depends(get_db)):
     try:
-        updated_categoria = crud.update_categoria(db, categoria_id, nombre)
-        if not updated_categoria:
-            raise HTTPException(status_code=404, detail="No se encontró la categoria")
-        return updated_categoria 
+        update_rol = crud.update_rol(db, rol_id, nombre)
+        if not update_rol:
+            raise HTTPException(status_code=404, detail="No se encontró el Rol")
+        return update_rol 
     except Exception as e:
         raise HTTPException(status_code=500, detail="Error interno del servidor")
 
@@ -179,7 +212,7 @@ def delete_responsable(responsable_id: int, db: Session = Depends(get_db)):
     if del_responsable == "Deleted Responsable":
         return JSONResponse(content={"detail": "Responsable deleted OK"}, status_code=200)
     elif del_responsable == "ForeignKeyViolation":
-        raise HTTPException(status_code=409, detail="Cannot delete responsable, it is referenced by other records")
+        raise HTTPException(status_code=409, detail="No se puede eliminar el Responsable, es referenciado por otros registros")
     else:
         raise HTTPException(status_code=404, detail="Responsable not found")
 
@@ -189,7 +222,7 @@ def delete_rol(rol_id: int, db: Session = Depends(get_db)):
     if del_rol == "Deleted Rol":
         return JSONResponse(content={"detail": "Rol deleted OK"}, status_code=200)
     elif del_rol == "ForeignKeyViolation":
-        raise HTTPException(status_code=409, detail="Cannot delete rol, it is referenced by other records")
+        raise HTTPException(status_code=409, detail="No se puede eliminar el Rol, es referenciado por otros registros")
     else:
         raise HTTPException(status_code=404, detail="rol not found")
 
@@ -199,7 +232,7 @@ def delete_sede(sede_id: int, db: Session = Depends(get_db)):
     if del_sede == "Deleted Rol":
         return JSONResponse(content={"detail": "Rol deleted OK"}, status_code=200)
     elif del_sede == "ForeignKeyViolation":
-        raise HTTPException(status_code=409, detail="Cannot delete rol, it is referenced by other records")
+        raise HTTPException(status_code=409, detail="No se puede eliminar la Sede, es referenciada por otros registros")
     else:
         raise HTTPException(status_code=404, detail="rol not found")
 
@@ -209,37 +242,36 @@ def delete_proveedor(proveedor_id: int, db: Session = Depends(get_db)):
     if del_proveedor == "Deleted Proveedor":
         return JSONResponse(content={"detail": "Proveedor deleted OK"}, status_code=200)
     elif del_proveedor == "ForeignKeyViolation":
-        raise HTTPException(status_code=409, detail="Cannot delete rol, it is referenced by other records")
+        raise HTTPException(status_code=409, detail="No se puede eliminar el proveedor, es referenciado por otros registros")
     else:
         raise HTTPException(status_code=404, detail="rol not found")
 
 @methods.delete("/producto-deleted/{producto_id}", response_model=schemas.Producto, tags=['Routes Delete'])
-def delete_proveedor(producto_id: int, db: Session = Depends(get_db)):
+def delete_producto(producto_id: int, db: Session = Depends(get_db)):
     del_producto = crud.delete_producto(db = db, producto_id = producto_id)
     if del_producto == "Deleted Producto":
         return JSONResponse(content={"detail": "Proveedor deleted OK"}, status_code=200)
-    elif del_producto == "ForeignKeyViolation":
-        raise HTTPException(status_code=409, detail="Cannot delete producto, it is referenced by other records")
     else:
-        raise HTTPException(status_code=404, detail="producto not found")
+        raise HTTPException(status_code=409, detail="No se puede eliminar el producto, es referenciado por otros registros")
 
-@methods.delete("/mantenimiento-deleted/{mantenimiento_id}", response_model=schemas.Producto, tags=['Routes Delete'])
+
+@methods.delete("/mantenimiento-deleted/{mantenimiento_id}", response_model=schemas.Mantenimiento, tags=['Routes Delete'])
 def del_mantenimiento(mantenimiento_id: int, db: Session = Depends(get_db)):
     del_mante = crud.delete_mantenimiento(db = db, mantenimiento_id = mantenimiento_id)
     if del_mante == "Deleted Mantenimiento":
         return JSONResponse(content={"detail": "Mantenimiento deleted OK"}, status_code=200)
     elif del_mante == "ForeignKeyViolation":
-        raise HTTPException(status_code=409, detail="Cannot delete mantenimiento, it is referenced by other records")
+        raise HTTPException(status_code=409, detail="No se puede eliminar el Mantenimiento, es referenciado por otros registros")
     else:
         raise HTTPException(status_code=404, detail="mantenimiento not found")
 
-@methods.delete("/categoria-deleted/{categoria_id}", response_model=schemas.Producto, tags=['Routes Delete'])
-def del_mantenimiento(categoria_id: int, db: Session = Depends(get_db)):
-    del_categoria = crud.delete_categoria(db = db, categoria_id = categoria_id)
-    if del_categoria == "Deleted Categoria":
+@methods.delete("/categoria-deleted/{categoria_id}", response_model=schemas.Categoria, tags=['Routes Delete'])
+def del_categoria(categoria_id: int, db: Session = Depends(get_db)):
+    del_cate = crud.delete_categoria(db = db, categoria_id = categoria_id)
+    if del_cate == "Deleted Categoria":
         return JSONResponse(content={"detail": "Categoria deleted OK"}, status_code=200)
-    elif del_categoria == "ForeignKeyViolation":
-        raise HTTPException(status_code=409, detail="Cannot delete categoria, it is referenced by other records")
+    elif del_cate == "ForeignKeyViolation":
+        raise HTTPException(status_code=409, detail="No se puede eliminar la Categoria, es referenciada por otros registros")
     else:
         raise HTTPException(status_code=404, detail="categoria not found")
 
@@ -249,7 +281,7 @@ def del_mantenimiento(usuario_id: int, db: Session = Depends(get_db)):
     if del_user == "Deleted Usuario":
         return JSONResponse(content={"detail": "Usuario deleted OK"}, status_code=200)
     elif del_user == "ForeignKeyViolation":
-        raise HTTPException(status_code=409, detail="Cannot delete user, it is referenced by other records")
+        raise HTTPException(status_code=409, detail="No se puede eliminar el Usuario, es referenciado por otros registros")
     else:
         raise HTTPException(status_code=404, detail="user not found")
 

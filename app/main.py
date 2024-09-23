@@ -1,4 +1,5 @@
 import qrcode
+import zipfile
 from io import BytesIO
 from fastapi.responses import StreamingResponse
 from fastapi import FastAPI, Depends, HTTPException, APIRouter, status, Response, Request, Form, Cookie, Query
@@ -65,7 +66,7 @@ async def desbloquear_usuario(usuario_id: int, db: Session = Depends(get_db)):
         usuario.estado = 'activo'
         db.commit()
         db.refresh(usuario)
-    return HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Usuario no encontrado, no se logo cambiar el estado")
+    return HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Usuario no encontrado, no se logro cambiar el estado")
 
 @app.put("/desactivar-usuario/{usuario_id}", tags={"Users"})
 async def bloquear_usuario_by_admin(usuario_id: int, db: Session = Depends(get_db)):
@@ -74,7 +75,7 @@ async def bloquear_usuario_by_admin(usuario_id: int, db: Session = Depends(get_d
         usuario.estado = 'inactivo'
         db.commit()
         db.refresh(usuario)
-    return HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Usuario no encontrado, no se logo cambiar el estado")
+    return HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Usuario no encontrado, no se logro cambiar el estado")
 
 @app.get("/salir", response_class=HTMLResponse, tags=["Users"])
 async def logout(request: Request):
@@ -154,20 +155,13 @@ async def usuarios_main(request: Request, db: Session = Depends(get_db)):
 
 @app.get("/mantenimiento-section", response_class=HTMLResponse, tags=['Routes Templates'])
 async def mantenimiento_main(request: Request, access_token: Annotated[str | None, Cookie()] = None, db: Session = Depends(get_db)):
-    if access_token is None:
-        return login
-    try:
-        data_user = jwt.decode(access_token, key = SECRET_KEY, algorithms = ALGORITHM)
-        mantenimientos = db.query(models.Mantenimiento).options(
-            joinedload(models.Mantenimiento.usuarios),
-            joinedload(models.Mantenimiento.producto)).order_by(models.Mantenimiento.id.asc())
-        productos = db.query(models.Producto).all()
-        usuarios = db.query(models.Usuarios).all()
-        return templates.TemplateResponse("mantenimiento.html", {"request": request, "mantenimientos": mantenimientos, "usuarios": usuarios, "productos": productos})
-    except JWTError:
-        return login
+    mantenimientos = db.query(models.Mantenimiento).filter(models.Mantenimiento.fecha_mantenimiento > fecha_actual).options(
+        joinedload(models.Mantenimiento.usuarios),
+        joinedload(models.Mantenimiento.producto)).order_by(models.Mantenimiento.id.asc())
+    return templates.TemplateResponse("mantenimiento.html", {"request": request, "mantenimientos": mantenimientos})
 
 
+# endpoints para codigos QR de productos
 @app.get("/generar-codigoqr-producto/{producto_id}", tags=['QR Code'])
 async def generar_qr(producto_id: int,  db: Session = Depends(get_db)):
     producto = crud.get_producto_for_qr(producto_id, db)
@@ -181,12 +175,12 @@ async def generar_qr(producto_id: int,  db: Session = Depends(get_db)):
         f"Cantidad: {producto.cantidad}\n"
         f"Uso: {producto.uso}\n"
         f"Estado: {producto.estado}\n"
-        f"Fecha proximo mantenimiento: {producto.fecha_mantenimiento}\n"
+        f"Fecha proximo mantenimiento: {producto.fecha_mantenimiento if producto.fecha_mantenimiento else "Nulo"}\n"
         f"Costo: {producto.costo_inicial}\n"
         f"Modo: {producto.modo}\n"
         f"Observacion: {producto.observacion}\n"
         f"Categoria: {producto.categoria.nombre}\n"
-        f"Proveedor: {producto.proveedor.nombre}\n"
+        f"Proveedor: {producto.proveedor.nombre if producto.proveedor else "Nulo"}\n"
         f"Ingreso: {producto.fecha_ingreso}"
     )
     
@@ -198,6 +192,91 @@ async def generar_qr(producto_id: int,  db: Session = Depends(get_db)):
     
     return StreamingResponse(buf, status_code=200, media_type="image/png")
 
-@app.get('imagen-qr', tags=['QR Code'])
+@app.get('/productos-imagen-qr', tags=['QR Code'])
 async def image_qr_producto(request: Request, db: Session = Depends(get_db)):
-    a = 22
+    productos = crud.get_all_productos_for_qr(db)
+
+    zip_buffer = BytesIO()
+
+    with zipfile.ZipFile(zip_buffer, 'w') as zip_file:
+        for producto in productos:
+            producto_info = (
+                f"ID: {producto.id}\n"
+                f"Lider Acargo: {producto.responsable.nombre}\n"
+                f"Codigo producto: {producto.codigo}\n"
+                f"Sede: {producto.sede.nombre}\n"
+                f"Cantidad: {producto.cantidad}\n"
+                f"Uso: {producto.uso}\n"
+                f"Estado: {producto.estado}\n"
+                f"Fecha proximo mantenimiento: {producto.fecha_mantenimiento}\n"
+                f"Costo: {producto.costo_inicial}\n"
+                f"Modo: {producto.modo}\n"
+                f"Observacion: {producto.observacion}\n"
+                f"Categoria: {producto.categoria.nombre}\n"
+                f"Proveedor: {producto.proveedor.nombre if producto.proveedor else "Nulo"}\n"
+                f"Ingreso: {producto.fecha_ingreso}"
+            )
+
+            qr_image = qrcode.make(producto_info)
+            qr_buffer = BytesIO()
+            qr_image.save(qr_buffer)
+            qr_buffer.seek(0)
+
+            file_name = f"{producto.codigo}_qr.png"
+            zip_file.writestr(file_name, qr_buffer.getvalue())
+
+    zip_buffer.seek(0)
+
+    return StreamingResponse(zip_buffer, media_type="application/zip", headers={
+        "Content-Disposition": "attachment; filename=productos-codigos_qr.zip"
+    })
+    
+# methods para historial mantenimiento
+@app.get('/producto/{codigo_producto}/historial-mantenimiento', tags=['Historial'])
+def get_historial_m(codigo_producto: str, db: Session = Depends(get_db)):
+    producto = db.query(models.Producto).filter(models.Producto.codigo == codigo_producto).first()
+    
+    if not producto:
+        raise HTTPException(status_code=404, detail="Codigo de producto no encontrado")
+
+    producto_detalles = {
+        "codigo": producto.codigo,
+        "estado": producto.estado,
+        "fecha_ingreso": producto.fecha_ingreso,
+        "cantidad": producto.cantidad,
+        "responsable": producto.responsable.nombre if producto.responsable else "No asignado",
+        "sede": producto.sede.nombre if producto.sede else "No asignada",
+        "categoria": producto.categoria.nombre if producto.categoria else "No asignada",
+        "proveedor": producto.proveedor.nombre if producto.proveedor else "No asignado"
+    }
+    
+    # Obtener el historial de mantenimientos
+    historial_mantenimiento = (
+        db.query(models.Mantenimiento)
+        .filter(models.Mantenimiento.id_producto == producto.id)
+        .all()
+    )
+    
+    historial_detalles = []
+    for mantenimiento in historial_mantenimiento:
+        proveedor_mantenimiento = db.query(models.Proveedormantenimiento).filter(
+            models.Proveedormantenimiento.id_producto == producto.id
+        ).first()
+        
+        historial_detalles.append({
+            "fecha_mantenimiento": mantenimiento.fecha_mantenimiento,
+            "observacion": mantenimiento.observacion,
+            "usuario_responsable": mantenimiento.usuarios.nombre if mantenimiento.usuarios else "Desconocido",
+            "proveedor_mantenimiento": proveedor_mantenimiento.nombre if proveedor_mantenimiento else "No asignado",
+            "contacto_proveedor": proveedor_mantenimiento.contacto if proveedor_mantenimiento else "No contactos de proveedores"
+        })
+
+    historial = {
+        "producto": producto_detalles,
+        "historial_mantenimiento": historial_detalles
+    }
+
+    if not historial["historial_mantenimiento"]:
+        raise HTTPException(status_code=400, detail="No hay mantenimientos relacionados a este producto")
+
+    return historial

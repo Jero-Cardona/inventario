@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session, joinedload
 from fastapi import FastAPI, Depends, HTTPException, APIRouter, status, Response, Request, Form
 from . import models, schemas 
-from typing import List
+from typing import List, Optional
 from sqlalchemy.exc import IntegrityError
 from .security import get_password_hash
 from datetime import datetime, date
@@ -39,6 +39,16 @@ def get_producto_for_qr(producto_id: int, db: Session):
         raise HTTPException(status_code=404, detail='Product not found')
     return producto
 
+def get_all_productos_for_qr(db: Session) -> List[models.Producto]:
+    productos = db.query(models.Producto).options(
+        joinedload(models.Producto.responsable), joinedload(models.Producto.sede),
+        joinedload(models.Producto.categoria), joinedload(models.Producto.proveedor)).order_by(
+            models.Producto.id
+        ).all()
+    if not productos:
+        raise HTTPException(status_code=404, detail='Error Products not founds')
+    return productos
+
 def get_proveedor(proveedor_id: int, db: Session):
     proveedor = db.query(models.Proveedor).filter(models.Proveedor.id == proveedor_id).first()
     if not proveedor:
@@ -68,6 +78,24 @@ def get_rol(rol_id: int, db: Session):
     if not rol:
         raise HTTPException(status_code=404, detail='Rol not found')
     return rol
+
+def get_ubicacion(ubicacion_id: int, db: Session):
+    ubicacion = db.query(models.Ubicacion).filter(models.Ubicacion.id == ubicacion_id).first()
+    if not ubicacion:
+        raise HTTPException(status_code=404, detail='Ubicacacion not found')
+    return ubicacion
+
+def get_producto_proveedor(id_consult: int, db: Session):
+    producto_proveedor = db.query(models.ProductoProveedores).filter(models.ProductoProveedores.id == id_consult).first()
+    if not producto_proveedor:
+        raise HTTPException(status_code=404, detail='Product and Proveedor not found')
+    return producto_proveedor
+
+def get_proveedor_mantenimiento(id_consult: int, db: Session):
+    proveedor_mantenimiento = db.query(models.Proveedormantenimiento).filter(models.Proveedormantenimiento.id == id_consult).first()
+    if not proveedor_mantenimiento:
+        raise HTTPException(status_code=404, detail='Product and Proveedor not found')
+    return proveedor_mantenimiento
 
 # obtener todos los registros
 def get_all_responsables(db: Session) -> List[models.Responsable]:
@@ -154,9 +182,10 @@ def update_proveedor(db: Session, proveedor_id: int, nombre: str, direccion: str
     return None
 
 def update_producto(db: Session, producto_id: int, id_responsable: int, codigo: str, id_sede: int, cantidad: int, uso: str, 
-            estado: str, fecha_mantenimiento: date, costo_inicial: float, modo: str, observacion: str,
-            id_categoria: int, id_proveedor: int, fecha_ingreso: date):
+                    estado: str, fecha_mantenimiento: date, costo_inicial: float, modo: str, observacion: str,
+                    id_categoria: int, fecha_ingreso: date, id_proveedor: Optional[int] = None):
     db_producto = db.query(models.Producto).filter(models.Producto.id == producto_id).first()
+
     if db_producto:
         db_producto.id_responsable = id_responsable
         db_producto.codigo = codigo
@@ -169,12 +198,44 @@ def update_producto(db: Session, producto_id: int, id_responsable: int, codigo: 
         db_producto.modo = modo
         db_producto.observacion = observacion
         db_producto.id_categoria = id_categoria
-        db_producto.id_proveedor = id_proveedor
         db_producto.fecha_ingreso = fecha_ingreso
+
+        if id_proveedor is not None:
+            db_producto.id_proveedor = id_proveedor
+
+            db_proveedor = db.query(models.ProductoProveedores).filter(
+                models.ProductoProveedores.id_producto == producto_id).first()
+
+            if db_proveedor:
+                db_proveedor.id_proveedor = id_proveedor
+                db.commit()
+                db.refresh(db_proveedor)
+            else:
+                new_producto_proveedor = models.ProductoProveedores(
+                    id_producto=producto_id,
+                    id_proveedor=id_proveedor
+                )
+                db.add(new_producto_proveedor)
+                db.commit()
+                db.refresh(new_producto_proveedor)
+
+        elif db_producto.id_proveedor is not None:
+            db_proveedor = db.query(models.ProductoProveedores).filter(
+                models.ProductoProveedores.id_producto == producto_id).first()
+
+            if db_proveedor:
+                db.delete(db_proveedor)
+                db.commit()
+
+            db_producto.id_proveedor = None
+
         db.commit()
         db.refresh(db_producto)
+
         return db_producto
+
     return None
+
 
 def update_sede(db: Session, sede_id: int, nombre: str, direccion: str, telefono: str):
     sede = db.query(models.Sede).filter(models.Sede.id == sede_id).first()
@@ -195,6 +256,19 @@ def update_categoria(db: Session, categoria_id: int, nombre: str):
             db.commit()
             db.refresh(categoria)
             return categoria
+        return None
+    except Exception as e:
+        db.rollback()
+        raise e
+
+def update_rol(db: Session, rol_id: int, nombre: str):
+    try:
+        rol = db.query(models.Roles).filter(models.Roles.id == rol_id).first()
+        if rol:
+            rol.nombre = nombre
+            db.commit()
+            db.refresh(rol)
+            return rol
         return None
     except Exception as e:
         db.rollback()
@@ -230,9 +304,9 @@ def delete_producto(db: Session, producto_id: int):
         if result == 0:
             return "Not found"
         return "Deleted Producto"
-    except IntegrityError:
+    except IntegrityError as e:
         db.rollback()
-        return "ForeignKeyViolation"
+        return e
 
 def delete_categoria(db: Session, categoria_id: int):
     try:

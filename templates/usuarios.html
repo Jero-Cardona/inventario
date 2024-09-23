@@ -7,86 +7,70 @@
 {% endblock %}
 <!-- contendio que varia del aplicativo -->
 {% block content %}
-  <h2 class="font-bold text-xl">Seccion de Usuarios</h2>
-  <div class="flex justify-center items-center w-full">
-    <!-- component -->
-    <div class="mx-2 w-full my-2 py-2 px-3 overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 pr-10 lg:px-8 flex flex-col justify-center items-center">
-        <div class="align-middle rounded-tl-lg rounded-tr-lg w-full py-4 overflow-hidden bg-white shadow-lg px-8">
-            <!-- div del buscador y la secion de arriba -->
-            <div class="flex justify-between items-center w-full px-2">
-              <!-- Div del botón Agregar -->
-              <div class="flex items-center space-x-2 bg-gray-100 p-2 rounded-md shadow-md">
-                  <span class="text-sm font-semibold text-gray-800">Registrar Usuario</span>
-                  <button
-                    title="Add New"
-                    class="open_modal group cursor-pointer outline-none hover:rotate-90 duration-300"
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="40px"
-                      height="40px"
-                      viewBox="0 0 24 24"
-                      class="stroke-zinc-400 fill-none group-hover:fill-zinc-800 group-active:stroke-zinc-200 group-active:fill-zinc-600 group-active:duration-0 duration-300"
-                    >
-                      <path
-                        d="M12 22C17.5 22 22 17.5 22 12C22 6.5 17.5 2 12 2C6.5 2 2 6.5 2 12C2 17.5 6.5 22 12 22Z"
-                        stroke-width="1.5"
-                      ></path>
-                      <path d="M8 12H16" stroke-width="1.5"></path>
-                      <path d="M12 16V8" stroke-width="1.5"></path>
-                    </svg>
-                  </button>
-              </div>
-          
-        <!-- Div del botón Cargue masivo -->
-        <div class="flex items-center space-x-2 bg-gray-100 p-2 rounded-md shadow-md">
-            <span class="text-sm font-semibold text-gray-800">Cargue masivo</span>
-            <label class="flex items-center cursor-pointer px-2 group outline-none hover:rotate-90 duration-300">
-            <input type="file" title="cargar archivos" class="hidden" id="fileInput" data-endpoint="Usuarios"/>
-            <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="40px"
-                height="40px"
-                viewBox="0 0 24 24"
-                class="stroke-zinc-400 fill-none group-hover:fill-zinc-800 group-active:stroke-zinc-200 group-active:fill-zinc-600 group-active:duration-0 duration-300"
-            >
-                <path
-                d="M12 22C17.5 22 22 17.5 22 12C22 6.5 17.5 2 12 2C6.5 2 2 6.5 2 12C2 17.5 6.5 22 12 22Z"
-                stroke-width="1.5"
-                ></path>
-                <path d="M8 12H16" stroke-width="1.5"></path>
-                <path d="M12 16V8" stroke-width="1.5"></path>
-            </svg>
-            </label>
-        </div>
-          
-              <!-- Div del buscador -->
-              <div class="flex border rounded-lg w-1/2 h-12 bg-white shadow-md">
-                  <div class="flex items-center w-full h-full bg-white px-4">
-                      <span class="flex items-center leading-normal bg-transparent rounded-l-lg text-grey-dark text-lg">
-                          <svg width="18" height="18" class="w-4 lg:w-auto" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                              <path d="M8.11086 15.2217C12.0381 15.2217 15.2217 12.0381 15.2217 8.11086C15.2217 4.18364 12.0381 1 8.11086 1C4.18364 1 1 4.18364 1 8.11086C1 12.0381 4.18364 15.2217 8.11086 15.2217Z" stroke="#455A64" stroke-linecap="round" stroke-linejoin="round" />
-                              <path d="M16.9993 16.9993L13.1328 13.1328" stroke="#455A64" stroke-linecap="round" stroke-linejoin="round" />
-                          </svg>
-                      </span>
-                      <input type="text" class="flex-shrink flex-1 leading-normal tracking-wide border-none rounded-r-lg px-3 focus:outline-none text-xs text-gray-500" placeholder="Buscar Usuarios">
-                  </div>
-              </div>
-          </div>
-          
-        </div>
-        
-        <div class="align-middle w-full flex flex-col shadow overflow-hidden bg-white shadow-dashboard px-12 pt-3 rounded-bl-lg rounded-br-lg">
+<div class="flex px-4 h-auto space-x-4">
+    <a href="#mantenimientos" class="block max-w-screen-lg p-6 h-auto bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
+        <!-- incon font awsome por si acaso -->
+        <!-- <i class="fa-solid fa-circle-info fa-xl absolute right-20"></i> -->
+        <h1 class="font-bold text-black text-3xl mb-4">Sección de <i>Usuarios</i> del sistema</h1>
+        <p class="font-normal text-sm text-gray-700 dark:text-gray-400 text-justify">
+            En esta sección del aplicativo web, encontrarás los usuarios registrados. Como administrador, podrás realizar diversas funciones, como crear, cargar, editar, eliminar y desactivar usuarios en el sistema. Los usuarios inactivos serán deshabilitados para su ingreso y navegación en la plataforma.
+            Al crear un nuevo usuario, es fundamental que el nombre de usuario sea único; no se permitirán nombres repetidos. De igual manera, al cargar usuarios, asegúrate de no duplicar nombres.
+        </p>
+    </a>
+</div>
+<main class="flex justify-center items-center w-full">
+    <!-- conponente -->
+    <div class="w-full sm:px-2 overflow-x-auto sm:-mx-6 lg:px-8 flex-col justify-center items-center flex">
+        <div class="align-middle rounded-tl-lg rounded-tr-lg w-full py-4 overflow-hidden bg-white shadow-lg px-2 lg:px-4">
+            <!-- Responsive layout for the search bar and buttons -->
+            <div class="flex flex-wrap justify-between items-center w-full px-2 space-y-2 md:space-y-0 md:flex-nowrap">
+                <!-- Div del botón Agregar -->
+                <div class="flex items-center mx-4 space-x-2 bg-gray-100 p-2 rounded-md shadow-md w-full sm:w-1/2">
+                    <span class="text-sm font-semibold text-gray-800">Agregar</span>
+                    <button title="Add New" class="open_modal px-2 group cursor-pointer outline-none hover:rotate-90 duration-300">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="30px" height="30px" viewBox="0 0 24 24" class="stroke-zinc-400 fill-none group-hover:fill-zinc-800 group-active:stroke-zinc-200 group-active:fill-zinc-600 group-active:duration-0 duration-300">
+                            <path d="M12 22C17.5 22 22 17.5 22 12C22 6.5 17.5 2 12 2C6.5 2 2 6.5 2 12C2 17.5 6.5 22 12 22Z" stroke-width="1.5"></path>
+                            <path d="M8 12H16" stroke-width="1.5"></path>
+                            <path d="M12 16V8" stroke-width="1.5"></path>
+                        </svg>
+                    </button>
+                </div>
+                <!-- Div del botón Cargue masivo -->
+                <div class="flex items-center mx-4 space-x-2 bg-gray-100 p-2 rounded-md shadow-md w-full sm:w-1/2">
+                    <span class="text-sm font-semibold text-gray-800">Cargue masivo</span>
+                    <label class="flex items-center cursor-pointer px-2 group outline-none hover:rotate-90 duration-300">
+                        <input type="file" title="cargar archivos" class="hidden" id="fileInput" data-endpoint="Usuarios"/>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="30px" height="30px" viewBox="0 0 24 24" class="stroke-zinc-400 fill-none group-hover:fill-zinc-800 group-active:stroke-zinc-200 group-active:fill-zinc-600 group-active:duration-0 duration-300">
+                            <path d="M12 22C17.5 22 22 17.5 22 12C22 6.5 17.5 2 12 2C6.5 2 2 6.5 2 12C2 17.5 6.5 22 12 22Z" stroke-width="1.5"></path>
+                            <path d="M8 12H16" stroke-width="1.5"></path>
+                            <path d="M12 16V8" stroke-width="1.5"></path>
+                        </svg>
+                    </label>
+                </div>
+                <!-- Formulario del buscador -->
+                <form id="form-buscador" class="flex w-full mx-4 md:w-1/2 h-12 sm:w-1/2 bg-white shadow-md rounded-lg border">
+                    <div class="flex items-center w-full h-full bg-white px-4">
+                        <span class="flex items-center leading-normal bg-transparent rounded-l-lg text-grey-dark text-lg">
+                            <svg width="18" height="18" class="w-4 lg:w-auto" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M8.11086 15.2217C12.0381 15.2217 15.2217 12.0381 15.2217 8.11086C15.2217 4.18364 12.0381 1 8.11086 1C4.18364 1 1 4.18364 1 8.11086C1 12.0381 4.18364 15.2217 8.11086 15.2217Z" stroke="#455A64" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M16.9993 16.9993L13.1328 13.1328" stroke="#455A64" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </span>
+                        <input type="text" class="flex-shrink flex-1 leading-normal tracking-wide border-none rounded-r-lg px-3 focus:outline-none text-xs text-gray-500" placeholder="Buscar Usuarios en la tabla">
+                    </div>
+                </form>
+            </div>
+        <div id="usuarios" class="align-middle w-full flex-col overflow-hidden bg-white shadow-dashboard pt-3 rounded-bl-lg rounded-br-lg hidden md:block">
             <table class="max-w-full">
                 <thead>
                     <tr>
-                        <th class="px-2 py-3 border-b-2 border-gray-300 text-center leading-4 text-blue-500 tracking-wider">ID</th>
-                        <th class="px-2 py-3 border-b-2 border-gray-300 text-center text-sm leading-4 text-blue-500 tracking-wider">Usuario</th>
-                        <th class="px-2 py-3 border-b-2 border-gray-300 text-center text-sm leading-4 text-blue-500 tracking-wider">Email</th>
-                        <th class="px-2 py-3 border-b-2 border-gray-300 text-center text-sm leading-4 text-blue-500 tracking-wider">Estado</th>
-                        <th class="px-2 py-3 border-b-2 border-gray-300 text-center text-sm leading-4 text-blue-500 tracking-wider">Fecha de creacion</th>
-                        <th class="px-2 py-3 border-b-2 border-gray-300 text-center text-sm leading-4 text-blue-500 tracking-wider">Rol</th>
-                        <th class="px-2 py-3 border-b-2 border-gray-300 text-center text-sm leading-4 text-blue-500 tracking-wider">Acciones Administrador</th>
+                        <th class="py-3 px-2 border-b-2 border-gray-300 text-center leading-4 text-blue-500 tracking-wider">ID</th>
+                        <th class="py-3 px-2 border-b-2 border-gray-300 text-center text-sm leading-4 text-blue-500 tracking-wider">Usuario</th>
+                        <th class="py-3 px-2 border-b-2 border-gray-300 text-center text-sm leading-4 text-blue-500 tracking-wider">Email</th>
+                        <th class="py-3 px-2 border-b-2 border-gray-300 text-center text-sm leading-4 text-blue-500 tracking-wider">Estado</th>
+                        <th class="py-3 px-2 border-b-2 border-gray-300 text-center text-sm leading-4 text-blue-500 tracking-wider">Fecha de creacion</th>
+                        <th class="py-3 px-2 border-b-2 border-gray-300 text-center text-sm leading-4 text-blue-500 tracking-wider">Rol</th>
+                        <th class="py-3 px-2 border-b-2 border-gray-300 text-center text-sm leading-4 text-blue-500 tracking-wider">Acciones Administrador</th>
                     </tr>
                 </thead>
                 <tbody class="bg-white">
@@ -99,29 +83,31 @@
                                     </div>
                                 </div>
                             </td>
-                            <td class="px-1 py-4 text-center whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5">{{usuario.nombre}}</td>
-                            <td class="px-1 py-4 text-center whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5">{{usuario.correo}}</td>
-                            <td class="px-1 py-4 font-bold text-center whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5">{{usuario.estado}}</td>
-                            <td class="px-1 py-4 text-center whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5">{{usuario.fecha_creacion}}</td>
-                            <td class="px-1 py-4 text-center whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5">{{usuario.rol.nombre}}</td>
-                            <td class="px-1 py-4 m-auto place-items-center items-center whitespace-no-wrap border-b border-gray-500 text-sm leading-5">
-                                <button class="editar px-4 py-2 text-white bg-Andes rounded transition duration-300 hover:bg-green-800 hover:text-white focus:outline-none" data-endpoint="usuario" data-id="{{ usuario.id }}">Editar</button>
+                            <td class="py-4 px-1 text-center whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5">{{usuario.nombre}}</td>
+                            <td class="py-4 px-1 text-center whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5">{{usuario.correo}}</td>
+                            <td class="py-4 px-1 font-bold text-center whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5">{{usuario.estado}}</td>
+                            <td class="py-4 px-1 text-center whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5">{{usuario.fecha_creacion}}</td>
+                            <td class="py-4 px-1 text-center whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5">{{usuario.rol.nombre}}</td>
+                            <td class="py-4 px-1 m-auto place-items-center items-center whitespace-no-wrap border-b border-gray-500 text-sm leading-5">
+                                <button class="editar px-4 py-2 text-white bg-Andes rounded transition duration-300 hover:bg-green-800 hover:text-white focus:outline-none" data-endpoint="usuario" data-id="{{ usuario.id }}">
+                                    <i class="fas fa-edit mr-2"></i> Editar
+                                </button>
                                 <form id="delete-form-{{ usuario.id }}" class="inline-flex" action="/usuario-deleted/{{ usuario.id }}" method="post">
                                     <input type="hidden" name="_method" value="DELETE">
                                     <button type="submit" class="delete px-4 py-2 bg-gray-500 rounded text-white transition duration-400 hover:bg-orange-800 hover:text-white focus:outline-none">
-                                        Eliminar
+                                        <i class="fas fa-trash mr-2"></i> Eliminar
                                     </button>
                                 </form>
                                 {% if usuario.estado == "inactivo" %}
                                 <form id="active-user-{{ usuario.id }}" class="inline-flex" action="/activar-usuario/{{ usuario.id }}" method="post">
                                     <button type="submit" class="estado px-4 py-2 bg-orange-500 rounded text-white transition duration-400 hover:bg-orange-800 hover:text-white focus:outline-none">
-                                        Activar
+                                        <i class="fa-regular fa-circle-check mr-2"></i>Activar
                                     </button>
                                 </form>
                                 {% else %}
                                 <form id="desactivate-user-{{ usuario.id }}" class="inline-flex" action="/desactivar-usuario/{{ usuario.id }}" method="post">
                                     <button type="submit" class="estado px-4 py-2 bg-blue-500 rounded text-white transition duration-400 hover:bg-blue-800 hover:text-white focus:outline-none">
-                                        Desactivar
+                                        <i class="fa-solid fa-power-off ml-0 mr-2"></i>Desactivar
                                     </button>
                                 </form>
                                 {% endif %}
@@ -173,8 +159,66 @@
     </div>
     </div>
         </div>
+        <!-- design of the records responsive -->
+        <div class="grid grid-cols-1 gap-6 md:hidden">
+            {% for usuario in usuarios %}
+            <div class="bg-white p-6 rounded-lg shadow-lg border border-gray-200">
+                <!-- Producto Header con color -->
+                <h2 class="text-2xl font-semibold text-indigo-600 mb-4">Usuario ID: {{ usuario.id }}</h2>
+                <!-- Informacion del Producto -->
+                <div class="grid grid-cols-2 gap-2 text-sm">
+                    <div class="flex flex-col">
+                        <span class="text-gray-500 font-bold">Nombre del Usuario</span>
+                        <span class="text-gray-900">{{ usuario.nombre }}</span>
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-gray-500 font-bold">Correo:</span>
+                        <span class="text-gray-900">{{ usuario.correo }}</span>
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-gray-500 font-bold">Estado:</span>
+                        <span class="text-gray-900">{{ usuario.estado }}</span>
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-gray-500 font-bold">Fecha creacion:</span>
+                        <span class="text-gray-900">{{ usuario.fecha_creacion }}</span>
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-gray-500 font-bold">Rol usuario:</span>
+                        <span class="text-gray-900">{{ usuario.rol.nombre }}</span>
+                    </div>
+                </div>
+                <!-- contenedor de las acciones -->
+                <div class="flex justify-left items-center mt-6 space-x-2">
+                    <button class="editar flex items-center px-4 py-2 text-sm font-medium bg-Andes text-white rounded-lg shadow-md hover:bg-indigo-600 transition duration-300 ease-in-out" data-endpoint="usuario" data-id="{{ usuario.id }}">
+                        <i class="fas fa-edit mr-2"></i> Editar
+                    </button>
+                    <form id="delete-form-{{ usuario.id }}" action="/usuario-deleted/{{ usuario.id }}" method="post" class="inline-block">
+                        <input type="hidden" name="_method" value="DELETE">
+                        <button type="submit" class="delete max-[320px]:text-none flex items-center px-4 py-2 text-sm font-medium bg-red-500 text-white rounded-lg shadow-md hover:bg-red-600 transition duration-300 ease-in-out">
+                            <i class="fas fa-trash mr-2"></i> Eliminar
+                        </button>
+                    </form>
+                    {% if usuario.estado == "inactivo" %}
+                    <form id="active-user-{{ usuario.id }}" class="inline-flex" action="/activar-usuario/{{ usuario.id }}" method="post">
+                        <button type="submit" class="estado px-4 py-2 bg-orange-500 rounded text-white transition duration-400 hover:bg-orange-800 hover:text-white focus:outline-none">
+                            <i class="fa-regular fa-circle-check mr-2"></i>Activar
+                        </button>
+                    </form>
+                    {% else %}
+                    <form id="desactivate-user-{{ usuario.id }}" class="inline-flex" action="/desactivar-usuario/{{ usuario.id }}" method="post">
+                        <button type="submit" class="estado px-4 py-2 bg-blue-500 rounded text-white transition duration-400 hover:bg-blue-800 hover:text-white focus:outline-none">
+                            <i class="fa-solid fa-power-off ml-0 mr-2"></i>Desactivar
+                        </button>
+                    </form>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
     </div>
     </div>
+</main>
 {% endblock content %}
 {% block forms %}
 <h2 class="text-2xl font-bold text-gray-800 mb-4">Nuevo Usuario</h2>

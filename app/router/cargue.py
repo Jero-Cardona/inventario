@@ -109,15 +109,15 @@ MODEL_CONFIG = {
 
 
 @cargue.post("/cargue-archivos", tags=['Route Cargue'])
-def cargar(file: UploadFile = File(...), model_name: str = Form(...), db: Session = Depends(get_db)):
+def cargar(file: UploadFile = File(...), nombre_modelo: str = Form(...), db: Session = Depends(get_db)):
 
     if file.content_type not in ["application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "application/vnd.ms-excel"]:
         raise HTTPException(status_code=400, detail="El archivo debe ser un Excel")
 
-    if model_name not in MODEL_CONFIG:
-        raise HTTPException(status_code=400, detail=f"Modelo {model_name} no configurado")
+    if nombre_modelo not in MODEL_CONFIG:
+        raise HTTPException(status_code=400, detail=f"Modelo {nombre_modelo} no configurado")
 
-    model_config = MODEL_CONFIG[model_name]
+    model_config = MODEL_CONFIG[nombre_modelo]
     expected_columns = model_config['columns'].values()
 
     try:
@@ -129,8 +129,8 @@ def cargar(file: UploadFile = File(...), model_name: str = Form(...), db: Sessio
         raise HTTPException(status_code=400, detail=f"El archivo debe contener las siguientes columnas: {', '.join(expected_columns)}")
     
     # mapeo de id a traves del nombre
-    def get_foreign_key_id(model, value, db, model_name, field='nombre'):
-        if model_name == 'Producto' and hasattr(model, 'codigo'):
+    def get_foreign_key_id(model, value, db, nombre_modelo, field='nombre'):
+        if nombre_modelo == 'Producto' and hasattr(model, 'codigo'):
             field = 'codigo'
         else:
             field = 'nombre'
