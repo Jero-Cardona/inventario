@@ -7,26 +7,65 @@ Productos
 {% endblock %}
 <!-- contenidp que varia del aplicativo -->
 {% block content %}
-<div class="flex px-4 h-auto space-x-4">
-    <a href="#mantenimientos" class="block max-w-screen-lg p-6 h-auto bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
+<div class="inline-flex px-4 h-auto space-x-4">
+    <a href="#mantenimientos" class="block max-w-2xl p-6 h-auto bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
         <!-- incon font awsome por si acaso -->
         <!-- <i class="fa-solid fa-circle-info fa-xl absolute right-20"></i> -->
-        <h1 class="font-bold text-black text-3xl mb-4">Inventario de <i>productos</i> ingresados en el sistema</h1>
+        <h1 class="font-bold text-black text-2xl mb-4">Inventario de <i>productos</i> ingresados al sistema</h1>
         <p class="font-normal text-gray-700 dark:text-gray-400 text-justify">
             En esta sección del sistema, podrás visualizar los productos ingresados hasta el momento. Como administrador, tendrás la capacidad de ingresar, editar, eliminar y cargar productos en el sistema. Además, podrás ver el <strong>código QR</strong> de cada producto y descargar todos los códigos QR si así lo deseas. También podrás visualizar la cantidad de productos que cuentan con un proveedor y aquellos que no tienen proveedor.
         </p>
     </a>
+    <div class="block p-4 items-center bg-white border border-gray-200 rounded-lg shadow">
+        <p class="text-gray-800 font-bold text-normal mb-2">Acciones de usuario</p>
+        <p class="text-gray-800 text-sm mb-2">Numero de productos que no cuentan con proveedor asociados</p>
+        <!-- <a href="/mantenimiento-section" class="flex items-center w-44 px-4 py-2 m-auto text-sm font-medium bg-blue-400 text-white rounded-lg shadow-md hover:bg-indigo-600 transition duration-300 ease-in-out">
+            <i class="fa-solid fa-arrow-right fa-lg mr-2"></i>Mantenimientos
+        </a> -->
+        <span class="text-xl text-center font-bold m-auto px-4">{{productos_sin_proveedor|count}}</span>
+        <p class="text-gray-800 text-sm my-2">Dirigirte a la seccion de proveedores registrados en el sistema para conocer la cantidad de proveedores que realizan mantenimientos a los productos</p>
+        <a href="/proveedor-section" class="flex items-center w-32 px-4 py-2 m-auto text-sm font-medium bg-blue-400 text-white rounded-lg shadow-md hover:bg-indigo-600 transition duration-300 ease-in-out">
+            <i class="fa-solid fa-arrow-right fa-lg mr-2"></i>Proveedores
+        </a>
+        <!-- <span class="text-sm text-gray-800 flex mb-2"> Vizualizar los proveedores que realizan mantenimientos a sus productos</span> -->
+    </div>
+    </div>
+
+<!-- Contenedor de proveedores -->
+<div id="proveedores" class=" w-full px-4">
+    <p class="font-bold text-lg my-4 text-center">Cantidad de productos por proveedor</p>
+    <!-- Cards de proveedores -->
+    <div class="flex flex-wrap justify-center">
+        {% for proveedor in productos_por_proveedor %}
+        <div class="w-64 m-2 bg-white shadow-xl p-6 rounded-xl space-y-3 relative overflow-hidden transition-transform transform hover:scale-105 hover:shadow-xl">
+            <div class="h-20 w-20 bg-Andes rounded-full absolute -right-5 -top-7 flex items-center justify-center">
+                <p class="text-white text-2xl mt-3 mr-3">{{ loop.index }}</p>
+            </div>
+            <h2 class="font-bold text-xl">{{ proveedor.nombre }}</h2>
+            <p class="text-sm font-semibold text-gray-500 leading-5">
+                Cantidad de productos asociados a este proveedor:
+            </p>
+            <p class="text-base text-gray-500 uppercase leading-4">
+                {% if proveedor.producto_count == 1 %}
+                    <strong>{{ proveedor.producto_count }}</strong> producto
+                {% else %}
+                    <strong>{{ proveedor.producto_count }}</strong> productos
+                {% endif %}
+            </p>
+        </div>
+        {% endfor %}
+    </div>
 </div>
 <main class="flex justify-center items-center w-full">
     <!-- component -->
-    <div class="w-full sm:px-2 overflow-x-auto sm:-mx-6 lg:px-8 flex-col justify-center items-center flex">
+    <div class="w-full sm:px-2 overflow-x-auto mb-2 sm:-mx-6 lg:px-4 flex-col justify-center items-center flex">
         <div class="align-middle rounded-tl-lg rounded-tr-lg w-full py-4 overflow-hidden bg-white shadow-lg px-2 lg:px-4">
         <!-- Responsive layout for the search bar and buttons -->
         <div class="flex flex-wrap justify-between items-center w-full px-2 space-y-4 md:space-y-0 md:flex-nowrap">
             <!-- Div del botón Agregar -->
-            <div class="flex items-center mx-4 space-x-2 bg-gray-100 p-2 rounded-md shadow-md w-auto sm:w-1/2">
+            <div class="flex items-center mx-2 space-x-2 bg-gray-100 p-2 rounded-md shadow-md w-auto sm:w-1/2">
                 <span class="text-sm font-semibold text-gray-800">Agregar</span>
-                <button title="Add New" class="open_modal px-2 group cursor-pointer outline-none hover:rotate-90 duration-300">
+                <button title="Add New" class="open_modal group cursor-pointer outline-none hover:rotate-90 duration-300" data-id="productos-form">
                     <svg xmlns="http://www.w3.org/2000/svg" width="30px" height="30px" viewBox="0 0 24 24" class="stroke-zinc-400 fill-none group-hover:fill-zinc-800 group-active:stroke-zinc-200 group-active:fill-zinc-600 group-active:duration-0 duration-300">
                         <path d="M12 22C17.5 22 22 17.5 22 12C22 6.5 17.5 2 12 2C6.5 2 2 6.5 2 12C2 17.5 6.5 22 12 22Z" stroke-width="1.5"></path>
                         <path d="M8 12H16" stroke-width="1.5"></path>
@@ -35,10 +74,10 @@ Productos
                 </button>
             </div>
             <!-- Div del botón Cargue masivo -->
-            <div class="flex items-center mx-4 space-x-2 bg-gray-100 p-2 rounded-md shadow-md w-auto sm:w-1/2">
+            <div class="flex items-center mx-2 space-x-2 bg-gray-100 p-2 rounded-md shadow-md w-auto sm:w-1/2">
                 <span class="text-sm font-semibold text-gray-800">Cargue masivo</span>
                 <label class="flex items-center cursor-pointer px-2 group outline-none hover:rotate-90 duration-300">
-                    <input type="file" title="cargar archivos" class="hidden" id="fileInput" data-endpoint="Producto"/>
+                    <input type="file" title="cargar archivos" class="hidden fileInput" data-endpoint="Producto"/>
                     <svg xmlns="http://www.w3.org/2000/svg" width="30px" height="30px" viewBox="0 0 24 24" class="stroke-zinc-400 fill-none group-hover:fill-zinc-800 group-active:stroke-zinc-200 group-active:fill-zinc-600 group-active:duration-0 duration-300">
                         <path d="M12 22C17.5 22 22 17.5 22 12C22 6.5 17.5 2 12 2C6.5 2 2 6.5 2 12C2 17.5 6.5 22 12 22Z" stroke-width="1.5"></path>
                         <path d="M8 12H16" stroke-width="1.5"></path>
@@ -48,31 +87,43 @@ Productos
             </div>
             <!-- Div del botón descargar qrs -->
             <div class="flex items-center space-x-2 p-2 w-auto sm:w-1/2">
-                <button id="downloadAllQrButton" class="px-4 bg-blue-500 py-2 border text-white rounded transition duration-300 hover:bg-blue-800 focus:outline-none">
+                <button id="downloadAllQrButton" class="px-2 bg-blue-500 py-2 border text-white rounded transition duration-300 hover:bg-blue-800 focus:outline-none">
                     <i class="fa-regular fa-circle-down mr-2 fa-lg"></i> Descargar Qrs
                 </button>   
             </div>
             <div class="flex items-center space-x-2 p-2 w-auto sm:w-1/2">
                 <button id="Visualizar" class="mt-4 mb-4 px-2 py-2 bg-green-900 border-gray-800 border text-white rounded transition duration-400 hover:bg-Andes hover:text-white focus:outline-none md:block hidden">
-                    <i class="fa-solid fa-eye mr-2"></i>Ver más columnas
+                    <i class="fa-solid fa-eye mr-2"></i>más columnas
                 </button>   
             </div>
             <!-- Formulario del buscador -->
-            <form id="form-buscador" class="flex w-auto md:w-4/12 h-12 sm:w-1/2 bg-white shadow-md rounded-lg border">
-                <div class="flex items-center w-full h-full bg-white px-4">
+            <form id="form-buscador" class="flex mr-4 w-auto md:w-2/12 h-12 sm:w-1/2 bg-white shadow-md rounded-lg border">
+                <div class="flex items-center w-auto h-full bg-white px-2">
                     <span class="flex items-center leading-normal bg-transparent rounded-l-lg text-grey-dark text-lg">
                         <svg width="18" height="18" class="w-4 lg:w-auto" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M8.11086 15.2217C12.0381 15.2217 15.2217 12.0381 15.2217 8.11086C15.2217 4.18364 12.0381 1 8.11086 1C4.18364 1 1 4.18364 1 8.11086C1 12.0381 4.18364 15.2217 8.11086 15.2217Z" stroke="#455A64" stroke-linecap="round" stroke-linejoin="round"/>
                             <path d="M16.9993 16.9993L13.1328 13.1328" stroke="#455A64" stroke-linecap="round" stroke-linejoin="round"/>
                         </svg>
                     </span>
-                    <input type="text" class="flex-shrink flex-1 leading-normal tracking-wide border-none rounded-r-lg px-3 focus:outline-none text-xs text-gray-500" placeholder="Buscar productos">
+                    <input type="text" class="flex-shrink flex-1 leading-normal border-none rounded-r-lg px-3 text-xs text-gray-500" placeholder="Buscar productos">
                 </div>
             </form>
+            <!-- Selector de filas por página -->
+            <div class="flex items-center justify-between mb-4">
+                <label for="rowsPerPage" class="mr-2 text-gray-700 italic font-semibold">Mostrar:</label>
+                <select id="rowsPerPage" class="border rowsPerPage border-gray-300 rounded-md p-2 focus:outline-none ">
+                    <option value="5">5</option>
+                    <option value="10">10</option>
+                    <option value="15">15</option>
+                    <option value="20">20</option>
+                    <option value="30">30</option>
+                    <option value="50">50</option>
+                </select>
+            </div>
         </div>
         <!-- contenedor de la tabla -->
         <div class="align-middle w-full flex-col overflow-hidden bg-white shadow-dashboard px-4 pt-3 rounded-bl-lg rounded-br-lg hidden md:block">
-            <table id="table-producto" class="max-w-full">
+            <table id="table-producto" class="max-w-full m-auto">
                 <thead>
                     <tr>
                         <!-- Columna ID visible en todo momento  -->
@@ -93,10 +144,10 @@ Productos
                         <th class="group2 hidden px-2 py-3 border-b-2 border-gray-300 text-center text-sm leading-4 text-blue-500 tracking-wider">Proveedor</th>
                         <th class="group2 hidden px-2 py-3 border-b-2 border-gray-300 text-center text-sm leading-4 text-blue-500 tracking-wider">Modo</th>
                         <!-- Columna Acciones oculta inicialmente -->
-                        <th class="group2 hidden px-2 py-3 border-b-2 border-gray-300 text-center text-sm leading-4 text-blue-500 tracking-wider">Acciones</th>
+                        <th class="group2 hidden px-2 py-3 border-b-2 border-gray-300 text-center text-sm leading-4 text-blue-500 tracking-wider">Acciones de Administrador</th>
                     </tr>
                 </thead>
-                <tbody class="bg-white">
+                <tbody class="bg-white tables-body">
                     {% for producto in productos %}
                     <tr class="odd:bg-gray-100">
                         <!-- Datos correspondientes a la columna ID -->
@@ -108,22 +159,22 @@ Productos
                             </div>
                         </td>
                         <!-- Datos correspondientes a las columnas visibles inicialmente -->
-                        <td class="group1 py-4 whitespace-no-wrap text-center border-b border-gray-500 text-sm leading-5 text-blue-900">{{producto.fecha_ingreso}}</td>
-                        <td class="group1 py-4 whitespace-no-wrap text-center border-b border-gray-500 text-sm leading-5 text-blue-900">{{producto.responsable.nombre}}</td>
-                        <td class="group1 py-4 whitespace-no-wrap text-center border-b text-blue-900 border-gray-500 text-sm font-semibold leading-5">{{producto.codigo}}</td>
-                        <td class="group1 py-4 whitespace-no-wrap text-center border-b text-blue-900 border-gray-500 text-sm leading-5">{{producto.sede.nombre}}</td>
-                        <td class="group1 py-4 whitespace-no-wrap text-center border-b text-blue-900 border-gray-500 text-sm leading-5">{{producto.cantidad}}</td>
-                        <td class="group1 py-4 whitespace-no-wrap text-center border-b text-blue-900 border-gray-500 text-sm leading-5">{{producto.uso}}</td>
-                        <td class="group1 py-4 whitespace-no-wrap text-center border-b text-blue-900 border-gray-500 text-sm leading-5">{{producto.estado}}</td>
-                        <td class="group1 py-4 whitespace-no-wrap text-center border-b text-blue-900 border-gray-500 text-sm leading-5">{{producto.fecha_mantenimiento}}</td>
+                        <td class="group1 py-4 px-1 whitespace-no-wrap text-center border-b border-gray-500 text-sm leading-5 text-blue-900">{{producto.fecha_ingreso}}</td>
+                        <td class="group1 py-4 px-1 whitespace-no-wrap text-center border-b border-gray-500 text-sm leading-5 text-blue-900">{{producto.responsable.nombre}}</td>
+                        <td class="group1 py-4 px-1 whitespace-no-wrap text-center border-b text-blue-900 border-gray-500 text-sm font-semibold leading-5">{{producto.codigo}}</td>
+                        <td class="group1 py-4 px-1 whitespace-no-wrap text-center border-b text-blue-900 border-gray-500 text-sm leading-5">{{producto.sede.nombre}}</td>
+                        <td class="group1 py-4 px-1 whitespace-no-wrap text-center border-b text-blue-900 border-gray-500 text-sm leading-5">{{producto.cantidad}}</td>
+                        <td class="group1 py-4 px-1 whitespace-no-wrap text-center border-b text-blue-900 border-gray-500 text-sm leading-5">{{producto.uso}}</td>
+                        <td class="group1 py-4 px-1 whitespace-no-wrap text-center border-b text-blue-900 border-gray-500 text-sm leading-5">{{producto.estado}}</td>
+                        <td class="group1 py-4 px-1 whitespace-no-wrap text-center border-b text-blue-900 border-gray-500 text-sm leading-5">{{producto.fecha_mantenimiento}}</td>
                         <!-- Datos correspondientes a las columnas ocultas inicialmente -->
-                        <td class="group1 py-4 whitespace-no-wrap text-center border-b text-blue-900 border-gray-500 text-base font-semibold leading-5">$ {{producto.costo_inicial}}</td>
-                        <td class="descripcion ver-menos group2 w-1/4 hidden py-4 whitespace-no-wrap text-center border-b text-blue-900 border-gray-500 text-sm leading-5">{{producto.observacion}}</td>
-                        <td class="group2 hidden py-4 whitespace-no-wrap text-center border-b text-blue-900 border-gray-500 text-sm leading-5">{{producto.categoria.nombre}}</td>
-                        <td class="group2 hidden py-4 whitespace-no-wrap text-center border-b text-blue-900 border-gray-500 text-sm leading-5">{{producto.proveedor.nombre}}</td>
-                        <td class="group2 hidden py-4 whitespace-no-wrap text-center border-b text-blue-900 border-gray-500 text-sm leading-5">{{producto.modo}}</td>
+                        <td class="group1 py-4 px-1 whitespace-no-wrap text-center border-b text-blue-900 border-gray-500 text-base font-semibold leading-5">$ {{producto.costo_inicial}}</td>
+                        <td class="descripcion ver-menos group2 w-1/4 hidden py-4 px-1 whitespace-no-wrap text-center border-b text-blue-900 border-gray-500 text-sm leading-5">{{producto.observacion}}</td>
+                        <td class="group2 hidden py-4 px-1 whitespace-no-wrap text-center border-b text-blue-900 border-gray-500 text-sm leading-5">{{producto.categoria.nombre}}</td>
+                        <td class="group2 hidden py-4 px-1 whitespace-no-wrap text-center border-b text-blue-900 border-gray-500 text-sm leading-5">{{producto.proveedor.nombre}}</td>
+                        <td class="group2 hidden py-4 px-1 whitespace-no-wrap text-center border-b text-blue-900 border-gray-500 text-sm leading-5">{{producto.modo}}</td>
                         <!-- Datos correspondientes a la columna Acciones oculta inicialmente -->
-                        <td class="group2 hidden py-4 whitespace-no-wrap border-b border-gray-500 text-sm leading-5">
+                        <td class="group2 hidden py-4 px-1 whitespace-no-wrap border-b border-gray-500 text-sm text-center leading-5">
                             <button class="editar px-4 py-2  border text-white bg-Andes rounded transition duration-300 hover:bg-green-800 hover:text-white focus:outline-none" data-endpoint="producto" data-id="{{ producto.id }}">
                                 <i class="fas fa-edit"></i> Editar
                             </button>
@@ -141,51 +192,10 @@ Productos
                     {% endfor %}
                 </tbody>
             </table>
-        <div class="sm:flex-1 sm:flex sm:items-center sm:justify-between mt-4 work-sans">
-    <div>
-    <p class="text-sm leading-5 text-blue-700">
-        Mostrando
-        <span class="font-medium">1</span>
-        hasta
-        <span class="font-medium">5</span>
-        de
-        <span class="font-medium">{{productos|count}}</span>
-        Resultados
-    </p>
+        <!-- Contenedor de paginación -->
     </div>
-    <div>
-    <nav class="relative p-4 z-0 inline-flex shadow-sm">
-        <div>
-            <a href="#" class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm leading-5 font-medium text-gray-500 hover:text-gray-400 focus:z-10 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-gray-100 active:text-gray-500 transition ease-in-out duration-150" aria-label="Previous" v-on:click.prevent="changePage(pagination.current_page - 1)">
-                <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                    <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
-                </svg>
-            </a>
-        </div>
-        <div>
-            <a href="#" class="-ml-px relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm leading-5 font-medium text-blue-700 focus:z-10 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-tertiary active:text-gray-700 transition ease-in-out duration-150 hover:bg-tertiary">
-                1
-            </a>
-        <a href="#" class="-ml-px relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm leading-5 font-medium text-blue-600 focus:z-10 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-tertiary active:text-gray-700 transition ease-in-out duration-150 hover:bg-tertiary">
-                2
-            </a>
-        <a href="#" class="-ml-px relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm leading-5 font-medium text-blue-600 focus:z-10 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-tertiary active:text-gray-700 transition ease-in-out duration-150 hover:bg-tertiary">
-                3
-            </a>
-        </div>
-        <div v-if="pagination.current_page < pagination.last_page">
-            <a href="#" class="-ml-px relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm leading-5 font-medium text-gray-500 hover:text-gray-400 focus:z-10 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-gray-100 active:text-gray-500 transition ease-in-out duration-150" aria-label="Next">
-                <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                    <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
-                </svg>
-            </a>
-        </div>
-    </nav>
-    </div>
-    </div>
-        </div>
             <!-- Improved product cards design -->
-            <div class="grid grid-cols-1 gap-6 md:hidden">
+            <div class="cards-responsive grid grid-cols-1 gap-6 md:hidden">
                 {% for producto in productos %}
                 <div class="bg-white p-6 rounded-lg shadow-lg border border-gray-200">
                     <!-- Producto Header con color -->
@@ -263,6 +273,7 @@ Productos
                 </div>
                 {% endfor %}
             </div>
+    <div class="pagination flex justify-center mt-6 space-x-2"></div>
     </div>
     </div>
 </main>
@@ -282,11 +293,15 @@ Productos
         </div>
     </section>
     
+    
     <!-- script para las alertas del codigo qr -->
     <script src="../static/js/codigo_qr.js"></script>
+    <script src="../static/js/forms.js"></script>
+    <script src="../static/js/tables.js"></script>
 {% endblock content %}
 <!-- bloque oara las modales -->
 {% block forms %}
+<div id="productos-form" class="modal__form hidden">
 <h2 class="text-2xl font-bold text-gray-800 lg:mb-2">Agregar nuevo Producto</h2>
 <form id="form-productos" method="post" action="/crear-producto" class="grid overscroll-contain grid-cols-1 md:grid-cols-2 gap-2 w-full">
     <select name="id_responsable" required class="bg-gray-200 text-gray-800 border-0 rounded-md p-2 focus:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150 col-span-1 md:col-span-2" id="responsable">
@@ -331,4 +346,5 @@ Productos
         Enviar Datos
     </button>
 </form>
+</div>
 {% endblock forms %}

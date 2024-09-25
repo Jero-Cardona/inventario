@@ -193,6 +193,7 @@ class Producto(ProductoBase):
 class UbicacionBase(BaseModel):
     nombre: str
     id_sede: int
+    id_producto: int
 
 class UbicacionCreate(UbicacionBase):
     pass
@@ -200,6 +201,7 @@ class UbicacionCreate(UbicacionBase):
 class Ubicacion(UbicacionBase):
     id: int
     sede: Sede
+    producto: Producto
     
     class Config:
         from_attributes = True
@@ -222,11 +224,9 @@ class ProductoProveedores(Producto_ProvBase):
 
 # Modelo Proveedor_Mantenimiento
 class Proveedor_MBase(BaseModel):
-    nombre: str
-    direccion: Optional[str] = None
     contacto: Optional[str] = None
-    telefono: Optional[str] = None
     id_producto: int
+    id_proveedor: int
 
 class Proveedor_MCreate(Proveedor_MBase):
     pass
@@ -234,6 +234,7 @@ class Proveedor_MCreate(Proveedor_MBase):
 class ProveedorMantenimiento(Proveedor_MBase):
     id: int
     producto: Producto
+    proveedor: Proveedor
     
     class Config:
         from_attributes = True

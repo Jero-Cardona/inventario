@@ -4,20 +4,16 @@ from io import BytesIO
 from fastapi.responses import StreamingResponse
 from fastapi import FastAPI, Depends, HTTPException, APIRouter, status, Response, Request, Form, Cookie, Query
 from sqlalchemy.orm import Session, joinedload
+from sqlalchemy import func
 from . import crud, models, schemas, middleware
-from app.schemas import *
 from .database import SessionLocal, engine
-from starlette.status import *
-from typing import List, Annotated
 from datetime import datetime, date
 from fastapi.responses import JSONResponse, HTMLResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from starlette.middleware.sessions import SessionMiddleware
 from .router import auth, routes, methods, cargue
-from .security import *
 from .middleware import VerifyUserActive, AdminUser
-from jose import jwt, JWTError
 
 now = datetime.now()
 year = now.year
@@ -117,8 +113,28 @@ async def reportes_main(request: Request, db: Session = Depends(get_db)):
 
 @app.get("/sede-section", response_class=HTMLResponse, tags=['Routes Templates'])
 async def sedes_main(request: Request, db: Session = Depends(get_db)):
-        sedes = db.query(models.Sede).order_by(models.Sede.id.asc())
-        return templates.TemplateResponse("sede.html", {"request": request, "sedes": sedes})
+    sedes = db.query(models.Sede).order_by(models.Sede.id.asc()).all()
+    productos = db.query(models.Producto).order_by(models.Producto.id.asc()).all()
+
+    ubicaciones_productos = (
+        db.query(models.Ubicacion.nombre, func.count(models.Ubicacion.id_producto).label('productos_count'))
+        .join(models.Producto, models.Ubicacion.id_producto == models.Producto.id)
+        .group_by(models.Ubicacion.nombre)
+        .order_by(models.Ubicacion.nombre.asc())
+        .all()
+    )
+    ubicaciones = db.query(models.Ubicacion).options(
+        joinedload(models.Ubicacion.producto),
+        joinedload(models.Ubicacion.sede)
+    ).order_by(models.Ubicacion.id.asc()).all()
+    return templates.TemplateResponse("sede.html", {
+        "request": request,
+        "sedes": sedes,
+        "ubicaciones_productos": ubicaciones_productos,
+        "ubicaciones": ubicaciones,
+        "productos": productos,
+    })
+    
 
 @app.get("/responsable-section", response_class=HTMLResponse, tags=['Routes Templates'])
 async def responsable_main(request: Request, db: Session = Depends(get_db)):
@@ -127,25 +143,44 @@ async def responsable_main(request: Request, db: Session = Depends(get_db)):
 
 @app.get("/producto-section", response_class=HTMLResponse, tags=['Routes Templates'])
 async def productos_main(request: Request, db: Session = Depends(get_db)):
-        productos = db.query(models.Producto).options(
-            joinedload(models.Producto.responsable),
-            joinedload(models.Producto.sede),
-            joinedload(models.Producto.categoria),
-            joinedload(models.Producto.proveedor)
-        ).order_by(models.Producto.id.asc()).all()
-        responsables = db.query(models.Responsable).all()
-        sedes = db.query(models.Sede).all()
-        categorias = db.query(models.Categoria).all()
-        proveedores = db.query(models.Proveedor).all()
-        return templates.TemplateResponse("productos.html", {
-            "request": request,
-            "productos": productos,
-            "responsables": responsables,
-            "sedes": sedes,
-            "categorias": categorias,
-            "proveedores": proveedores,
-            "fecha_ingreso": fecha_creacion
-        })
+    # Consulta de productos con todas las relaciones cargadas
+    productos = db.query(models.Producto).options(
+        joinedload(models.Producto.responsable),
+        joinedload(models.Producto.sede),
+        joinedload(models.Producto.categoria),
+        joinedload(models.Producto.proveedor)
+    ).order_by(models.Producto.id.asc()).all()
+
+    # Consulta para contar productos por proveedor
+    productos_por_proveedor = (
+        db.query(models.Proveedor.nombre, func.count(models.Producto.id).label('producto_count'))
+        .join(models.Producto, models.Proveedor.id == models.Producto.id_proveedor)
+        .group_by(models.Proveedor.id)
+        .order_by(models.Proveedor.id.asc())
+        .all()
+    )
+    
+    productos_sin_pro = db.query(models.Producto).where(models.Producto.id_proveedor == None).all()
+
+    # Consultas adicionales
+    responsables = db.query(models.Responsable).all()
+    sedes = db.query(models.Sede).all()
+    categorias = db.query(models.Categoria).all()
+    proveedores = db.query(models.Proveedor).all()
+
+    # Pasamos todos los objetos al template
+    return templates.TemplateResponse("productos.html", {
+        "request": request,
+        "productos": productos,
+        "responsables": responsables,
+        "sedes": sedes,
+        "categorias": categorias,
+        "proveedores": proveedores,
+        "productos_por_proveedor": productos_por_proveedor,
+        "productos_sin_proveedor": productos_sin_pro,
+        "fecha_ingreso": fecha_creacion
+    })
+
 
 @app.get("/usuario-section", response_class=HTMLResponse, tags=['Routes Templates'])
 async def usuarios_main(request: Request, db: Session = Depends(get_db)):
@@ -154,11 +189,14 @@ async def usuarios_main(request: Request, db: Session = Depends(get_db)):
         return templates.TemplateResponse("usuarios.html", {"request": request, "usuarios": usuarios, "roles": roles, "fecha_creacion": fecha_creacion})
 
 @app.get("/mantenimiento-section", response_class=HTMLResponse, tags=['Routes Templates'])
-async def mantenimiento_main(request: Request, access_token: Annotated[str | None, Cookie()] = None, db: Session = Depends(get_db)):
+async def mantenimiento_main(request: Request,  db: Session = Depends(get_db)):
     mantenimientos = db.query(models.Mantenimiento).filter(models.Mantenimiento.fecha_mantenimiento > fecha_actual).options(
         joinedload(models.Mantenimiento.usuarios),
         joinedload(models.Mantenimiento.producto)).order_by(models.Mantenimiento.id.asc())
-    return templates.TemplateResponse("mantenimiento.html", {"request": request, "mantenimientos": mantenimientos})
+    productos = db.query(models.Producto).all()
+    usuarios = db.query(models.Usuarios).all()
+    
+    return templates.TemplateResponse("mantenimiento.html", {"request": request, "mantenimientos": mantenimientos, "productos": productos, "usuarios": usuarios})
 
 
 # endpoints para codigos QR de productos
@@ -267,7 +305,7 @@ def get_historial_m(codigo_producto: str, db: Session = Depends(get_db)):
             "fecha_mantenimiento": mantenimiento.fecha_mantenimiento,
             "observacion": mantenimiento.observacion,
             "usuario_responsable": mantenimiento.usuarios.nombre if mantenimiento.usuarios else "Desconocido",
-            "proveedor_mantenimiento": proveedor_mantenimiento.nombre if proveedor_mantenimiento else "No asignado",
+            "proveedor_mantenimiento": proveedor_mantenimiento.proveedor.nombre if proveedor_mantenimiento else "No asignado",
             "contacto_proveedor": proveedor_mantenimiento.contacto if proveedor_mantenimiento else "No contactos de proveedores"
         })
 

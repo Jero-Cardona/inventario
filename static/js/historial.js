@@ -66,8 +66,8 @@ function showHistorialModal(data) {
             <div class="border-t bg-gray-50 rounded-md shadow-md px-2 border-gray-300 py-4 mt-4">
                 <p class="mb-2"><strong class="font-semibold">Fecha:</strong> ${mantenimiento.fecha_mantenimiento}</p>
                 <p class="mb-2"><strong class="font-semibold">Observación:</strong> ${mantenimiento.observacion}</p>
-                <p class="mb-2"><strong class="font-semibold">Responsable:</strong> ${mantenimiento.usuario_responsable}</p>
-                <p class="mb-2"><strong class="font-semibold">Proveedor:</strong> ${mantenimiento.proveedor_mantenimiento}</p>
+                <p class="mb-2"><strong class="font-semibold">Responsable del producto:</strong> ${mantenimiento.usuario_responsable}</p>
+                <p class="mb-2"><strong class="font-semibold">Proveedor encargado:</strong> ${mantenimiento.proveedor_mantenimiento}</p>
                 <p class="mb-2"><strong class="font-semibold">Contacto Proveedor:</strong> ${mantenimiento.contacto_proveedor}</p>
             </div>
         `;

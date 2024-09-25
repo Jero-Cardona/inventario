@@ -101,24 +101,35 @@ async def add_responsable(request: Request, nombre: str = Form(...), correo: str
 
 @methods.post("/crear-proveedor-mantenimiento", response_class=HTMLResponse, tags=['Routes Post'])
 async def crear_proveedormantenimiento(
-    proveedor_id: int = Form(...), 
+    id_proveedor: int = Form(...), 
     contacto: str = Form(...), 
+    id_producto: int = Form(...), 
     db: Session = Depends(get_db)
 ):
-    proveedor = crud.get_proveedor(proveedor_id, db)
-    
-    nuevo_mantenimiento = models.Proveedormantenimiento(
-        nombre=proveedor.nombre,
-        direccion=proveedor.direccion,
-        telefono=proveedor.telefono,
-        contacto=contacto,
-        id_producto=None  
+    proveedor_mantenimimiento = models.Proveedormantenimiento(
+        contacto = contacto,
+        id_producto = id_producto,
+        id_proveedor = id_proveedor
     )
-    db.add(nuevo_mantenimiento)
+    db.add(proveedor_mantenimimiento)
     db.commit()
-    db.refresh(nuevo_mantenimiento)
-    
-    return {"message": "Registro creado exitosamente"}
+    return RedirectResponse(url="/proveedor-section", status_code=status.HTTP_303_SEE_OTHER)
+
+@methods.post("/crear-ubicacion-producto", response_class=HTMLResponse, tags=['Routes Post'])
+async def add_ubicacion(
+    nombre: str = Form(...),
+    id_sede: int = Form(...),
+    id_producto: int = Form(...),
+    db: Session = Depends(get_db)
+):
+    Ubicacion = models.Ubicacion(
+        nombre = nombre,
+        id_sede = id_sede,
+        id_producto = id_producto
+    )
+    db.add(Ubicacion)
+    db.commit()
+    return RedirectResponse(url="/sede-section", status_code=status.HTTP_303_SEE_OTHER)
 
 # Endpoints con el metodo PUT
 
@@ -137,15 +148,23 @@ def update_pro(producto_id: int, id_responsable: int, codigo: str, id_sede: int,
             estado: str, fecha_mantenimiento: date, costo_inicial: float, modo: str, observacion: str,
             id_categoria: int, fecha_ingreso: date, db: Session = Depends(get_db), id_proveedor: Optional[int] = None):
     try:
+        existing_producto = crud.get_cod_producto(db, codigo=codigo)
+        
+        if existing_producto and existing_producto.id != producto_id:
+            raise HTTPException(status_code=400, detail="Este código ya existe, por favor intenta otro")
+
         update_producto_id = crud.update_producto(db, producto_id, id_responsable, codigo, id_sede,
                                                 cantidad, uso, estado, fecha_mantenimiento, costo_inicial, modo,
                                                 observacion, id_categoria, fecha_ingreso, id_proveedor)
+        
         if not update_producto_id:
             raise HTTPException(status_code=404, detail="No se encontró el producto")
         return update_producto_id
+    
+    except HTTPException as e:
+        raise e
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
-
 
 @methods.put("/mantenimiento-update/{mantenimiento_id}", response_model=schemas.Mantenimiento, tags=['Routes Put'])
 def update_mantenimiento(mantenimiento_id: int, fecha_mantenimiento: date, observacion: str, id_usuarios: int, id_producto: int,  db: Session = Depends(get_db)):
@@ -176,6 +195,16 @@ def update_sede_id(sede_id: int, nombre: str, direccion: str, telefono: str, db:
         return update_sede 
     except Exception as e:
         raise HTTPException(status_code=500, detail="Error interno del servidor")
+
+@methods.put("/ubicacion-update/{ubicacion_id}", response_model=schemas.Ubicacion, tags=['Routes Put'])
+def update_ubicacion(ubicacion_id: int, nombre: str, id_sede: int, id_producto: int, db: Session = Depends(get_db)):
+    try:
+        update_ubi = crud.update_ubication(db, ubicacion_id, nombre, id_sede, id_producto)
+        if not update_ubi:
+            raise HTTPException(status_code=404, detail="No se encontro la ubicacion")
+        return update_ubi
+    except Exception as e:
+        raise HTTPException(status_code=500, detail='Error interno del servidor')
 
 @methods.put("/rol-update/{rol_id}", response_model=schemas.Roles, tags=['Routes Put'])
 def update_categoria_id(rol_id: int, nombre: str, db: Session = Depends(get_db)):
@@ -254,6 +283,13 @@ def delete_producto(producto_id: int, db: Session = Depends(get_db)):
     else:
         raise HTTPException(status_code=409, detail="No se puede eliminar el producto, es referenciado por otros registros")
 
+@methods.delete("/ubicacion-deleted/{ubicacion_id}", response_model=schemas.Producto, tags=['Routes Delete'])
+def delete_ubicacion(ubicacion_id: int, db: Session = Depends(get_db)):
+    del_ubicacion = crud.delete_ubicacion(db = db, ubicacion_id = ubicacion_id)
+    if del_ubicacion == "Deleted Ubicacion":
+        return JSONResponse(content={"detail": "Ubicacion deleted OK"}, status_code=200)
+    else:
+        raise HTTPException(status_code=409, detail="No se puede eliminar la ubicacion, es referenciada por otros registros")
 
 @methods.delete("/mantenimiento-deleted/{mantenimiento_id}", response_model=schemas.Mantenimiento, tags=['Routes Delete'])
 def del_mantenimiento(mantenimiento_id: int, db: Session = Depends(get_db)):

@@ -154,6 +154,21 @@ def update_m(db: Session, mantenimiento_id: int, fecha_mantenimiento: date, obse
         db.rollback()  
         raise e  
 
+def update_ubication(db: Session, ubicacion_id: int, nombre: str, id_sede: int, id_producto: int):
+    try:
+        ubicacion = db.query(models.Ubicacion).filter(models.Ubicacion.id == ubicacion_id).first()
+        if ubicacion:
+            ubicacion.nombre = nombre
+            ubicacion.id_sede = id_sede
+            ubicacion.id_producto = id_producto
+            db.commit()
+            db.refresh(ubicacion)
+            return ubicacion
+        return None
+    except Exception as e:
+        db.rollback()
+        raise e
+
 def update_user(db: Session, usuario_id: int, nombre: str, correo: str, hashed_password: str,
                 estado: str, fecha_creacion: date, id_rol: int):
     db_user = db.query(models.Usuarios).filter(models.Usuarios.id == usuario_id).first()

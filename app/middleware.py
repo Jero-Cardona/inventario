@@ -54,11 +54,11 @@ class VerifyUserActive(BaseHTTPMiddleware):
 
 # Creacion del middleware para las acciones del Admin
 class AdminUser(BaseHTTPMiddleware):
-    excluded_routes = ["/login/", "/", "/salir", "/bloquear-usuario", "/activar-usuario",
-                    "/static", "/docs", "/openapi.json", "/inicio", "/favicon.ico",
-                    "/proveedor-section", "/categoria-section", "/rol-section",
-                    "/reportes-section", "/sede-section", "/responsable-section",
-                    "/producto-section", "/usuario-section", "/mantenimiento-section",]
+    excluded_routes = ["/login/", "/", "/salir", "/bloquear-usuario", "/activar-usuario", "/static", "/docs", "/openapi.json", "/inicio", "/favicon.ico",
+    "/proveedor-section", "/categoria-section", "/rol-section",
+    "/reportes-section", "/sede-section", "/responsable-section",
+    "/producto-section", "/usuario-section", "/mantenimiento-section", 
+    "/productos-all-fk/","/productos-all/","/generar-codigoqr-producto/{producto_id}", "/productos-imagen-qr",]
 
     async def dispatch(self, request: Request, call_next):
         if request.url.path.startswith("/static"):

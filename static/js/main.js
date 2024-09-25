@@ -159,6 +159,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 'categoria': `/categoria-obtener/${id}`,
                 'mantenimiento': `/mantenimiento-obtener/${id}`,
                 'rol': `/rol-obtener/${id}`,
+                'ubicacion': `/ubicacion-obtener/${id}`,
             };
     
             const foreignKeyEndpoints = {
@@ -375,13 +376,27 @@ document.addEventListener('DOMContentLoaded', function () {
     
                             try {
                                 const response = await fetch(url, { method: 'PUT' });
-                                if (!response.ok) throw new Error(`Error al actualizar los datos: ${await response.json()}`);
-    
+                                if (!response.ok) {
+                                    const errorData = await response.json();
+                                    Swal.fire({
+                                        title: 'Error',
+                                        text: errorData.detail || 'Hubo un problema al actualizar los datos',
+                                        icon: 'error',
+                                        confirmButtonText: 'Entendido',
+                                        confirmButtonColor: '#13A438', 
+                                    }).then((result) => {
+                                        if (result.isConfirmed) {
+                                            window.location.reload(); 
+                                        }
+                                    });
+                                    return;
+                                }
+                            
                                 const result = await response.json();
                                 window.location.reload();
                                 console.log('Datos actualizados:', result);
-    
-                                closeFormEdit(); 
+                            
+                                closeFormEdit();
                             } catch (error) {
                                 console.error('Error en la actualización:', error);
                             }
@@ -434,25 +449,57 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-    const openModal = document.querySelector('.open_modal');
     const modal = document.querySelector('.modal');
     const closeModal = document.querySelector('.modal__close');
     
-    if (openModal && modal && closeModal) {
-        openModal.addEventListener('click', (e) => {
-            e.preventDefault();
-            modal.style.opacity = '1';
-            modal.style.pointerEvents = 'unset';
-            modal.style.transition = 'opacity .2s .4s';
+    // Selecciona todos los botones que abren el modal
+    const openModalButtons = document.querySelectorAll('.open_modal');
+    
+    // Valida que los elementos clave existan en el DOM
+    if (modal && closeModal && openModalButtons.length > 0) {
+        // Itera sobre todos los botones con la clase 'open_modal'
+        openModalButtons.forEach(button => {
+            button.addEventListener('click', (e) => {
+                e.preventDefault();
+    
+                // Obtener el valor del data-id
+                const dataId = button.getAttribute('data-id');
+    
+                // Validar que el data-id exista
+                if (dataId) {
+                    // Buscar el contenido del modal basado en el ID
+                    const modalContent = document.querySelector(`#${dataId}`);
+                    
+                    // Validar que el contenido del modal exista
+                    if (modalContent) {
+                        // Ocultar otros formularios y mostrar el seleccionado
+                        document.querySelectorAll('.modal__form').forEach(form => {
+                            form.classList.add('hidden');
+                        });
+    
+                        // Mostrar el contenido del modal
+                        modalContent.classList.remove('hidden');
+                        modal.style.opacity = '1';
+                        modal.style.pointerEvents = 'unset';
+                        modal.style.transition = 'opacity .2s .4s';
+                    } else {
+                        console.error(`No se encontró contenido para el ID: ${dataId}`);
+                    }
+                } else {
+                    console.error('El botón no tiene un atributo data-id.');
+                }
+            });
         });
-
+    
+        // Manejar el cierre del modal
         closeModal.addEventListener('click', (e) => {
             e.preventDefault();
             closeForm();
         });
     } else {
-        console.error('Uno o más elementos no se encuentran en el DOM.');
+        console.error('Uno o más elementos no se encuentran en el DOM o no hay botones para abrir el modal.');
     }
+    
 
     var visualizarButton = document.getElementById('Visualizar');
     if (visualizarButton) {
@@ -532,66 +579,69 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // funcion para el cargue masivo
-    const fileInput = document.getElementById('fileInput');
+    // Selecciona todos los elementos que tengan la clase o id 'fileInput'
+    const fileInputs = document.querySelectorAll('.fileInput'); // Cambia por el selector adecuado si es una clase o un id
 
-    if (fileInput) {
-        fileInput.addEventListener('change', async (event) => {
-            const file = event.target.files[0];
-            const modelName = fileInput.getAttribute('data-endpoint');
-            console.log(modelName);
+    // Itera sobre todos los elementos 'fileInput'
+    fileInputs.forEach(fileInput => {
+        if (fileInput) {
+            fileInput.addEventListener('change', async (event) => {
+                const file = event.target.files[0];
+                const modelName = fileInput.getAttribute('data-endpoint');
+                console.log(modelName);
 
-            if (file) {
-                Swal.fire({
-                    title: '¿Estás seguro?',
-                    text: "Estás a punto de cargar el archivo. Esta acción no puede deshacerse.",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonText: 'Sí, cargar',
-                    cancelButtonText: 'Cancelar',
-                    confirmButtonColor: '#13A438',
-                    cancelButtonColor: '#084F21',
-                }).then(async (result) => {
-                    if (result.isConfirmed) {
-                        
-                        const formData = new FormData();
-                        formData.append('file', file);
-                        formData.append('nombre_modelo', modelName); 
+                if (file) {
+                    Swal.fire({
+                        title: '¿Estás seguro?',
+                        text: "Estás a punto de cargar el archivo. Esta acción no puede deshacerse.",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonText: 'Sí, cargar',
+                        cancelButtonText: 'Cancelar',
+                        confirmButtonColor: '#13A438',
+                        cancelButtonColor: '#084F21',
+                    }).then(async (result) => {
+                        if (result.isConfirmed) {
+                            
+                            const formData = new FormData();
+                            formData.append('file', file);
+                            formData.append('nombre_modelo', modelName); 
 
-                        try {
-                            const response = await fetch('/cargue-archivos', {
-                                method: 'POST',
-                                body: formData, 
+                            try {
+                                const response = await fetch('/cargue-archivos', {
+                                    method: 'POST',
+                                    body: formData, 
+                                });
+
+                                if (response.ok) {
+                                    Swal.fire('Cargado', 'El archivo se ha cargado exitosamente', 'success').then((result) => {
+                                        if (result.isConfirmed){
+                                            window.location.reload();
+                                        }
+                                    });
+                                } else {
+                                    const errorData = await response.json(); 
+                                    Swal.fire('Error', errorData.detail || 'Hubo un problema al cargar el archivo', 'error').then((result) => {
+                                        if (result.isConfirmed){
+                                            window.location.reload();
+                                        }
+                                    });
+                                }
+                            } catch (error) {
+                                Swal.fire('Error', 'Error en la solicitud: ' + error.message, 'error');
+                            }
+                        } else {
+                            Swal.fire('Cancelado', 'La carga de archivo fue cancelada', 'info').then((result) => {
+                                if (result.isConfirmed){
+                                    window.location.reload();
+                                }
                             });
-
-                            if (response.ok) {
-                                Swal.fire('Cargado', 'El archivo se ha cargado exitosamente', 'success').then((result) => {
-                                    if (result.isConfirmed){
-                                        window.location.reload();
-                                    }
-                                });
-                            } else {
-                                const errorData = await response.json(); 
-                                Swal.fire('Error', errorData.detail || 'Hubo un problema al cargar el archivo', 'error').then((result) => {
-                                    if (result.isConfirmed){
-                                        window.location.reload();
-                                    }
-                                });
-                            }
-                        } catch (error) {
-                            Swal.fire('Error', 'Error en la solicitud: ' + error.message, 'error');
                         }
-                    } else {
-                        Swal.fire('Cancelado', 'La carga de archivo fue cancelada', 'info').then((result) => {
-                            if (result.isConfirmed){
-                                window.location.reload();
-                            }
-                        });
-                    }
-                });
-            }
-        });
-    }
+                    });
+                }
+            });
+        }
+    });
 
 // cierre del DOM
 });

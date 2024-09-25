@@ -92,10 +92,10 @@ class Ubicacion(Base):
     id = Column(Integer, primary_key=True, autoincrement=True, index=True)
     nombre = Column(String(200), nullable=False)
     id_sede = Column(Integer, ForeignKey("sede.id"))
-    id_producto = Column(Integer, ForeignKey("producto.id"))  # Corregido
+    id_producto = Column(Integer, ForeignKey("producto.id"))
 
     sede = relationship("Sede")
-    producto = relationship("Producto")  # Corregido
+    producto = relationship("Producto")
 
 # Modelo Producto_Proveedores
 class ProductoProveedores(Base):
@@ -111,12 +111,11 @@ class ProductoProveedores(Base):
 class Proveedormantenimiento(Base):
     __tablename__ = "proveedormantenimiento"
     id = Column(Integer, primary_key=True, autoincrement=True)
-    nombre = Column(String(200), nullable=False)
-    direccion = Column(String(200))
-    telefono = Column(String(20))
-    contacto = Column(String(200))
+    contacto = Column(String(200), nullable=False)
     id_producto = Column(Integer, ForeignKey("producto.id"))
+    id_proveedor = Column(Integer, ForeignKey("proveedor.id"))
 
+    proveedor = relationship("Proveedor")
     producto = relationship("Producto")
 
 # Modelo Mantenimiento
