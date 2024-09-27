@@ -97,7 +97,7 @@ Productos
                 </button>   
             </div>
             <!-- Formulario del buscador -->
-            <form id="form-buscador" class="flex mr-4 w-auto md:w-2/12 h-12 sm:w-1/2 bg-white shadow-md rounded-lg border">
+            <form class="flex mr-4 w-auto md:w-2/12 h-12 sm:w-1/2 bg-white shadow-md rounded-lg border">
                 <div class="flex items-center w-auto h-full bg-white px-2">
                     <span class="flex items-center leading-normal bg-transparent rounded-l-lg text-grey-dark text-lg">
                         <svg width="18" height="18" class="w-4 lg:w-auto" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -105,7 +105,7 @@ Productos
                             <path d="M16.9993 16.9993L13.1328 13.1328" stroke="#455A64" stroke-linecap="round" stroke-linejoin="round"/>
                         </svg>
                     </span>
-                    <input type="text" class="flex-shrink flex-1 leading-normal border-none rounded-r-lg px-3 text-xs text-gray-500" placeholder="Buscar productos">
+                    <input id="searchInput" type="text" class="flex-shrink flex-1 leading-normal border-none rounded-r-lg px-3 text-xs text-gray-500" placeholder="Buscar productos">
                 </div>
             </form>
             <!-- Selector de filas por página -->
@@ -298,12 +298,13 @@ Productos
     <script src="../static/js/codigo_qr.js"></script>
     <script src="../static/js/forms.js"></script>
     <script src="../static/js/tables.js"></script>
+    <script src="../static/js/search.js"></script>
 {% endblock content %}
 <!-- bloque oara las modales -->
 {% block forms %}
 <div id="productos-form" class="modal__form hidden">
 <h2 class="text-2xl font-bold text-gray-800 lg:mb-2">Agregar nuevo Producto</h2>
-<form id="form-productos" method="post" action="/crear-producto" class="grid overscroll-contain grid-cols-1 md:grid-cols-2 gap-2 w-full">
+<form id="form-productos" method="post" action="/crear-producto" class="form grid overscroll-contain grid-cols-1 md:grid-cols-2 gap-2 w-full">
     <select name="id_responsable" required class="bg-gray-200 text-gray-800 border-0 rounded-md p-2 focus:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150 col-span-1 md:col-span-2" id="responsable">
         <option value="" disabled selected class="bg-white">Escoge un Responsable</option>
         {% for responsable in responsables %}

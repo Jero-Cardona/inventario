@@ -213,12 +213,12 @@ async def generar_qr(producto_id: int,  db: Session = Depends(get_db)):
         f"Cantidad: {producto.cantidad}\n"
         f"Uso: {producto.uso}\n"
         f"Estado: {producto.estado}\n"
-        f"Fecha proximo mantenimiento: {producto.fecha_mantenimiento if producto.fecha_mantenimiento else "Nulo"}\n"
+        f"Fecha proximo mantenimiento: {producto.fecha_mantenimiento if producto.fecha_mantenimiento else 'Nulo'}\n"
         f"Costo: {producto.costo_inicial}\n"
         f"Modo: {producto.modo}\n"
         f"Observacion: {producto.observacion}\n"
         f"Categoria: {producto.categoria.nombre}\n"
-        f"Proveedor: {producto.proveedor.nombre if producto.proveedor else "Nulo"}\n"
+        f"Proveedor: {producto.proveedor.nombre if producto.proveedor else 'Nulo'}\n"
         f"Ingreso: {producto.fecha_ingreso}"
     )
     
@@ -251,7 +251,7 @@ async def image_qr_producto(request: Request, db: Session = Depends(get_db)):
                 f"Modo: {producto.modo}\n"
                 f"Observacion: {producto.observacion}\n"
                 f"Categoria: {producto.categoria.nombre}\n"
-                f"Proveedor: {producto.proveedor.nombre if producto.proveedor else "Nulo"}\n"
+                f"Proveedor: {producto.proveedor.nombre if producto.proveedor else 'Nulo'}\n"
                 f"Ingreso: {producto.fecha_ingreso}"
             )
 

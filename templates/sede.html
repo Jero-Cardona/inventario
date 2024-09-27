@@ -323,15 +323,15 @@
 {% block forms %}
 <div id="sede-form" class="modal__form hidden">
     <h2 class="text-2xl font-bold text-gray-800 mb-4">Nueva sede</h2>
-    <form method="post" action="/crear-sede" class="flex flex-col">
+    <form method="post" action="/crear-sede" class="form flex flex-col">
         <input placeholder="Nombre de la Sede" 
-               class="bg-gray-100 text-gray-800 border-0 lg:w-96 rounded-md p-2 mb-4 focus:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150"
+               class="bg-gray-200 text-gray-800 border-0 lg:w-96 rounded-md p-2 mb-4 focus:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150"
                type="text" name="nombre" required />
         <input placeholder="Dirección" 
-               class="bg-gray-100 text-gray-800 border-0 lg:w-96 rounded-md p-2 mb-4 focus:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150"
+               class="bg-gray-200 text-gray-800 border-0 lg:w-96 rounded-md p-2 mb-4 focus:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150"
                type="text" name="direccion" required />
         <input placeholder="Número de Teléfono" 
-               class="bg-gray-100 text-gray-800 border-0 lg:w-96 rounded-md p-2 mb-4 focus:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150"
+               class="bg-gray-200 text-gray-800 border-0 lg:w-96 rounded-md p-2 mb-4 focus:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150"
                type="number" name="telefono" required />
         <button class="bg-gradient-to-r from-indigo-500 to-blue-500 text-white font-bold py-2 px-4 rounded-md mt-4 hover:bg-indigo-600 hover:to-blue-600 transition ease-in-out duration-150"
                 type="submit">
@@ -343,9 +343,9 @@
 <!-- Contenido del formulario de ubicación -->
 <div id="ubicacion-form" class="modal__form hidden">
     <h2 class="text-2xl font-bold text-gray-800 mb-4">Nueva ubicación</h2>
-    <form method="post" action="/crear-ubicacion-producto" class="flex flex-col">
+    <form method="post" action="/crear-ubicacion-producto" class="form flex flex-col">
         <input placeholder="Nombre de la ubicación" 
-               class="bg-gray-200 text-gray-800 border-0 lg:w-96 rounded-md p-2 mb-4 focus:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150"
+               class="bg-gray-200 text-gray-800 border-0 lg:w-96 rounded-md p-2 mb-4 focus:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150"
                type="text" name="nombre" required />
         <select required name="id_sede" 
                 class="bg-gray-200 text-gray-800 border-0 lg:w-96 rounded-md p-2 mb-4 focus:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150">
