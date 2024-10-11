@@ -1,6 +1,7 @@
 import qrcode
 import zipfile
 from io import BytesIO
+from typing import List
 from fastapi.responses import StreamingResponse
 from fastapi import FastAPI, Depends, HTTPException, APIRouter, status, Response, Request, Form, Cookie, Query
 from sqlalchemy.orm import Session, joinedload
@@ -12,7 +13,7 @@ from fastapi.responses import JSONResponse, HTMLResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from starlette.middleware.sessions import SessionMiddleware
-from .router import auth, routes, methods, cargue
+from .router import auth, routes, methods, cargue, exporte
 from .middleware import VerifyUserActive, AdminUser
 
 now = datetime.now()
@@ -21,13 +22,14 @@ month = now.month
 day = now.day
 
 fecha_actual = date(year, month, day)
-fecha_creacion = fecha_actual
+fecha = fecha_actual
 
 app = FastAPI()
 app.include_router(auth.router)
 app.include_router(routes.routes)
 app.include_router(methods.methods)
 app.include_router(cargue.cargue)
+app.include_router(exporte.exporte)
 
 app.mount("/static", StaticFiles(directory="static"), name="static")
 templates = Jinja2Templates(directory="templates")
@@ -78,29 +80,58 @@ async def logout(request: Request):
     request.session.pop('nombre', None)
     request.session.pop('correo', None)
     request.session.pop('rol', None)
+    request.session.pop('id', None)
     return RedirectResponse(url="/", status_code=302, headers={
         "set-cookie": "access_token=; Max-Age=0"})
+
+# Modelo para recibir las rutas
+
+@app.post("/configurar-rutas")
+async def update_routes(data: schemas.RoutesConfig):
+    AdminUser.update_excluded_routes(data.routes)
+    return {"message": "Rutas actualizadas correctamente", "routes": AdminUser.excluded_routes}
+
 
 @app.get("/inicio", response_class=JSONResponse, tags=['Routes Templates'])
 async def inicio_main(request: Request, db: Session = Depends(get_db)):
     productos = db.query(models.Producto).all()
     responsables = db.query(models.Responsable).options(joinedload(models.Responsable.productos)).order_by(models.Responsable.id.asc()).all()
-    return templates.TemplateResponse("inicio.html", {"request": request, "responsables": responsables, "productos": productos})
+    
+    productos_categorias = (
+        db.query(models.Categoria.nombre, func.count(models.Producto.id).label('productos_count')).join(models.Producto, models.Categoria.id == models.Producto.id_categoria).group_by(models.Categoria.id).order_by(models.Categoria.id.asc()).all()
+    )
+
+    depreciaciones = crud.depreciacion_categorias(db)
+    
+    return templates.TemplateResponse("inicio.html", {"request": request, "responsables": responsables, "productos": productos, "depreciaciones": depreciaciones, "productos_categorias": productos_categorias})
 
 
 @app.get("/proveedor-section", response_class=HTMLResponse, tags=['Routes Templates'])
 async def proveedor_main(request: Request, db: Session = Depends(get_db)):
-        proveedores = db.query(models.Proveedor).order_by(models.Proveedor.id.asc())
-        return templates.TemplateResponse("proveedor.html", {"request": request, "proveedores": proveedores})
+    
+    # consultas necesarias para las vistas
+    proveedores = db.query(models.Proveedor).order_by(models.Proveedor.id.asc()).all()
+    proveedor_mantenimiento = db.query(models.Proveedormantenimiento).options(joinedload(models.Proveedormantenimiento.proveedor), joinedload(models.Proveedormantenimiento.producto)).order_by(models.Proveedormantenimiento.id.asc()).all()
+    
+    productos = db.query(models.ProductoProveedores).order_by(models.ProductoProveedores.id_producto).options(joinedload(models.ProductoProveedores.producto)).all()
+    proveedor_m_productos = (
+        db.query(models.Proveedormantenimiento.id_proveedor, func.count(models.Proveedormantenimiento.id_producto).label('productos_p_count'))
+        .join(models.ProductoProveedores, models.Proveedormantenimiento.id_producto == models.ProductoProveedores.id)
+        .group_by(models.Proveedormantenimiento.id_proveedor)
+        .order_by(models.Proveedormantenimiento.id_proveedor.asc())
+        .all()
+    )
+    
+    return templates.TemplateResponse("proveedor.html", {"request": request, "proveedores": proveedores, "proveedor_m_productos": proveedor_m_productos, "mantenimientos_pro": proveedor_mantenimiento, "productos": productos})
 
 @app.get("/categoria-section", response_class=HTMLResponse, tags=['Routes Templates'])
 async def categorias_main(request: Request, db: Session = Depends(get_db)):
-        categorias = db.query(models.Categoria).order_by(models.Categoria.id.asc())
-        return templates.TemplateResponse("categorias.html", {"request": request, "categorias": categorias})
+    categorias = db.query(models.Categoria).order_by(models.Categoria.id.asc()).all()
+    return templates.TemplateResponse("categorias.html", {"request": request, "categorias": categorias})
 
 @app.get("/rol-section", response_class=HTMLResponse, tags=['Routes Templates'])
 async def roles_main(request: Request, db: Session = Depends(get_db)):
-    roles = db.query(models.Roles).order_by(models.Roles.id.asc())
+    roles = db.query(models.Roles).order_by(models.Roles.id.asc()).all()
     return templates.TemplateResponse("roles.html", {
             "request": request,
             "roles": roles,
@@ -138,7 +169,7 @@ async def sedes_main(request: Request, db: Session = Depends(get_db)):
 
 @app.get("/responsable-section", response_class=HTMLResponse, tags=['Routes Templates'])
 async def responsable_main(request: Request, db: Session = Depends(get_db)):
-        responsables = db.query(models.Responsable).order_by(models.Responsable.id.asc())
+        responsables = db.query(models.Responsable).order_by(models.Responsable.id.asc()).all()
         return templates.TemplateResponse("responsables.html", {"request": request, "responsables": responsables})
 
 @app.get("/producto-section", response_class=HTMLResponse, tags=['Routes Templates'])
@@ -150,7 +181,17 @@ async def productos_main(request: Request, db: Session = Depends(get_db)):
         joinedload(models.Producto.categoria),
         joinedload(models.Producto.proveedor)
     ).order_by(models.Producto.id.asc()).all()
-
+    
+    # depreciacion por activos
+    productos_valor_actual = []
+    for producto in productos:
+        valor_actual = crud.calcular_valor_actual(producto)
+        valor = f"{valor_actual:,.2f}"
+        productos_valor_actual.append({
+            "producto": producto,
+            "valor_actual": valor
+        })
+        
     # Consulta para contar productos por proveedor
     productos_por_proveedor = (
         db.query(models.Proveedor.nombre, func.count(models.Producto.id).label('producto_count'))
@@ -171,6 +212,7 @@ async def productos_main(request: Request, db: Session = Depends(get_db)):
     # Pasamos todos los objetos al template
     return templates.TemplateResponse("productos.html", {
         "request": request,
+        "productos_v": productos_valor_actual,
         "productos": productos,
         "responsables": responsables,
         "sedes": sedes,
@@ -178,21 +220,21 @@ async def productos_main(request: Request, db: Session = Depends(get_db)):
         "proveedores": proveedores,
         "productos_por_proveedor": productos_por_proveedor,
         "productos_sin_proveedor": productos_sin_pro,
-        "fecha_ingreso": fecha_creacion
+        "fecha_ingreso": fecha
     })
 
 
 @app.get("/usuario-section", response_class=HTMLResponse, tags=['Routes Templates'])
 async def usuarios_main(request: Request, db: Session = Depends(get_db)):
-        usuarios = db.query(models.Usuarios).options(joinedload(models.Usuarios.rol)).order_by(models.Usuarios.id.asc())
+        usuarios = db.query(models.Usuarios).options(joinedload(models.Usuarios.rol)).order_by(models.Usuarios.id.asc()).all()
         roles = db.query(models.Roles).all()
-        return templates.TemplateResponse("usuarios.html", {"request": request, "usuarios": usuarios, "roles": roles, "fecha_creacion": fecha_creacion})
+        return templates.TemplateResponse("usuarios.html", {"request": request, "usuarios": usuarios, "roles": roles, "fecha_creacion": fecha})
 
 @app.get("/mantenimiento-section", response_class=HTMLResponse, tags=['Routes Templates'])
 async def mantenimiento_main(request: Request,  db: Session = Depends(get_db)):
     mantenimientos = db.query(models.Mantenimiento).filter(models.Mantenimiento.fecha_mantenimiento > fecha_actual).options(
         joinedload(models.Mantenimiento.usuarios),
-        joinedload(models.Mantenimiento.producto)).order_by(models.Mantenimiento.id.asc())
+        joinedload(models.Mantenimiento.producto)).order_by(models.Mantenimiento.id.asc()).all()
     productos = db.query(models.Producto).all()
     usuarios = db.query(models.Usuarios).all()
     
@@ -201,10 +243,13 @@ async def mantenimiento_main(request: Request,  db: Session = Depends(get_db)):
 
 # endpoints para codigos QR de productos
 @app.get("/generar-codigoqr-producto/{producto_id}", tags=['QR Code'])
-async def generar_qr(producto_id: int,  db: Session = Depends(get_db)):
+async def generar_qr(producto_id: int, db: Session = Depends(get_db)):
     producto = crud.get_producto_for_qr(producto_id, db)
-    
-    # informacion del producto en un string
+
+    # Generar la URL de edición del producto
+    url_editar_producto = f"http://localhost:8000/productos-section/"
+
+    # información del producto en un string con el enlace para editar
     producto_info = (
         f"ID: {producto.id}\n"
         f"Lider Acargo: {producto.responsable.nombre}\n"
@@ -219,15 +264,16 @@ async def generar_qr(producto_id: int,  db: Session = Depends(get_db)):
         f"Observacion: {producto.observacion}\n"
         f"Categoria: {producto.categoria.nombre}\n"
         f"Proveedor: {producto.proveedor.nombre if producto.proveedor else 'Nulo'}\n"
-        f"Ingreso: {producto.fecha_ingreso}"
+        f"Ingreso: {producto.fecha_ingreso}\n"
+        f"\nAcciones: Para editar este producto, dirígete al siguiente enlace:\n{url_editar_producto}"
     )
-    
-    # Generar la imagen del QR
+
+    # Generar la imagen del QR con la información del producto
     qr_image = qrcode.make(producto_info)
     buf = BytesIO()
     qr_image.save(buf)
     buf.seek(0)
-    
+
     return StreamingResponse(buf, status_code=200, media_type="image/png")
 
 @app.get('/productos-imagen-qr', tags=['QR Code'])
@@ -242,7 +288,7 @@ async def image_qr_producto(request: Request, db: Session = Depends(get_db)):
                 f"ID: {producto.id}\n"
                 f"Lider Acargo: {producto.responsable.nombre}\n"
                 f"Codigo producto: {producto.codigo}\n"
-                f"Sede: {producto.sede.nombre}\n"
+                f"Sede<: {producto.sede.nombre}\n"
                 f"Cantidad: {producto.cantidad}\n"
                 f"Uso: {producto.uso}\n"
                 f"Estado: {producto.estado}\n"

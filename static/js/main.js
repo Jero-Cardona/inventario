@@ -18,7 +18,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
     const swaledits = document.querySelectorAll('.editar');
-    const swalldownloand = document.querySelectorAll('.descargar');
     
     document.querySelectorAll('.delete').forEach(button => {
         button.addEventListener('click', async function (e) {
@@ -160,6 +159,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 'mantenimiento': `/mantenimiento-obtener/${id}`,
                 'rol': `/rol-obtener/${id}`,
                 'ubicacion': `/ubicacion-obtener/${id}`,
+                'proveedor_mante': `/proveedor-mantenimiento-obtener/${id}`,
             };
     
             const foreignKeyEndpoints = {
@@ -212,7 +212,7 @@ document.addEventListener('DOMContentLoaded', function () {
                                 const selectClasses = endpoint === 'producto' && key === 'id_responsable' ? 
                                     'bg-gray-200 text-gray-800 border-0 rounded-md p-2 focus:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150 col-span-1 md:col-span-2' :
                                     (endpoint === 'producto'?  'bg-gray-200 text-gray-800 border-0 rounded-md p-2 focus:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150' :
-                                        'bg-gray-100 text-gray-800 border-0 lg:w-96 rounded-md p-2 mb-4 focus:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150'
+                                        'bg-gray-200 text-gray-800 border-0 lg:w-96 rounded-md p-2 mb-4 focus:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150'
                                     );
                                     
                                 formInputs += `
@@ -234,24 +234,22 @@ document.addEventListener('DOMContentLoaded', function () {
                             } else if (key === 'observacion') {
                                 const textareaClasses = endpoint === 'producto' ? 
                                     'bg-gray-200 text-gray-800 border-0 rounded-md p-2 focus:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150 col-span-1 md:col-span-2' :
-                                    'bg-gray-100 text-gray-800 border-0 lg:w-96 rounded-md p-2 mb-4 focus:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150';
+                                    'bg-gray-200 text-gray-800 border-0 lg:w-96 rounded-md p-2 mb-4 focus:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150';
                                     
-                                formInputs += `
-                                    <textarea 
+                                    formInputs += 
+                                    `<textarea 
                                         name="${key}" 
                                         required 
                                         placeholder="${key}" 
                                         class="${textareaClasses}"
-                                    >
-                                        ${datos[key] || ''}
-                                    </textarea>
-                                `;
+                                    >${(datos[key] || '').trim()}</textarea>`
+                                ;
                             } else if (endpoint === 'usuario' && key === 'estado') {
                                 formInputs += `
                                     <select 
                                         name="${key}" 
                                         required 
-                                        class="bg-gray-100 text-gray-800 border-0 lg:w-96 rounded-md p-2 mb-4 focus:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150">
+                                        class="bg-gray-200 text-gray-800 border-0 lg:w-96 rounded-md p-2 mb-4 focus:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150">
                                         <option value="" disabled>Selecciona una opción</option>
                                         <option value="activo" ${datos[key] === 'activo' ? 'selected' : ''}>Activo</option>
                                         <option value="inactivo" ${datos[key] === 'inactivo' ? 'selected' : ''}>Inactivo</option>
@@ -270,9 +268,10 @@ document.addEventListener('DOMContentLoaded', function () {
                                             <input
                                                 placeholder="${key === 'hashed_password' ? 'Nueva contraseña' : key}"
                                                 name="${key}"
+                                                id="${key}"
                                                 value="${inputValue}"
                                                 required
-                                                class="bg-gray-100 text-gray-800 border-0 lg:w-96 rounded-md p-2 mb-4 focus:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150"
+                                                class="bg-gray-200 text-gray-800 border-0 lg:w-96 rounded-md p-2 mb-4 focus:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150 w-full"
                                                 type="${inputType}"
                                                 id="${key === 'hashed_password' ? 'passwordInput' : ''}"
                                             />
@@ -288,9 +287,10 @@ document.addEventListener('DOMContentLoaded', function () {
                                         <input
                                             placeholder="${key === 'hashed_password' ? 'Nueva contraseña' : key}"
                                             name="${key}"
+                                            id="${key}"
                                             value="${inputValue}"
                                             required
-                                            class="bg-gray-200 text-gray-800 border-0 rounded-md p-2 focus:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150"
+                                            class="bg-gray-200 text-gray-800 border-0 rounded-md p-2 focus:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150 w-full"
                                             type="${inputType}"
                                             id="${key === 'hashed_password' ? 'passwordInput' : ''}"
                                         />
@@ -314,10 +314,10 @@ document.addEventListener('DOMContentLoaded', function () {
                                     </button>
                                     <h2 class="text-2xl font-bold text-gray-800">Editar ${endpoint}</h2>
                                     <div id="form-datos-back-edit">
-                                        <form id="form-edit" class="grid grid-cols-1 md:grid-cols-2 gap-2 w-full">
+                                        <form id="form-edit" class="form grid grid-cols-1 md:grid-cols-2 gap-2 w-full">
                                         ${formInputs}
                                         ${hiddenInputs}
-                                            <button class="bg-gradient-to-r bg-Andes text-white font-bold py-2 px-4 rounded-md mt-4 hover:bg-green-700 transition ease-in-out duration-150 col-span-1 md:col-span-2" type="submit">
+                                            <button class="bg-gradient-to-r text-center bg-Andes text-white font-bold py-2 px-4 rounded-md mt-4 hover:bg-green-700 transition ease-in-out duration-150 col-span-1 md:col-span-2" type="submit">
                                             Actualizar Datos
                                             </button>
                                         </form>
@@ -331,12 +331,12 @@ document.addEventListener('DOMContentLoaded', function () {
                                         <button onclick="closeFormEdit()" class="modal__close absolute top-4 right-4 w-10 h-10 flex justify-center items-center cursor-pointer text-gray-600 hover:text-gray-900">
                                             <i class="fa-regular fa-circle-xmark fa-2xl"></i>
                                         </button>
-                                        <h2 class="text-2xl font-bold text-gray-800 mb-1">Editar ${endpoint}</h2>
+                                        <h2 class="text-2xl font-bold text-gray-800 mb-1">Editar ${endpoint === 'proveedor_mante' ? 'mantenimiento de proveedor' : endpoint}</h2>
                                         <div id="form-datos-back-edit">
-                                            <form id="form-edit" class="flex flex-col">
+                                            <form id="form-edit" class="form flex flex-col">
                                             ${formInputs}
                                             ${hiddenInputs}
-                                                <button class="bg-gradient-to-r m-auto w-full items-center flex bg-Andes text-white font-bold py-2 px-4 rounded-md mt-4 hover:bg-green-700 transition ease-in-out duration-150" type="submit">
+                                                <button class="bg-gradient-to-r m-auto w-full text-center bg-Andes text-white font-bold py-2 px-4 rounded-md mt-4 hover:bg-green-700 transition ease-in-out duration-150" type="submit">
                                                 Actualizar Datos
                                                 </button>
                                             </form>
@@ -378,18 +378,25 @@ document.addEventListener('DOMContentLoaded', function () {
                                 const response = await fetch(url, { method: 'PUT' });
                                 if (!response.ok) {
                                     const errorData = await response.json();
-                                    Swal.fire({
-                                        title: 'Error',
-                                        text: errorData.detail || 'Hubo un problema al actualizar los datos',
-                                        icon: 'error',
-                                        confirmButtonText: 'Entendido',
-                                        confirmButtonColor: '#13A438', 
-                                    }).then((result) => {
-                                        if (result.isConfirmed) {
-                                            window.location.reload(); 
-                                        }
-                                    });
-                                    return;
+                                    if (response.status === 422){
+                                        Toast.fire({
+                                            icon: 'error',
+                                            title: 'Hubo un problema al procesar la solicitud, intenta de nuevo'
+                                        });
+                                    } else {
+                                        Swal.fire({
+                                            title: 'Error',
+                                            text: errorData.detail || 'Hubo un problema al actualizar los datos',
+                                            icon: 'error',
+                                            confirmButtonText: 'Entendido',
+                                            confirmButtonColor: '#13A438', 
+                                        }).then((result) => {
+                                            if (result.isConfirmed) {
+                                                window.location.reload(); 
+                                            }
+                                        });
+                                        return
+                                    }
                                 }
                             
                                 const result = await response.json();
@@ -420,35 +427,12 @@ document.addEventListener('DOMContentLoaded', function () {
                             });
                         }
                     } catch (error) {
-                        console.error('Error al obtener los datos:', error);
+                        console.error('Error al obtener los datos para la contraseña:', error);
                     }
                 }
             });
         });
     });
-    
-    swalldownloand.forEach(button => {
-        button.addEventListener('click', function(e){
-            e.preventDefault();
-            const url = this.getAttribute('href');
-            Swal.fire({
-                title: 'Descargar csv',
-                text: 'Al aceptar descargaras todos los registros de esta tabla',
-                icon: 'Info',
-                showCancelButton: true,
-                confirmButtonText: 'Descargar',
-                cancelButtonText: 'Cancelar',
-                confirmButtonColor: '#13A438',
-                cancelButtonColor: '#084F21',
-            }).then((result) => {
-                // Si se hace clic en 'Editar'
-                if (result.isConfirmed) {
-                    window.location.href = url;
-                }
-            });
-        });
-    });
-
     const modal = document.querySelector('.modal');
     const closeModal = document.querySelector('.modal__close');
     
@@ -571,14 +555,6 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-
-    if (document.getElementById("default-table") && typeof simpleDatatables.DataTable !== 'undefined') {
-        const dataTable = new simpleDatatables.DataTable("#default-table", {
-            searchable: false,
-            perPageSelect: false
-        });
-    }
-
     // Selecciona todos los elementos que tengan la clase o id 'fileInput'
     const fileInputs = document.querySelectorAll('.fileInput'); // Cambia por el selector adecuado si es una clase o un id
 
@@ -641,6 +617,30 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
             });
         }
+    });
+
+    // Obtener referencia al botón
+    const scrollToTopBtn = document.getElementById("scrollToTopBtn");
+    window.onscroll = function() {
+        showScrollToTopBtn();
+    };
+
+    function showScrollToTopBtn() {
+        if (document.body.scrollTop > 600 || document.documentElement.scrollTop > 600) {
+            scrollToTopBtn.classList.remove('hidden');
+            scrollToTopBtn.classList.add('block');
+        } else {
+            scrollToTopBtn.classList.remove('block');
+            scrollToTopBtn.classList.add('hidden');
+        }
+    }
+
+    // Cuando el usuario haga clic en el botón, scrollear hacia arriba suavemente
+    scrollToTopBtn.addEventListener('click', function() {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
     });
 
 // cierre del DOM

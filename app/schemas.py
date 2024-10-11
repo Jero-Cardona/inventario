@@ -7,6 +7,7 @@ from fastapi import Form
 # Modelo Categoria
 class CategoriaBase(BaseModel):
     nombre: str
+    depreciacion: float
 
 class CategoriaCreate(CategoriaBase):
     pass
@@ -256,3 +257,7 @@ class Mantenimiento(MantenimientoBase):
     
     class Config:
         from_attributes = True
+
+# configuracion de rutas
+class RoutesConfig(BaseModel):
+    routes: List[str] = Form(...)

@@ -18,7 +18,9 @@ document.getElementById('searchForm').addEventListener('submit', function (event
 
     fetch(`/producto/${productCode}/historial-mantenimiento`)
         .then(response => {
-            if (!response.ok) {
+            if (response.status === 403){
+                throw new Error('¡Sesion expirada! Iniciar sesión nuevamente.')
+            } else if (!response.ok) {
                 throw new Error('Producto no encontrado o sin historial de mantenimiento');
             }
             return response.json(); 
@@ -27,9 +29,7 @@ document.getElementById('searchForm').addEventListener('submit', function (event
             showHistorialModal(data);
         })
         .catch(error => {
-            console.error('Error:', error);
-
-            // Mostrar un toast de error con SweetAlert2
+            console.log('Error:', error);
             Toast.fire({
                 icon: "error",
                 title: error.message

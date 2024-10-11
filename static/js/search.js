@@ -1,16 +1,14 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Obtén el input del buscador
     const inputBuscador = document.getElementById('searchInput');
 
     // Función que ejecuta el filtrado
     function filtrarRegistros() {
-        const texto = inputBuscador.value.toLowerCase(); // Obtener texto del buscador y convertir a minúsculas
-        const filasTabla = document.querySelectorAll('tbody.tables-body tr'); // Obtener filas de la tabla
-        const tarjetas = document.querySelectorAll('.cards-responsive .bg-white'); // Obtener divs de las tarjetas
+        const texto = inputBuscador.value.toLowerCase(); 
+        const filasTabla = document.querySelectorAll('tbody.tables-body tr');
+        const tarjetas = document.querySelectorAll('.cards-responsive .bg-white'); 
 
-        // Filtrar filas de la tabla
         filasTabla.forEach(fila => {
-            const contenidoFila = fila.textContent.toLowerCase(); // Obtener el contenido de la fila en minúsculas
+            const contenidoFila = fila.textContent.toLowerCase();
             if (contenidoFila.includes(texto)) {
                 fila.style.display = ''; // Mostrar la fila si coincide
             } else {

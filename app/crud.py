@@ -99,28 +99,31 @@ def get_proveedor_mantenimiento(id_consult: int, db: Session):
 
 # obtener todos los registros
 def get_all_responsables(db: Session) -> List[models.Responsable]:
-    return db.query(models.Responsable).order_by(models.Responsable.id).all()
+    return db.query(models.Responsable).order_by(models.Responsable.id.asc()).all()
 
 def get_all_productos(db: Session) -> List[models.Producto]:
-    return db.query(models.Producto).order_by(models.Producto.id).all()
+    return db.query(models.Producto).order_by(models.Producto.id.asc()).all()
 
 def get_all_usuarios(db: Session) -> List[models.Usuarios]:
-    return db.query(models.Usuarios).order_by(models.Usuarios.id).all()
+    return db.query(models.Usuarios).order_by(models.Usuarios.id.asc()).all()
 
 def get_all_categorias(db: Session) -> List[models.Categoria]:
-    return db.query(models.Categoria).order_by(models.Categoria.id).all()
+    return db.query(models.Categoria).order_by(models.Categoria.id.asc()).all()
 
 def get_all_sedes(db: Session) -> List[models.Sede]:
-    return db.query(models.Sede).order_by(models.Sede.id).all()
+    return db.query(models.Sede).order_by(models.Sede.id.asc()).all()
 
 def get_all_proveedores(db: Session) -> List[models.Proveedor]:
-    return db.query(models.Proveedor).order_by(models.Proveedor.id).all()
+    return db.query(models.Proveedor).order_by(models.Proveedor.id.asc()).all()
 
 def get_all_roles(db: Session) -> List[models.Roles]:
-    return db.query(models.Roles).order_by(models.Roles.id).all()
+    return db.query(models.Roles).order_by(models.Roles.id.asc()).all()
 
 def get_all_mantenimientos(db: Session) -> List[models.Mantenimiento]:
-    return db.query(models.Mantenimiento).order_by(models.Mantenimiento.id).all()
+    return db.query(models.Mantenimiento).order_by(models.Mantenimiento.id.asc()).all()
+
+def get_all_ubicaciones(db: Session) -> list[models.Ubicacion]:
+    return db.query(models.Ubicacion).order_by(models.Ubicacion.id.asc()).all()
 
 # Funciones de Actualizar Datos
 def update_responsable(db: Session, responsable_id: int, nombre: str, correo: str, telefono: str):
@@ -263,14 +266,30 @@ def update_sede(db: Session, sede_id: int, nombre: str, direccion: str, telefono
         return sede
     return None
 
-def update_categoria(db: Session, categoria_id: int, nombre: str):
+def update_categoria(db: Session, categoria_id: int, nombre: str, depreciacion: float):
     try:
         categoria = db.query(models.Categoria).filter(models.Categoria.id == categoria_id).first()
         if categoria:
             categoria.nombre = nombre
+            categoria.depreciacion = depreciacion
             db.commit()
             db.refresh(categoria)
             return categoria
+        return None
+    except Exception as e:
+        db.rollback()
+        raise e
+
+def update_proveedor_m(db: Session, proveedor_mante_id: int, contacto: str, id_proveedor:int, id_producto: int):
+    try:
+        proveedor_mante = db.query(models.Proveedormantenimiento).filter(models.Proveedormantenimiento.id == proveedor_mante_id).first()
+        if proveedor_mante:
+            proveedor_mante.contacto = contacto
+            proveedor_mante.id_proveedor = id_proveedor
+            proveedor_mante.id_producto = id_producto
+            db.commit()
+            db.refresh(proveedor_mante)
+            return proveedor_mante
         return None
     except Exception as e:
         db.rollback()
@@ -389,6 +408,17 @@ def delete_usuario(db: Session, usuario_id: int):
         db.rollback()
         return "ForeignKeyViolation"
 
+def delete_proveedor_mante(db: Session, proveedor_mante_id: int):
+    try:
+        result = db.query(models.Proveedormantenimiento).filter(models.Proveedormantenimiento.id == proveedor_mante_id).delete(synchronize_session=False)
+        db.commit()
+        if result == 0:
+            return "Not found"
+        return "Deleted Mantenimiento del proveedor"
+    except IntegrityError:
+        db.rollback()
+        return "ForeignKeyViolation"
+
 # logs users
 def get_user_by_username(db: Session, nombre: str):
     return db.query(models.Usuarios).filter(models.Usuarios.nombre == nombre).first()
@@ -409,4 +439,49 @@ def create_user(db: Session, usuario: schemas.UsuariosCreate):
     db.add(db_user)
     db.commit()
     db.refresh(db_user)
-    return RedirectResponse(url="/usuario-section", status_code=status.HTTP_303_SEE_OTHER) 
+    return RedirectResponse(url="/usuario-section", status_code=status.HTTP_303_SEE_OTHER)
+
+# calcular la depreciacion de un producto
+def calcular_valor_actual(producto):
+    # Datos importantes
+    fecha_ingreso = producto.fecha_ingreso
+    costo_inicial = producto.costo_inicial
+    porcentaje_m = producto.categoria.depreciacion  # Depreciación mensual en porcentaje 
+    
+    fecha_actual = datetime.now().date()
+    years_pass = (fecha_actual - fecha_ingreso).days / 365.25  # Considera años bisiestos
+    
+    depreciacion_acumulada = round(((porcentaje_m * 12) / 100) * costo_inicial * years_pass, 1)
+    valor_actual = costo_inicial - depreciacion_acumulada
+    
+    if valor_actual < 0:
+        valor_actual = 0
+        
+    valor = round(valor_actual, 1)
+    return valor
+
+# funcion para el calculo de cada categoria
+def depreciacion_categorias(db: Session):
+    productos = db.query(models.Producto).all()
+    categorias = db.query(models.Categoria).all()
+    
+    depreciacion_por_categoria = {categoria.id:0 for categoria in categorias}
+    suma_costos_categoria = {categoria.id:0 for categoria in categorias}
+    
+    
+    for producto in productos:
+        valor_actual = calcular_valor_actual(producto)
+        
+        if producto.id_categoria:
+            depreciacion_por_categoria[producto.id_categoria] += valor_actual
+        
+        resultado = []
+        for categoria in categorias:
+            total_valor_actual = f"{depreciacion_por_categoria[categoria.id]:,.2f}"
+            resultado.append({
+                "categoria": categoria.nombre,
+                "total_valor_actual": total_valor_actual
+            })
+    # costos actuales
+    return resultado
+

@@ -42,7 +42,7 @@ document.addEventListener("DOMContentLoaded", function() {
             // Botón "Primero"
             const firstButton = document.createElement("button");
             firstButton.textContent = "Primero";
-            firstButton.classList.add("px-4", "py-2", "border", "border-gray-300", "bg-white", "hover:bg-green-200", "rounded-md");
+            firstButton.classList.add("px-4", "py-2", "border", "border-gray-400", "bg-gray-50", "hover:bg-green-200", "rounded-md", "max-sm:text-sm", "max-sm:px-2");
             firstButton.addEventListener("click", () => {
                 currentPage = 1;
                 showPage(currentPage);
@@ -54,7 +54,7 @@ document.addEventListener("DOMContentLoaded", function() {
             // Botón "Anterior"
             const prevButton = document.createElement("button");
             prevButton.textContent = "Anterior";
-            prevButton.classList.add("px-4", "py-2", "border", "border-gray-300", "bg-white", "hover:bg-green-200", "rounded-md");
+            prevButton.classList.add("px-4", "py-2", "border", "border-gray-400", "bg-gray-50", "hover:bg-green-200", "rounded-md", "max-sm:text-sm", "max-sm:px-2");
             prevButton.disabled = currentPage === 1;
             prevButton.addEventListener("click", () => {
                 if (currentPage > 1) {
@@ -78,10 +78,10 @@ document.addEventListener("DOMContentLoaded", function() {
             for (let i = startPage; i <= endPage; i++) {
                 const button = document.createElement("button");
                 button.textContent = i;
-                button.classList.add("px-4", "py-2", "border", "border-gray-300", "bg-white", "hover:bg-green-200", "rounded-md");
+                button.classList.add("px-4", "py-2", "border", "border-gray-400", "bg-gray-50", "hover:bg-green-200", "rounded-md", "max-sm:text-sm", "max-sm:px-2", "hidden", "md:block");
                 if (i === currentPage) {
-                    button.classList.remove("bg-white", "hover:bg-green-200");
-                    button.classList.add("bg-Andes", "text-white", "hover:bg-green-600");
+                    button.classList.remove("bg-gray-50", "hover:bg-green-200");
+                    button.classList.add("bg-[#13A438]", "text-white", "hover:bg-green-600");
                 }
                 button.addEventListener("click", () => {
                     currentPage = i;
@@ -91,11 +91,10 @@ document.addEventListener("DOMContentLoaded", function() {
                 });
                 paginationContainer.appendChild(button);
             }
-
             // Botón "Siguiente"
             const nextButton = document.createElement("button");
             nextButton.textContent = "Siguiente";
-            nextButton.classList.add("px-4", "py-2", "border", "border-gray-300", "bg-white", "hover:bg-green-200", "rounded-md");
+            nextButton.classList.add("px-4", "py-2", "border", "border-gray-400", "bg-gray-50", "hover:bg-green-200", "rounded-md", "max-sm:text-sm", "max-sm:px-2");
             nextButton.disabled = currentPage === totalPages;
             nextButton.addEventListener("click", () => {
                 if (currentPage < totalPages) {
@@ -110,7 +109,7 @@ document.addEventListener("DOMContentLoaded", function() {
             // Botón "Último"
             const lastButton = document.createElement("button");
             lastButton.textContent = "Último";
-            lastButton.classList.add("px-4", "py-2", "border", "border-gray-300", "bg-white", "hover:bg-green-200", "rounded-md");
+            lastButton.classList.add("px-4", "py-2", "border", "border-gray-400", "bg-gray-50", "hover:bg-green-200", "rounded-md", "max-sm:text-sm", "max-sm:px-2");
             lastButton.addEventListener("click", () => {
                 currentPage = totalPages;
                 showPage(currentPage);

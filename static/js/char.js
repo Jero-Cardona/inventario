@@ -17,8 +17,6 @@ document.addEventListener("DOMContentLoaded", function() {
     async function buildChart() {
         const data = await fetchData();
         
-        console.log('Datos recibidos:', data); // Verifica los datos recibidos
-
         if (!data.length) {
             console.error('No hay datos para construir el gráfico.');
             return;
@@ -115,7 +113,6 @@ document.addEventListener("DOMContentLoaded", function() {
     async function buildChartDonut() {
         try {
             const data = await fetchData();
-            console.log('Datos recibidos para el gráfico de dona:', data); // Verifica los datos recibidos
 
             if (!data.length) {
                 console.error('No hay datos para construir el gráfico de dona.');
@@ -125,7 +122,7 @@ document.addEventListener("DOMContentLoaded", function() {
             // Mapea los usos de los productos y sus cantidades
             const usoCounts = {};
             data.forEach(product => {
-                const uso = product.uso || 'Desconocido'; // Si 'uso' está vacío, lo marcas como 'Desconocido'
+                const uso = product.uso || 'Desconocido';
                 if (usoCounts[uso]) {
                     usoCounts[uso] += product.cantidad;
                 } else {
@@ -142,10 +139,10 @@ document.addEventListener("DOMContentLoaded", function() {
             const myDonutChart = new Chart(ctx, {
                 type: 'pie',
                 data: {
-                    labels: labels, // Muestra los distintos usos
+                    labels: labels,
                     datasets: [{
                         label: 'Cantidad de productos por uso',
-                        data: values, // Cantidad de productos para cada uso
+                        data: values,
                         backgroundColor: [
                             'rgba(251, 68, 100, 0.6)',
                             'rgba(119, 182, 254, 0.6)',

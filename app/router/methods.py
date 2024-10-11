@@ -59,8 +59,8 @@ async def add_proveedores(request: Request, nombre: str = Form(...), direccion: 
     return RedirectResponse(url="/proveedor-section", status_code=status.HTTP_303_SEE_OTHER)
 
 @methods.post("/crear-categoria", response_class=HTMLResponse, tags=['Routes Post'])
-async def add_categoria(request: Request, nombre: str = Form(...), db: Session = Depends(get_db)):
-    categoria = models.Categoria(nombre=nombre)
+async def add_categoria(request: Request, nombre: str = Form(...), depreciacion: float = Form(...), db: Session = Depends(get_db)):
+    categoria = models.Categoria(nombre=nombre, depreciacion=depreciacion)
     db.add(categoria)
     db.commit()
     return RedirectResponse(url="/categoria-section", status_code=status.HTTP_303_SEE_OTHER)
@@ -130,6 +130,22 @@ async def add_ubicacion(
     db.add(Ubicacion)
     db.commit()
     return RedirectResponse(url="/sede-section", status_code=status.HTTP_303_SEE_OTHER)
+
+@methods.post("/crear-proveedor-mantenimiento", response_class=HTMLResponse, tags=['Routes Post'])
+async def add_ubicacion(
+    contacto: str = Form(...),
+    id_proveedor: int = Form(...),
+    id_producto: int = Form(...),
+    db: Session = Depends(get_db)
+):
+    provedor = models.Proveedormantenimiento(
+        contacto = contacto,
+        id_proveedor = id_proveedor,
+        id_producto = id_producto
+    )
+    db.add(provedor)
+    db.commit()
+    return RedirectResponse(url="/proveedor-section", status_code=status.HTTP_303_SEE_OTHER)
 
 # Endpoints con el metodo PUT
 
@@ -207,12 +223,22 @@ def update_ubicacion(ubicacion_id: int, nombre: str, id_sede: int, id_producto: 
         raise HTTPException(status_code=500, detail='Error interno del servidor')
 
 @methods.put("/rol-update/{rol_id}", response_model=schemas.Roles, tags=['Routes Put'])
-def update_categoria_id(rol_id: int, nombre: str, db: Session = Depends(get_db)):
+def update_rol_id(rol_id: int, nombre: str, db: Session = Depends(get_db)):
     try:
         update_rol = crud.update_rol(db, rol_id, nombre)
         if not update_rol:
             raise HTTPException(status_code=404, detail="No se encontró el Rol")
         return update_rol 
+    except Exception as e:
+        raise HTTPException(status_code=500, detail="Error interno del servidor")
+
+@methods.put("/categoria-update/{categoria_id}", response_model=schemas.Categoria, tags=['Routes Put'])
+def update_categoria_id(categoria_id: int, nombre: str, depreciacion: float, db: Session = Depends(get_db)):
+    try:
+        update_categoria_id = crud.update_categoria(db, categoria_id, nombre, depreciacion)
+        if not update_categoria_id:
+            raise HTTPException(status_code=404, detail="No se encontró la Categoria")
+        return update_categoria_id 
     except Exception as e:
         raise HTTPException(status_code=500, detail="Error interno del servidor")
 
@@ -234,7 +260,21 @@ def update_usuario(
     return crud.update_user(db=db, usuario_id=usuario_id, nombre=nombre, correo=correo,
                             hashed_password=hashed_password, estado=estado, fecha_creacion=fecha_creacion, id_rol=id_rol)
 
+@methods.put("/proveedor_mante-update/{proveedor_mante_id}", response_model=schemas.ProveedorMantenimiento, tags=['Routes Put'])
+def update_provedor_mantenimiento(
+    proveedor_mante_id: int, 
+    contacto: str, id_proveedor: int, id_producto: int,
+    db: Session = Depends(get_db)
+):
+    try:
+        db_proveedor_m = crud.update_proveedor_m(db, proveedor_mante_id, contacto, id_proveedor, id_producto)
+        if not db_proveedor_m:
+            raise HTTPException(status_code=404, detail="Registro no encontrado")
+        return db_proveedor_m
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"error {e}, problemas con el servidor")
 
+# methods delete for records
 @methods.delete("/responsable-deleted/{responsable_id}", response_model=schemas.Responsable, tags=['Routes Delete'])
 def delete_responsable(responsable_id: int, db: Session = Depends(get_db)):
     del_responsable = crud.delete_responsable(db = db, responsable_id = responsable_id)
@@ -310,6 +350,16 @@ def del_categoria(categoria_id: int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=409, detail="No se puede eliminar la Categoria, es referenciada por otros registros")
     else:
         raise HTTPException(status_code=404, detail="categoria not found")
+
+@methods.delete("/proveedor-mantenimiento-deleted/{proveedor_mante_id}", response_model=schemas.ProveedorMantenimiento, tags=['Routes Delete'])
+def del_prove_mante(proveedor_mante_id: int, db: Session = Depends(get_db)):
+    del_pro_m = crud.delete_proveedor_mante(db = db, proveedor_mante_id = proveedor_mante_id)
+    if del_pro_m == "Deleted Mantenimiento del proveedor":
+        return JSONResponse(content={"detail": "Mantenimiento del proveedor deleted OK"}, status_code=200)
+    elif del_pro_m == "ForeignKeyViolation":
+        raise HTTPException(status_code=409, detail="No se puede eliminar el mantenimiento del proveedor, es referenciada por otros registros")
+    else:
+        raise HTTPException(status_code=404, detail="Mantenimiento del proveedor not found")
 
 @methods.delete("/usuario-deleted/{usuario_id}", response_model=schemas.Usuarios, tags=['Routes Delete'])
 def del_mantenimiento(usuario_id: int, db: Session = Depends(get_db)):

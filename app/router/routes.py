@@ -96,3 +96,7 @@ def roles_all(db: Session = Depends(get_db)):
 @routes.get("/mantenimientos-all/", tags=['Routes get all'])
 def mantenimientos_all(db: Session = Depends(get_db)):
         return crud.get_all_mantenimientos(db)
+
+@routes.get("/ubicaciones-all/", tags=['Routes get all'])
+def ubicaciones_all(db: Session = Depends(get_db)):
+        return crud.get_all_ubicaciones(db)

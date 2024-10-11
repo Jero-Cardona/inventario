@@ -11,12 +11,35 @@ const Toast = Swal.mixin({
     }
 });
 
+// Función para formatear el campo de entrada con separadores de miles
+function formatInput() {
+    const inputs = document.querySelectorAll('input[id="costo_inicial"]');
+    
+    inputs.forEach(input => {
+        input.addEventListener('input', () => {
+            let value = input.value.replace(/,/g, '');  // Eliminar comas previas
+            if (value) {
+                value = parseInt(value, 10).toLocaleString('en-US');  // Formatear con separadores
+                input.value = value;
+            }
+        });
+    });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
+    formatInput(); // Llamar la función para formatear al escribir
+
     const forms = document.querySelectorAll('.form');
 
     forms.forEach(form => {
         form.addEventListener('submit', async (e) => {
-            e.preventDefault(); 
+            e.preventDefault();
+
+            // Eliminar separadores de miles antes de enviar el formulario
+            const input = form.querySelector('input[id="costo_inicial"]');
+            if (input) {
+                input.value = input.value.replace(/,/g, '');  // Eliminar comas antes de enviar
+            }
 
             const formData = new FormData(form);
             const action = form.getAttribute('action');
@@ -33,11 +56,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 if (!response.ok) {
                     const errorData = await response.json();
-                    // Mostrar un toast de error con SweetAlert2
-                    Toast.fire({
-                        icon: 'error',
-                        title: errorData.detail || 'Hubo un problema al enviar los datos.'
-                    });
+
+                    if (response.status === 422) {
+                        Toast.fire({
+                            icon: 'error',
+                            title: 'Hubo un problema con la solicitud, intenta de nuevo'
+                        });
+                    } else if (response.status === 403) {
+                        Toast.fire({
+                            icon: 'error',
+                            title: '¡Sesion expirada! Iniciar sesión nuevamente.'
+                        });
+                    } else {
+                        Toast.fire({
+                            icon: 'error',
+                            title: errorData.detail || 'Hubo un problema al enviar los datos.'
+                        });
+                    }
                 } else {
                     Swal.fire({
                         title: 'Éxito',
