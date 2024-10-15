@@ -80,7 +80,9 @@
                         </td>
                         <td class="px-4 py-4 whitespace-no-wrap border-b text-gray-900 border-gray-500 text-base text-center leading-5 italic">{{categoria.nombre}}</td>
                         <td class="px-4 py-4 whitespace-no-wrap border-b text-gray-900 border-gray-500 text-base text-center leading-5 italic font-semibold">% {{categoria.depreciacion}}</td>
-                        <td class="px-4 py-4 whitespace-no-wrap border-b text-gray-900 border-gray-500 font-semibold text-base text-center leading-6">{{ (100 / (categoria.depreciacion) / 12) | round(0) }} años</td>
+                        <td class="px-4 py-4 whitespace-no-wrap border-b text-gray-900 border-gray-500 font-semibold text-base text-center leading-6">
+                            {{ ((100 / categoria.depreciacion) / 12) | int }} años
+                        </td>                        
                         <td class="px-0 py-4 whitespace-no-wrap border-b border-gray-500 text-sm leading-5 text-center">
                             <button class="editar px-4 py-2  border text-white bg-[#13A438] rounded transition duration-300 hover:bg-green-500 hover:text-white focus:outline-none" data-endpoint="categoria" data-id="{{ categoria.id }}"><i class="fas fa-edit mr-2"></i> Editar</button>
                             <form id="delete-form-{{ categoria.id }}" class="inline-flex" action="/categoria-deleted/{{ categoria.id }}" method="post">
@@ -113,7 +115,7 @@
                     </div>
                     <div class="flex flex-col">
                         <span class="text-gray-500 font-bold">Vida util del activo aproximado</span>
-                        <span class="text-gray-900 text-lg">{{ (100 / (categoria.depreciacion)) | round(0) }} años</span>
+                        <span class="text-gray-900 text-lg">{{ ((100 / (categoria.depreciacion)) / 12) | int }} años</span>
                     </div>
                 </div>
                 <!-- contenedor de las acciones -->

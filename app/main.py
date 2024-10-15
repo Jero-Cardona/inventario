@@ -140,7 +140,7 @@ async def roles_main(request: Request, db: Session = Depends(get_db)):
 
 @app.get("/reportes-section", response_class=HTMLResponse, tags=['Routes Templates'])
 async def reportes_main(request: Request, db: Session = Depends(get_db)):
-        return templates.TemplateResponse("reportes.html", {"request": request})
+    return templates.TemplateResponse("reportes.html", {"request": request})
 
 @app.get("/sede-section", response_class=HTMLResponse, tags=['Routes Templates'])
 async def sedes_main(request: Request, db: Session = Depends(get_db)):
@@ -171,6 +171,22 @@ async def sedes_main(request: Request, db: Session = Depends(get_db)):
 async def responsable_main(request: Request, db: Session = Depends(get_db)):
         responsables = db.query(models.Responsable).order_by(models.Responsable.id.asc()).all()
         return templates.TemplateResponse("responsables.html", {"request": request, "responsables": responsables})
+
+@app.get("/producto-obtener-qr-section/{producto_id}", response_class=HTMLResponse, tags=['Routes Templates'])
+async def producto_section_qr(request: Request, producto_id: int, db: Session = Depends(get_db)):
+    producto = crud.get_producto(producto_id, db)
+    valor_actual = crud.calcular_valor_actual(producto)
+    valor_formateado = f"{valor_actual:,.2f}"
+
+    # Pasar la información del producto y su valor actual al template
+    return templates.TemplateResponse(
+        "producto_info.html", 
+        {
+            "request": request,
+            "producto": producto,
+            "valor_actual": valor_formateado
+        }
+    )
 
 @app.get("/producto-section", response_class=HTMLResponse, tags=['Routes Templates'])
 async def productos_main(request: Request, db: Session = Depends(get_db)):
@@ -247,25 +263,25 @@ async def generar_qr(producto_id: int, db: Session = Depends(get_db)):
     producto = crud.get_producto_for_qr(producto_id, db)
 
     # Generar la URL de edición del producto
-    url_editar_producto = f"http://localhost:8000/productos-section/"
+    url_editar_producto = f"http://192.168.8.47:8000/producto-obtener-qr-section/{producto.id}"
 
     # información del producto en un string con el enlace para editar
     producto_info = (
         f"ID: {producto.id}\n"
-        f"Lider Acargo: {producto.responsable.nombre}\n"
+        # f"Lider Acargo: {producto.responsable.nombre}\n"
         f"Codigo producto: {producto.codigo}\n"
-        f"Sede: {producto.sede.nombre}\n"
-        f"Cantidad: {producto.cantidad}\n"
-        f"Uso: {producto.uso}\n"
-        f"Estado: {producto.estado}\n"
-        f"Fecha proximo mantenimiento: {producto.fecha_mantenimiento if producto.fecha_mantenimiento else 'Nulo'}\n"
-        f"Costo: {producto.costo_inicial}\n"
+        # f"Sede: {producto.sede.nombre}\n"
+        # f"Cantidad: {producto.cantidad}\n"
+        # f"Uso: {producto.uso}\n"
+        # f"Estado: {producto.estado}\n"
+        # f"Fecha proximo mantenimiento: {producto.fecha_mantenimiento if producto.fecha_mantenimiento else 'Nulo'}\n"
+        f"Costo inicial: {producto.costo_inicial}\n"
         f"Modo: {producto.modo}\n"
-        f"Observacion: {producto.observacion}\n"
+        # f"Observacion: {producto.observacion}\n"
         f"Categoria: {producto.categoria.nombre}\n"
-        f"Proveedor: {producto.proveedor.nombre if producto.proveedor else 'Nulo'}\n"
-        f"Ingreso: {producto.fecha_ingreso}\n"
-        f"\nAcciones: Para editar este producto, dirígete al siguiente enlace:\n{url_editar_producto}"
+        f"Proveedor: {producto.proveedor.nombre if producto.proveedor else 'Sin proveedor'}\n"
+        f"fecha de ingreso: {producto.fecha_ingreso}\n"
+        f"\nAcciones: Para ver más información de este producto, usa al siguiente enlace:\n{url_editar_producto}"
     )
 
     # Generar la imagen del QR con la información del producto
@@ -284,21 +300,23 @@ async def image_qr_producto(request: Request, db: Session = Depends(get_db)):
 
     with zipfile.ZipFile(zip_buffer, 'w') as zip_file:
         for producto in productos:
+            url_editar_producto = f"http://192.168.8.47:8000/producto-obtener-qr-section/{producto.id}"
             producto_info = (
                 f"ID: {producto.id}\n"
-                f"Lider Acargo: {producto.responsable.nombre}\n"
+                # f"Lider Acargo: {producto.responsable.nombre}\n"
                 f"Codigo producto: {producto.codigo}\n"
-                f"Sede<: {producto.sede.nombre}\n"
-                f"Cantidad: {producto.cantidad}\n"
-                f"Uso: {producto.uso}\n"
-                f"Estado: {producto.estado}\n"
-                f"Fecha proximo mantenimiento: {producto.fecha_mantenimiento}\n"
-                f"Costo: {producto.costo_inicial}\n"
+                # f"Sede<: {producto.sede.nombre}\n"
+                # f"Cantidad: {producto.cantidad}\n"
+                # f"Uso: {producto.uso}\n"
+                # f"Estado: {producto.estado}\n"
+                # f"Fecha proximo mantenimiento: {producto.fecha_mantenimiento}\n"
+                f"Costo inicial: {producto.costo_inicial}\n"
                 f"Modo: {producto.modo}\n"
-                f"Observacion: {producto.observacion}\n"
+                # f"Observacion: {producto.observacion}\n"
                 f"Categoria: {producto.categoria.nombre}\n"
-                f"Proveedor: {producto.proveedor.nombre if producto.proveedor else 'Nulo'}\n"
-                f"Ingreso: {producto.fecha_ingreso}"
+                f"Proveedor: {producto.proveedor.nombre if producto.proveedor else 'Sin proveedor'}\n"
+                f"Fecha de ingreso: {producto.fecha_ingreso}"
+                f"\nAcciones: Para ver más información de este producto, usa al siguiente enlace:\n{url_editar_producto}"
             )
 
             qr_image = qrcode.make(producto_info)

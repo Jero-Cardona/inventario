@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Informacion QR producto</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="../static/public/output.css">
+    <link rel="apple-touch-icon" sizes="180x180" href="../static/imagenes/">
+    <link rel="icon" type="image/png" sizes="32x32" href="../static/imagenes//favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../static/imagenes//favicon-16x16.png">
+    <!-- <link rel="manifest" href="/site.webmanifest"> -->
+</head>
+<body>
+    <section id="historialModal" class="fixed inset-0 bg-[#111111bd] flex z-50">
+        <div class="m-auto w-full sm:w-full md:w-2/3 lg:w-1/2 max-h-[90%] bg-white rounded-lg p-6 shadow-lg relative overflow-y-auto max-sm:bg-green-400">
+            <h2 class="text-2xl sm:text-xl font-semibold text-[#084F21] mb-4 text-center">Información del producto: ID {{ producto.id }}</h2>
+            <div class="grid grid-cols-2 gap-2 text-sm">
+                <div class="flex flex-col">
+                    <span class="text-gray-500 font-bold text-base">Responsable</span>
+                    <span class="text-gray-900 text-sm">{{ producto.responsable.nombre }}</span>
+                </div>
+                <div class="flex flex-col">
+                    <span class="text-gray-500 font-bold text-base">Código</span>
+                    <span class="text-gray-900 text-sm">{{ producto.codigo }}</span>
+                </div>
+                <div class="flex flex-col">
+                    <span class="text-gray-500 font-bold text-base">Sede</span>
+                    <span class="text-gray-900 text-sm">{{ producto.sede.nombre }}</span>
+                </div>
+                <div class="flex flex-col">
+                    <span class="text-gray-500 font-bold text-base">Cantidad</span>
+                    <span class="text-gray-900 text-sm">{{ producto.cantidad }}</span>
+                </div>
+                <div class="flex flex-col">
+                    <span class="text-gray-500 font-bold text-base">Uso</span>
+                    <span class="text-gray-900 text-sm">{{ producto.uso }}</span>
+                </div>
+                <div class="flex flex-col">
+                    <span class="text-gray-500 font-bold text-base">Estado</span>
+                    <span class="text-gray-900 text-sm">{{ producto.estado }}</span>
+                </div>
+                <div class="flex flex-col">
+                    <span class="text-gray-500 font-bold text-base">Mantenimiento</span>
+                    <span class="text-gray-900 text-sm">{{ producto.fecha_mantenimiento }}</span>
+                </div>
+                <div class="flex flex-col">
+                    <span class="text-gray-500 font-bold text-base">Costo Inicial</span>
+                    <span class="text-gray-900 text-sm">$ {{ "{:,.2f}".format(producto.costo_inicial) }}</span>
+                </div>
+                <div class="flex flex-col">
+                    <span class="text-gray-500 font-bold text-base">Modo</span>
+                    <span class="text-gray-900 text-sm">{{ producto.modo }}</span>
+                </div>
+                <div class="flex flex-col">
+                    <span class="text-gray-500 font-bold text-base">Observación</span>
+                    <span class="text-gray-900 text-sm">{{ producto.observacion }}</span>
+                </div>
+                <div class="flex flex-col">
+                    <span class="text-gray-500 font-bold text-base">Categoría</span>
+                    <span class="text-gray-900 text-sm">{{ producto.categoria.nombre }}</span>
+                </div>
+                <div class="flex flex-col">
+                    <span class="text-gray-500 font-bold text-base">Proveedor</span>
+                    <span class="text-gray-900 text-sm">{{ producto.proveedor.nombre }}</span>
+                </div>
+                <div class="flex flex-col">
+                    <span class="text-gray-500 font-bold text-base">Fecha de Ingreso</span>
+                    <span class="text-gray-900 text-sm">{{ producto.fecha_ingreso }}</span>
+                </div>
+                <div class="flex flex-col">
+                    <span class="text-gray-500 font-bold text-base">Valor actual</span>
+                    <span class="text-gray-900 text-sm">$ {{ valor_actual }}</span>
+                </div>
+                <div class="flex flex-col">
+                    <span class="text-gray-500 font-bold text-base">Depreciación mensual</span>
+                    <span class="text-gray-900 text-sm">$ {{ "{:,.2f}".format((producto.costo_inicial / ((100 / (producto.categoria.depreciacion) / 12 | int) * 12)) | round(2)) }}</span>
+                </div>
+            </div>
+    
+            <div class="flex flex-col max-sm:flex-row justify-center items-center mt-6">
+                <a href="/inicio" class="flex font-bold items-center px-4 py-2 mb-2 sm:mb-0 sm:mr-4 bg-Andes text-white rounded-lg shadow-md hover:bg-green-600 transition duration-300 ease-in-out">
+                    <i class="fas fa-home mr-2"></i> Ir a Inicio
+                </a>
+                <a href="/producto-section" class="flex font-bold items-center px-4 py-2 bg-[#084F21] text-white rounded-lg shadow-md hover:bg-green-600 transition duration-300 ease-in-out">
+                    <i class="fa-solid fa-briefcase mr-2"></i> Productos
+                </a>
+            </div>
+        </div>
+    </section>
+    
+</body>
+</html>

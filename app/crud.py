@@ -312,9 +312,9 @@ def update_rol(db: Session, rol_id: int, nombre: str):
 def delete_responsable(db: Session, responsable_id: int):
     try:
         result = db.query(models.Responsable).filter(models.Responsable.id == responsable_id).delete(synchronize_session=False)
-        db.commit()
         if result == 0:
             return "Not Found"
+        db.commit()
         return "Deleted Responsable"
     except IntegrityError:
         db.rollback()
@@ -323,9 +323,9 @@ def delete_responsable(db: Session, responsable_id: int):
 def delete_rol(db: Session, rol_id: int):
     try:
         result = db.query(models.Roles).filter(models.Roles.id == rol_id).delete(synchronize_session=False)
-        db.commit()
         if result == 0:
             return "Not found"
+        db.commit()
         return "Deleted Rol"
     except IntegrityError:
         db.rollback()
@@ -334,9 +334,9 @@ def delete_rol(db: Session, rol_id: int):
 def delete_producto(db: Session, producto_id: int):
     try:
         result = db.query(models.Producto).filter(models.Producto.id == producto_id).delete(synchronize_session=False)
-        db.commit()
         if result == 0:
             return "Not found"
+        db.commit()
         return "Deleted Producto"
     except IntegrityError as e:
         db.rollback()
@@ -345,9 +345,9 @@ def delete_producto(db: Session, producto_id: int):
 def delete_categoria(db: Session, categoria_id: int):
     try:
         result = db.query(models.Categoria).filter(models.Categoria.id == categoria_id).delete(synchronize_session=False)
-        db.commit()
         if result == 0:
             return "Not found"
+        db.commit()
         return "Deleted Categoria"
     except IntegrityError:
         db.rollback()
@@ -356,9 +356,9 @@ def delete_categoria(db: Session, categoria_id: int):
 def delete_sede(db: Session, sede_id: int):
     try:
         result = db.query(models.Sede).filter(models.Sede.id == sede_id).delete(synchronize_session=False)
-        db.commit()
         if result == 0:
             return "Not found"
+        db.commit()
         return "Deleted Sede"
     except IntegrityError:
         db.rollback()
@@ -367,9 +367,9 @@ def delete_sede(db: Session, sede_id: int):
 def delete_mantenimiento(db: Session, mantenimiento_id: int):
     try:
         result = db.query(models.Mantenimiento).filter(models.Mantenimiento.id == mantenimiento_id).delete(synchronize_session=False)
-        db.commit()
         if result == 0:
             return "Not found"
+        db.commit()
         return "Deleted Mantenimiento"
     except IntegrityError:
         db.rollback()
@@ -378,9 +378,9 @@ def delete_mantenimiento(db: Session, mantenimiento_id: int):
 def delete_proveedor(db: Session, proveedor_id: int):
     try:
         result = db.query(models.Proveedor).filter(models.Proveedor.id == proveedor_id).delete(synchronize_session=False)
-        db.commit()
         if result == 0:
             return "Not found"
+        db.commit()
         return "Deleted Proveedor"
     except IntegrityError:
         db.rollback()
@@ -389,9 +389,9 @@ def delete_proveedor(db: Session, proveedor_id: int):
 def delete_ubicacion(db: Session, ubicacion_id: int):
     try:
         result = db.query(models.Ubicacion).filter(models.Ubicacion.id == ubicacion_id).delete(synchronize_session=False)
-        db.commit()
         if result == 0:
             return "Not found"
+        db.commit()
         return "Deleted Ubicacion"
     except IntegrityError:
         db.rollback()
@@ -400,9 +400,9 @@ def delete_ubicacion(db: Session, ubicacion_id: int):
 def delete_usuario(db: Session, usuario_id: int):
     try:
         result = db.query(models.Usuarios).filter(models.Usuarios.id == usuario_id).delete(synchronize_session=False)
-        db.commit()
         if result == 0:
             return "Not found"
+        db.commit()
         return "Deleted Usuario"
     except IntegrityError:
         db.rollback()
@@ -411,9 +411,9 @@ def delete_usuario(db: Session, usuario_id: int):
 def delete_proveedor_mante(db: Session, proveedor_mante_id: int):
     try:
         result = db.query(models.Proveedormantenimiento).filter(models.Proveedormantenimiento.id == proveedor_mante_id).delete(synchronize_session=False)
-        db.commit()
         if result == 0:
             return "Not found"
+        db.commit()
         return "Deleted Mantenimiento del proveedor"
     except IntegrityError:
         db.rollback()
@@ -449,9 +449,10 @@ def calcular_valor_actual(producto):
     porcentaje_m = producto.categoria.depreciacion  # Depreciación mensual en porcentaje 
     
     fecha_actual = datetime.now().date()
+    days_pass = (fecha_actual - fecha_ingreso).days
     years_pass = (fecha_actual - fecha_ingreso).days / 365.25  # Considera años bisiestos
     
-    depreciacion_acumulada = round(((porcentaje_m * 12) / 100) * costo_inicial * years_pass, 1)
+    depreciacion_acumulada = ((porcentaje_m * 12) / 100) * costo_inicial * years_pass
     valor_actual = costo_inicial - depreciacion_acumulada
     
     if valor_actual < 0:
