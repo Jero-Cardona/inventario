@@ -11,18 +11,18 @@
         <!-- incon font awsome por si acaso -->
         <!-- <i class="fa-solid fa-circle-info fa-xl absolute right-20"></i> -->
         <i class="fa-solid fa-circle-info fa-xl absolute right-7"></i>
-        <h1 class="font-bold text-black text-3xl mb-4">Sección de <i class="font-bold">Proveedores</i></h1>
+        <h1 class="font-bold text-black text-3xl mb-4">Sección de Proveedores</h1>
         <p class="font-normal text-sm text-gray-700 dark:text-gray-400 text-justify">
             En esta sección del sistema, encontrarás los proveedores que han sido ingresados hasta el momento. Como administrador, podrás crear, actualizar, editar, cargar y eliminar proveedores en el sistema. Cada proveedor tiene productos asociados a él, y también podrás ver la cantidad de productos que tiene cada proveedor en esta parte del sistema, así como los proveedores que realizan mantenimiento a sus productos.
         </p>
     </a>
     <div class="block w-full md:w-2/3 p-4 bg-white border border-gray-200 rounded-lg shadow">
         <p class="text-gray-800 font-bold text-normal mb-2">Acciones de usuario</p>
-        <p class="text-gray-800 text-sm mb-2">crear un mantenimiento para un producto, mantenimiento el cual es realizado por un proveedor registrado en el sistema</p>
+        <p class="text-gray-800 text-sm mb-2">Crear un mantenimiento para un producto, mantenimiento el cual es realizado por un proveedor registrado en el sistema</p>
         <a href="#mantenimientos-proveedores-crear" class="flex items-center w-48 m-auto px-4 py-2 text-sm font-medium bg-[#084F21] text-white rounded-lg shadow-md hover:bg-green-700 transition duration-300 ease-in-out">
             <i class="fa-solid fa-plus mr-2 fa-lg"></i> Crear mantenimiento
         </a>
-        <p class="text-gray-800 text-sm my-2">Dirigirte a la seccion de mantenimientos donde lograr tambien ver la cantidad de proveedores que realizan mantenimientos a los productos y la cantidad de los mismos</p>
+        <p class="text-gray-800 text-sm my-2">Dirígete a la sección de Mantenimientos para ver la cantidad de proveedores que realizan mantenimientos a los productos, así como la cantidad de mantenimientos asociados a cada uno de ellos. </p>
         <a href="#ubicaciones" class="flex items-center w-60 text-center px-4 py-2 m-auto text-sm font-medium bg-[#084F21] text-white rounded-lg shadow-md hover:bg-green-700 transition duration-300 ease-in-out">
             <i class="fa-solid fa-location-arrow mr-2 fa-lg"></i>Proveedores Mantenimiento
         </a>
@@ -58,7 +58,7 @@
                 <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
                     <i class="fa-solid fa-magnifying-glass text-gray-400"></i>
                 </div>
-                <input type="search" id="searchInput" class="block w-full p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Buscar proveedores" required />
+                <input type="search" class="searchInput block w-full p-2 ps-10 text-sm text-gray-900 border border-gray-400 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Buscar proveedores" required />
             </div>
             <!-- Selector de filas por página -->
             <div class="flex items-center mx-4 max-sm:w-full max-sm:pb-6">
@@ -78,8 +78,8 @@
                     <tr>
                         <th class="px-2 py-3 border-b-2 border-gray-300 text-center leading-4 text-green-500 tracking-wider">ID</th>
                         <th class="px-2 py-3 border-b-2 border-gray-300 text-center text-sm leading-4 text-green-500 tracking-wider">Nombre del Proveedor</th>
-                        <th class="px-2 py-3 border-b-2 border-gray-300 text-center text-sm leading-4 text-green-500 tracking-wider">Direccion</th>
-                        <th class="px-2 py-3 border-b-2 border-gray-300 text-center text-sm leading-4 text-green-500 tracking-wider">Telefono</th>
+                        <th class="px-2 py-3 border-b-2 border-gray-300 text-center text-sm leading-4 text-green-500 tracking-wider">Dirección</th>
+                        <th class="px-2 py-3 border-b-2 border-gray-300 text-center text-sm leading-4 text-green-500 tracking-wider">Teléfono</th>
                         <th class="px-2 py-3 border-b-2 border-gray-300 text-center text-sm leading-4 text-green-500 tracking-wider">Acciones Administrador</th>
                     </tr>
                 </thead>
@@ -119,11 +119,11 @@
                     <span class="text-gray-900">{{ proveedor.nombre }}</span>
                 </div>
                 <div class="flex flex-col">
-                    <span class="text-gray-500 font-bold">Direecion del proveedor</span>
+                    <span class="text-gray-500 font-bold">Direeción del proveedor</span>
                     <span class="text-gray-900">{{ proveedor.direccion }}</span>
                 </div>
                 <div class="flex flex-col">
-                    <span class="text-gray-500 font-bold">Telefono</span>
+                    <span class="text-gray-500 font-bold">Teléfono</span>
                     <span class="text-gray-900">{{ proveedor.telefono }}</span>
                 </div>
             </div>
@@ -159,10 +159,10 @@
             </div>
             <h3 class="font-bold text-lg">{{ proveedor_p.contacto }}</h3>
             <p class="text-sm font-semibold text-zinc-500 leading-6">
-                productos a los que este proveedor realiza mantenimiento:
+                Productos a los que este proveedor realiza mantenimiento:
             </p>
             <p class="text-base uppercase text-zinc-500 leading-5">
-                <strong>{{ proveedor_p.productos_p_count }}</strong> productos
+                <strong>{{ proveedor_p.productos_p_count }}</strong> Productos
             </p>
         </div>
         {% endfor %}
@@ -198,7 +198,7 @@
                 <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
                     <i class="fa-solid fa-magnifying-glass text-gray-400"></i>
                 </div>
-                <input type="search" id="searchInput" class="block w-full p-2 ps-10 text-sm text-gray-900 border border-gray-400 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Buscar mantenimientos de proveedores" required />
+                <input type="search" class="searchInput block w-full p-2 ps-10 text-sm text-gray-900 border border-gray-400 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Buscar mantenimientos de proveedores" required />
             </div>
             <!-- Selector de filas por página -->
             <div class="flex items-center mx-4 max-sm:w-full max-sm:pb-6">
@@ -218,7 +218,7 @@
                     <tr>
                         <th class="px-2 py-3 border-b-2 border-gray-300 text-center leading-4 text-green-500 tracking-wider">ID</th>
                         <th class="px-2 py-3 border-b-2 border-gray-300 text-center text-sm leading-4 text-green-500 tracking-wider">Proveedor</th>
-                        <th class="px-2 py-3 border-b-2 border-gray-300 text-center text-sm leading-4 text-green-500 tracking-wider">Direccion del Proveedor</th>
+                        <th class="px-2 py-3 border-b-2 border-gray-300 text-center text-sm leading-4 text-green-500 tracking-wider">Dirección del Proveedor</th>
                         <th class="px-2 py-3 border-b-2 border-gray-300 text-center text-sm leading-4 text-green-500 tracking-wider">Contacto del Proveedor</th>
                         <th class="px-2 py-3 border-b-2 border-gray-300 text-center text-sm leading-4 text-green-500 tracking-wider">Producto</th>
                         <th class="px-2 py-3 border-b-2 border-gray-300 text-center text-sm leading-4 text-green-500 tracking-wider">Categoria Producto</th>
@@ -263,7 +263,7 @@
                     <span class="text-gray-900">{{ proveedor_mante.proveedor.nombre }}</span>
                 </div>
                 <div class="flex flex-col">
-                    <span class="text-gray-500 font-bold">Direccion del proveedor</span>
+                    <span class="text-gray-500 font-bold">Dirección del proveedor</span>
                     <span class="text-gray-900">{{ proveedor_mante.proveedor.direccion }}</span>
                 </div>
                 <div class="flex flex-col">
@@ -275,7 +275,7 @@
                     <span class="text-gray-900">{{ proveedor_mante.producto.codigo }}</span>
                 </div>
                 <div class="flex flex-col">
-                    <span class="text-gray-500 font-bold">categoria del producto asociado</span>
+                    <span class="text-gray-500 font-bold">Categoria del producto asociado</span>
                     <span class="text-gray-900">{{ proveedor_mante.producto.categoria.nombre }}</span>
                 </div>
             </div>
@@ -302,6 +302,7 @@
 <!-- scripts necesarios para el funcionamiento -->
 <script src="../static/js/tables.js"></script>
 <script src="../static/js/forms.js"></script>
+<script src="../static/js/search.js"></script>
 
 {% endblock %}
 {% block forms %}

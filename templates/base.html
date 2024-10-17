@@ -54,18 +54,6 @@ aria-label="Sidebar">
             </a>
         </li>
         <li>
-            <a href="#"
-                class="route flex items-center p-2 text-green-800 rounded-lg dark:text-black hover:bg-green-200 dark:hover:bg-Andes group">
-                <svg
-                    class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
-                    aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-                    <path
-                    d="M96 0C60.7 0 32 28.7 32 64V448c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V64c0-35.3-28.7-64-64-64H96zM208 288h64c44.2 0 80 35.8 80 80c0 8.8-7.2 16-16 16H144c-8.8 0-16-7.2-16-16c0-44.2 35.8-80 80-80zm-32-96a64 64 0 1 1 128 0 64 64 0 1 1 -128 0zM512 80c0-8.8-7.2-16-16-16s-16 7.2-16 16v64c0 8.8 7.2 16 16 16s16-7.2 16-16V80zM496 192c-8.8 0-16 7.2-16 16v64c0 8.8 7.2 16 16 16s16-7.2 16-16V208c0-8.8-7.2-16-16-16zm16 144c0-8.8-7.2-16-16-16s-16 7.2-16 16v64c0 8.8 7.2 16 16 16s16-7.2 16-16V336z" />
-                </svg>
-                <span class="flex-1 ms-3 whitespace-nowrap">Contactos</span>
-            </a>
-        </li>
-        <li>
             <a href="../reportes-section"
                 class="route flex items-center p-2 text-green-800 rounded-lg dark:text-black hover:bg-green-200 dark:hover:bg-Andes group">
                 <svg
@@ -165,7 +153,6 @@ aria-label="Sidebar">
                             <a href="/inicio" class="route block px-4 py-2 text-sm text-gray-700 hover:bg-green-200"><i class="fa-solid fa-house mr-2"></i>Inicio</a>
                             <a href="/producto-section" class="route block px-4 py-2 text-sm text-gray-700 hover:bg-green-200"><i class="fa-solid fa-briefcase mr-2"></i>Inventario</a>
                             <a href="/mantenimiento-section" class="route block px-4 py-2 text-sm text-gray-700 hover:bg-green-200"><i class="fa-solid fa-microchip mr-2"></i>Mantenimiento</a>
-                            <a href="#" class="route block px-4 py-2 text-sm text-gray-700 hover:bg-green-200"><i class="fa-solid fa-address-book mr-2"></i>Contactos</a>
                             <a href="/reportes-section" class="route block px-4 py-2 text-sm text-gray-700 hover:bg-green-200"><i class="fa-solid fa-list-check mr-2"></i>Reportes</a>
                             <a href="/usuario-section" class="route block px-4 py-2 text-sm text-gray-700 hover:bg-green-200"><i class="fa-solid fa-users mr-2"></i>Usuarios</a>
                             <a href="/rol-section" class="route block px-4 py-2 text-sm text-gray-700 hover:bg-green-200"><i class="fa-solid fa-user mr-2"></i>Roles</a>
@@ -222,7 +209,7 @@ aria-label="Sidebar">
     {% endblock content %}
 </div>
 <!-- modal para los formularios -->
-<section id="form-container" class="modal fixed inset-0 bg-[#111111bd] flex opacity-0 pointer-events-none">
+<section id="form-container" class="modal fixed inset-0 bg-[#111111bd] flex opacity-0 pointer-events-none z-50">
 <div class="modal__container m-auto max-w-[800px] max-h-[90%] bg-white rounded-[6px] p-[3em_2.5em] grid gap-[1em] place-items-center shadow-md relative overflow-y-auto">
     <button onclick="closeForm()" class="modal__close absolute top-4 right-4 w-10 h-10 flex justify-center items-center cursor-pointer text-gray-600 hover:text-gray-900">
         <i class="fa-regular fa-circle-xmark fa-2xl"></i>
@@ -233,7 +220,7 @@ aria-label="Sidebar">
 </div>
 </section>
 <!-- Botón de Scroll to Top -->
-<button id="scrollToTopBtn" class="hidden fixed bottom-16 right-6 opacity-90 z-50 p-3 rounded-lg bg-[#084F21] text-white hover:bg-green-500 focus:outline-none focus:ring-2 focus:ring-green-700 md:bottom-14 md:right-8 md:p-4 lg:bottom-10 lg:right-12 lg:p-4">
+<button id="scrollToTopBtn" class="hidden fixed bottom-16 right-6 opacity-90 z-40 p-3 rounded-lg bg-[#084F21] text-white hover:bg-green-500 focus:outline-none focus:ring-2 focus:ring-green-700 md:bottom-14 md:right-8 md:p-4 lg:bottom-10 lg:right-12 lg:p-4">
     <i class="fa-solid fa-angles-up font-extrabold fa-xl"></i>
 </button>
 <div id="form-container-edits"></div>

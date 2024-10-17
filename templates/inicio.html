@@ -12,7 +12,7 @@
     <a href="#resumen" class="block w-full sm:max-w-4xl p-6 bg-white border border-gray-400 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700 transition duration-300">
         <h1 class="font-bold text-black text-2xl sm:text-3xl tracking-tight mb-2">Bienvenido al inventario de AndesBPO</h1>
         <p class="font-normal text-gray-700 dark:text-gray-400">
-            Esta sección permite la administración de productos en el inventario, ingresos, salidas, mantenimientos, etc. A continuación, encontrarás un resumen general de toda la información de valor que deseas dentro del inventario.
+            Esta sección permite la administración de productos en el inventario, así como gestionar ingresos, salidas, mantenimientos, etc. A continuación, encontrarás un resumen general de toda la información valiosa que deseas dentro del inventario.
         </p>
     </a>
 
@@ -31,7 +31,7 @@
         </li>
         <li class="w-full">
             <a href="../producto-section" class="w-full">
-                <button id="faq-tab" data-tabs-target="#faq" type="button" role="tab" aria-controls="faq" aria-selected="false" class="inline-block w-full p-4 rounded-tr-lg bg-gray-100 hover:bg-gray-200 focus:outline-none focus:bg-gray-200 transition dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:bg-gray-600">Activos de la compañia ingresados en el sistema</button>
+                <button id="faq-tab" data-tabs-target="#faq" type="button" role="tab" aria-controls="faq" aria-selected="false" class="inline-block w-full p-4 rounded-tr-lg bg-gray-100 hover:bg-gray-200 focus:outline-none focus:bg-gray-200 transition dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:bg-gray-600">Activos de la compañía registrados en el sistema   </button>
             </a>
         </li>
     </ul>
@@ -73,7 +73,7 @@
 
 <!-- Resumen -->
 <div class="max-sm:p-4 max-sm:w-[300px] h-auto max-sm:bg-gray-100 rounded-lg max-sm:mb-4 max-sm:border border-gray-500">
-<h3 id="resumen" class="font-bold text-xl text-center max-sm:px-0 px-2 mt-6 max-sm:mt-0 italic hover:not-italic">cantidad de productos asociados a cada lider</h3>
+<h3 id="resumen" class="font-bold text-xl text-center max-sm:px-0 px-2 mt-6 max-sm:mt-0 ">Cantidad de productos asociados a cada lider</h3>
 </div>
 <!-- Tarjetas de responsables -->
 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 p-6 rounded-lg">
@@ -105,7 +105,7 @@
 <!-- Contenedor de las cards de depreciaciones -->
 <div id="depreciaciones" class="w-full px-4">
     <div class="max-sm:p-4 max-sm:bg-gray-100 rounded-lg max-sm:mb-4 max-sm:border border-gray-500">
-        <p class="font-bold text-lg my-4 text-center">Valor de todos los activos por categoria</p>
+        <p class="font-bold text-lg my-4 text-center">Valor de todos los activos por categoría</p>
     </div>
     
     <!-- Cards de depreciaciones -->
@@ -117,7 +117,7 @@
             </div>
             <h2 class="font-bold text-xl">{{ depreciacion.categoria }}</h2>
             <p class="text-sm font-semibold text-gray-500 leading-4">
-                Total valor de activos:
+                Total de valor en activos:
             </p>
             <p class="text-base text-gray-500 uppercase leading-4">
                 {% if depreciacion.total_valor_actual == 1 %}

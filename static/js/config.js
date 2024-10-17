@@ -24,21 +24,29 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             const result = await response.json();
-            // Mostrar un mensaje de éxito (puedes usar SweetAlert o cualquier otra librería)
-            Swal.fire({
-                title: 'Éxito',
-                text: 'Las rutas fueron actualizadas correctamente.',
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.onmouseenter = Swal.stopTimer;
+                    toast.onmouseleave = Swal.resumeTimer;
+                }
+            });
+            Toast.fire({
                 icon: 'success',
-                confirmButtonText: 'Aceptar'
+                text: result.detail || 'Las rutas fueron actualizadas correctamente.',
             });
             
         } catch (error) {
-            // Manejar los errores de la solicitud
             const errorData = await response.json();
             console.error('Error al guardar las rutas:', error);
 
             // Mostrar un mensaje de error al usuario
             Swal.fire({
+                toast: true,
                 title: 'Error',
                 text: errorData.detail || 'Problema al procesar la solcitud',
                 icon: 'error',

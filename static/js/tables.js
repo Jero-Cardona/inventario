@@ -1,42 +1,27 @@
-document.addEventListener("DOMContentLoaded", function() { 
-    let rowsPerPage = 5;  // Número de filas por página inicial
-    let currentPage = 1;
+document.addEventListener("DOMContentLoaded", function() {
     const maxVisiblePages = 5;  // Número máximo de botones visibles
-    const tableBodies = document.querySelectorAll(".tables-body"); // Cambiado a clase
-    const paginationContainers = document.querySelectorAll(".pagination"); // Cambiado a clase
-    const rows = Array.from(tableBodies[0].querySelectorAll("tr")); // Selecciona filas del primer tbody
+    const tableBodies = document.querySelectorAll(".tables-body"); // Seleccionar todos los tbody
+    const paginationContainers = document.querySelectorAll(".pagination"); // Seleccionar todos los contenedores de paginación
+    const rowsPerPageSelects = document.querySelectorAll(".rowsPerPage"); // Seleccionar todos los selects de "filas por página"
 
-    // Obtener tarjetas de producto
-    const cardContainers = document.querySelectorAll(".cards-responsive"); // Cambiado a clase
-    const allCards = Array.from(cardContainers[0].children); // Selecciona tarjetas del primer contenedor
+    tableBodies.forEach((tableBody, index) => {
+        let currentPage = 1;  // Página actual para cada tabla
+        let rowsPerPage = parseInt(rowsPerPageSelects[index].value); // Número de filas por página inicial por tabla
+        const rows = Array.from(tableBody.querySelectorAll("tr")); // Selecciona filas del tbody actual
 
-    function showPage(page, isCardView = false) {
-        const start = (page - 1) * rowsPerPage;
-        const end = start + rowsPerPage;
+        function showPage(page) {
+            const start = (page - 1) * rowsPerPage;
+            const end = start + rowsPerPage;
 
-        if (isCardView) {
-            // Ocultar todas las tarjetas en todos los contenedores
-            cardContainers.forEach(container => {
-                const cards = Array.from(container.children);
-                cards.forEach((card, index) => {
-                    card.style.display = (index >= start && index < end) ? "" : "none";
-                });
-            });
-        } else {
-            // Ocultar todas las filas en todos los tbody
-            tableBodies.forEach(tableBody => {
-                const rows = Array.from(tableBody.querySelectorAll("tr"));
-                rows.forEach((row, index) => {
-                    row.style.display = (index >= start && index < end) ? "" : "none";
-                });
+            rows.forEach((row, rowIndex) => {
+                row.style.display = (rowIndex >= start && rowIndex < end) ? "" : "none";
             });
         }
-    }
 
-    function createPagination() {
-        paginationContainers.forEach(paginationContainer => {
+        function createPagination() {
+            const paginationContainer = paginationContainers[index]; // Contenedor de paginación correspondiente
             paginationContainer.innerHTML = ""; 
-            const totalRows = Array.from(tableBodies[0].querySelectorAll("tr")).length; 
+            const totalRows = rows.length; 
             const totalPages = Math.ceil(totalRows / rowsPerPage);
 
             // Botón "Primero"
@@ -46,7 +31,6 @@ document.addEventListener("DOMContentLoaded", function() {
             firstButton.addEventListener("click", () => {
                 currentPage = 1;
                 showPage(currentPage);
-                showPage(currentPage, true);
                 createPagination();
             });
             paginationContainer.appendChild(firstButton);
@@ -60,7 +44,6 @@ document.addEventListener("DOMContentLoaded", function() {
                 if (currentPage > 1) {
                     currentPage--;
                     showPage(currentPage);
-                    showPage(currentPage, true);
                     createPagination();
                 }
             });
@@ -86,11 +69,11 @@ document.addEventListener("DOMContentLoaded", function() {
                 button.addEventListener("click", () => {
                     currentPage = i;
                     showPage(currentPage);
-                    showPage(currentPage, true); // Mostrar la página correspondiente en tarjetas
                     createPagination();
                 });
                 paginationContainer.appendChild(button);
             }
+
             // Botón "Siguiente"
             const nextButton = document.createElement("button");
             nextButton.textContent = "Siguiente";
@@ -100,7 +83,6 @@ document.addEventListener("DOMContentLoaded", function() {
                 if (currentPage < totalPages) {
                     currentPage++;
                     showPage(currentPage);
-                    showPage(currentPage, true);
                     createPagination();
                 }
             });
@@ -113,25 +95,21 @@ document.addEventListener("DOMContentLoaded", function() {
             lastButton.addEventListener("click", () => {
                 currentPage = totalPages;
                 showPage(currentPage);
-                showPage(currentPage, true); // Mostrar la última página en tarjetas
                 createPagination();
             });
             paginationContainer.appendChild(lastButton);
-        });
-    }
+        }
 
-    // Inicializar con la primera página
-    showPage(currentPage);
-    showPage(currentPage, true); 
-    createPagination();
+        // Inicializar la primera página para esta tabla
+        showPage(currentPage);
+        createPagination();
 
-    document.querySelectorAll(".rowsPerPage").forEach(selectElement => {
-        selectElement.addEventListener("change", function() {
+        // Cambiar el número de filas por página cuando se cambie el valor del select
+        rowsPerPageSelects[index].addEventListener("change", function() {
             rowsPerPage = parseInt(this.value);
-            currentPage = 1; 
+            currentPage = 1;  // Reiniciar a la primera página
+            showPage(currentPage);
             createPagination();
-            showPage(currentPage); 
-            showPage(currentPage, true); 
         });
     });
 });

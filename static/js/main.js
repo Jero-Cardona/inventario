@@ -191,7 +191,26 @@ document.addEventListener('DOMContentLoaded', function () {
                 if (result.isConfirmed) {
                     try {
                         const datosResponse = await fetch(fetchUrl);
-                        if (!datosResponse.ok) throw new Error('Error al obtener los datos');
+                        
+                        if (!datosResponse.ok) {
+                            const errorData = await datosResponse.json();  // Aseguramos que estamos esperando la respuesta de manera correcta
+                            
+                            Swal.fire({
+                                toast: true,
+                                icon: 'error',
+                                text: errorData.detail || 'Solo Admins',
+                                position: 'top',
+                                showConfirmButton: false,
+                                timer: 3000,
+                                timerProgressBar: true,
+                                didOpen: (toast) => {
+                                    toast.addEventListener('mouseenter', Swal.stopTimer);
+                                    toast.addEventListener('mouseleave', Swal.resumeTimer);
+                                }
+                            });
+                            
+                            return;
+                        }
                         const datos = await datosResponse.json();
                         
                         let formInputs = '';
@@ -307,7 +326,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         let nuevoFormularioHtml = '';
                         if (endpoint === 'producto'){
                             nuevoFormularioHtml = `
-                            <section id="form-container-editar" class="modal fixed inset-0 bg-[#111111bd] flex opacity-0 pointer-events-none">
+                            <section id="form-container-editar" class="modal fixed inset-0 bg-[#111111bd] flex opacity-0 pointer-events-none z-50">
                                 <div class="modal__container m-auto max-w-[800px] max-h-[90%] bg-white rounded-[6px] p-[3em_2.5em] grid gap-[1em] place-items-center shadow-md relative overflow-y-auto">
                                     <button onclick="closeFormEdit()" class="modal__close absolute top-4 right-4 w-10 h-10 flex justify-center items-center cursor-pointer text-gray-600 hover:text-gray-900">
                                         <i class="fa-regular fa-circle-xmark fa-2xl"></i>
@@ -326,7 +345,7 @@ document.addEventListener('DOMContentLoaded', function () {
                             </section>`;
                         }else{
                             nuevoFormularioHtml = `
-                                <section id="form-container-editar" class="modal fixed inset-0 bg-[#111111bd] flex opacity-0 pointer-events-none">
+                                <section id="form-container-editar" class="modal fixed inset-0 bg-[#111111bd] flex opacity-0 pointer-events-none z-50">
                                     <div class="modal__container m-auto max-w-[800px] max-h-[90%] bg-white rounded-[6px] p-[3em_2.5em] grid gap-[1em] place-items-center shadow-md relative overflow-y-auto">
                                         <button onclick="closeFormEdit()" class="modal__close absolute top-4 right-4 w-10 h-10 flex justify-center items-center cursor-pointer text-gray-600 hover:text-gray-900">
                                             <i class="fa-regular fa-circle-xmark fa-2xl"></i>

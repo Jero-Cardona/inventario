@@ -11,9 +11,9 @@
     <a href="#mantenimientos" class="block max-w-screen-xl p-6 h-auto bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
         <!-- incon font awsome por si acaso -->
         <!-- <i class="fa-solid fa-circle-info fa-xl absolute right-20"></i> -->
-        <h1 class="font-bold text-black text-3xl mb-4">Seccion de <i class="font-bold">roles de usuarios</i> del sistema</h1>
+        <h1 class="font-bold text-black text-3xl mb-4">Seccion de roles de usuarios del sistema</h1>
         <p class="font-normal text-sm text-gray-700 dark:text-gray-400 text-justify">
-            En esta sección del sistema, encontrarás los roles de usuario que han sido ingresados hasta el momento. Como administrador, tendrás la capacidad de crear, cargar, editar y eliminar estos roles. Es importante tener en cuenta que cada usuario del aplicativo cuenta con un rol asignado. Además, aquí podrás configurar las vistas que deseas que cada usuario visualice en el sistema, en el apartado de <strong><i> Permisos - Configurar.</i></strong>
+            En esta sección del sistema encontrarás los roles de usuario registrados hasta el momento. Como administrador, podrás crear, cargar, editar y eliminar roles. Es importante recordar que cada usuario tiene un rol asignado. Además, podrás configurar las vistas que deseas que cada usuario acceda en el apartado de <strong>Permisos - Configurar.</strong>
         </p>
     </a>
 </div>
@@ -47,7 +47,7 @@
                     <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
                         <i class="fa-solid fa-magnifying-glass text-gray-400"></i>
                     </div>
-                    <input type="search" id="searchInput" class="block w-full p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Buscar roles" required />
+                    <input type="search" class="searchInput block w-full p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Buscar roles" required />
                 </div>
                 <!-- Selector de filas por página -->
                 <div class="flex items-center mx-4 max-sm:w-full max-sm:pb-6">
@@ -177,7 +177,7 @@
 <!-- contenedor configurar permisos -->
 <div id="form-configuracion" class="hidden modal__form">
 <h2 class="text-2xl font-bold text-gray-800 my-4">Configurar permisos para este rol</h2>
-<form id="config-form" action="/configurar-rutas" method="post" class="form flex flex-col">
+<form id="config-form" action="/configurar-rutas" method="post" class="flex flex-col">
     <!-- Aquí puedes iterar las rutas -->
     <div>
         <label class="relative my-2 inline-flex items-center cursor-pointer">
@@ -250,7 +250,7 @@
         </label>
     </div>
     <!-- Agrega más rutas según sea necesario -->
-    <button type="submit" class="mt-4 bg-Andes rounded-md text-white px-4 py-2">Guardar ambios</button>
+    <button type="submit" class="mt-4 bg-Andes rounded-md text-white px-4 py-2">Guardar cambios</button>
   </form>
 </div>
 {% endblock %}
