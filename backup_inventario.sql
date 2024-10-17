@@ -509,16 +509,20 @@ ALTER TABLE ONLY public.usuarios ALTER COLUMN id SET DEFAULT nextval('public.usu
 
 COPY public.categoria (id, nombre, depreciacion) FROM stdin;
 30	dasdasdasd	18
-1	Categoría Inmueble	10
 2	Equipo Tecnologico	15
 3	Categoría A	8
 4	Materia Prima	2.25
 18	Alquilado	16
 19	Comprado	30
 29	categoria producto pequeño	22
-35	categoria	1.7
 11	prueba 	4.2
 34	tecnologia	1.6
+35	categoria	1.8
+38	Prueba categoría 	1.666
+39	Categoria Prueba Editada h	1.666
+40	inmueble	0.83
+41	inmueble ca 2	0.8333333
+1	Categoría Inmueble	15
 \.
 
 
@@ -562,7 +566,6 @@ COPY public.producto (id, id_responsable, codigo, id_sede, cantidad, uso, estado
 80	1	d	1	10	uso general	activo	2024-05-20	5000.59	Producto guardado	2	2	valoor por defecto	2023-07-28
 81	2	t	1	1	uso general	prueba	2024-07-26	30000	Producto nuevo	2	2	Alquilado	2024-04-26
 9	2	ADA3	2	2	Cualquiera	Activo\n	2024-07-01	31000	dasdas	3	1	Cualquiera	2024-06-01
-4	1	P001	2	532	Uso General	Inactivo	2024-06-25	100000	Nueva descripción detallada del producto, como prueba de funcionamiento del mismo	3	2	valor_por_defecto	2024-06-01
 56	2	CODIGO2232	1	20	uso general	activo	2024-07-26	30000	Producto nuevo	2	2	Alquilado	2024-04-26
 57	2	CODIGO2203	1	4	uso general	inactivo	2025-12-30	20000	Producto antiguo	2	2	propio	2024-09-15
 58	1	CODIGO2123123	1	10	uso general	activo	2024-05-20	5000.59	Producto guardado	2	2	valoor por defecto	2023-07-28
@@ -582,11 +585,12 @@ COPY public.producto (id, id_responsable, codigo, id_sede, cantidad, uso, estado
 96	2	codigo prueba	1	1	asdasdasd	Cualquiera	2024-09-11	123123	adasdsad	11	2	sdadsad	2024-09-19
 142	2	11EDIT	1	1	uso general	prueba	2024-07-26	30000	Producto nuevo	2	2	Alquilado	2024-04-26
 14	2	A31450	3	1	Produccion	Activo	2024-08-30	85600	Observación producto prueba bugs editado de nuevo	3	2	Alquilado	2024-08-22
-3	1	P003	2	100	Uso General	Activo	2024-06-25	320000.53	Producto nuevo	2	1	Propio	2024-06-01
+3	1	A	2	100	Uso General	Activo	2024-06-25	320000.53	Producto nuevo	2	1	Propioaqs	2024-06-01
 98	2	75675a	1	20	uso general	activo	2024-07-26	30000	Producto nuevo	2	2	Alquilado	2024-04-26
 99	2	423443a	1	4	uso general	inactivo	2025-12-30	20000	Producto antiguo	2	2	propio	2024-09-15
 100	1	7657567a	1	10	uso general	activo	2024-05-20	5000.59	Producto guardado	2	2	valoor por defecto	2023-07-28
 101	2	312312a	1	1	uso general	prueba	2024-07-26	30000	Producto nuevo	2	2	Alquilado	2024-04-26
+4	1	P090	2	532	Uso General	Inactivo	2024-06-25	100000	Nueva descripción detallada del producto, como prueba de funcionamiento del mismo	3	2	valor_por_defecto	2024-06-01
 107	2	75673123123	1	20	uso general	activo	2024-07-26	30000	Producto nuevo	2	2	Alquilado	2024-04-26
 108	2	888888888	1	4	uso general	inactivo	2025-12-30	20000	Producto antiguo	2	2	propio	2024-09-15
 109	1	76575675435	1	10	uso general	activo	2024-05-20	5000.59	Producto guardado	2	2	valoor por defecto	2023-07-28
@@ -607,6 +611,14 @@ COPY public.producto (id, id_responsable, codigo, id_sede, cantidad, uso, estado
 144	2	DEPRE21	1	1	Cualquiera	Cualquiera	2024-09-25	2e+07	Producto ya depreciado	34	1	Cualquiera	2020-09-09
 145	2	32183d	1	1	Cualquiera	activo	2024-10-10	2e+06	producto nuevo	35	1	Cualquiera	2020-07-31
 146	2	producto2312	1	1	uso	activo	2024-10-30	4.5e+06	producto	34	\N	Cualquiera	2015-07-07
+150	2	13245457	1	1	Cualquiera	Cualquiera	2024-10-01	300000	h	39	1	Cualquiera	2022-06-15
+151	3	3123123123	1	1	Cualquiera	Cualquiera	2024-10-08	5e+06	hola	40	1	Cualquiera	2024-09-01
+155	2	P002	1	1	Produccion	Activo	2024-11-19	85600	dfdfd	41	\N	Alquilado	2024-10-16
+157	2	Nm	1	20	uso general	activo	2024-07-26	30000	Producto nuevo	2	2	Alquilado	2024-04-26
+158	2	Nm1	1	4	uso general	inactivo	2025-12-30	20000	Producto antiguo	2	2	propio	2024-09-15
+159	1	Emm	1	10	uso general	activo	2024-05-20	5000.59	Producto guardado	2	2	valoor por defecto	2023-07-28
+160	2	Em11	1	1	uso general	prueba	2024-07-26	30000	Producto nuevo	2	2	Alquilado	2024-04-26
+161	2	0000hola	1	1	En produccion arriba	dasd	2024-11-01	160000	Hola asdsad	40	\N	Alquilado	2024-10-30
 \.
 
 
@@ -637,6 +649,12 @@ COPY public.producto_proveedores (id, id_producto, id_proveedor) FROM stdin;
 29	142	2
 30	144	1
 31	145	1
+32	150	1
+33	151	1
+37	157	2
+38	158	2
+39	159	2
+40	160	2
 \.
 
 
@@ -645,13 +663,14 @@ COPY public.producto_proveedores (id, id_producto, id_proveedor) FROM stdin;
 --
 
 COPY public.proveedor (id, nombre, direccion, telefono) FROM stdin;
-1	Compañia tecnologica	Calle #41a 25-05	312-5233465
-7	Proveedor C	calle 41a #25c05	312312316546
 2	Biotecs SAS	Calle #41a 25-05	312834212
 6	Proveedor editado 	calle 41a #25c05	3123213213
 12	Proveedor Prueba	cll37#56a65	3125432789
 14	Proveedor Prueba	cr37#29-50	3122564388
 3	prueba proveedor	direccion calle31a #25c05	31232131876
+1	Compañia tecnologica	Calle #41a 25-15	3289768987
+7	Proveedor C	calle 41a #25c05	312312316547
+16	sadasd	asdasdasd	213123
 \.
 
 
@@ -662,7 +681,6 @@ COPY public.proveedor (id, nombre, direccion, telefono) FROM stdin;
 COPY public.proveedormantenimiento (id, contacto, id_producto, id_proveedor) FROM stdin;
 16	312312312312	4	2
 18	12312312123	20	1
-20	3021412423	134	2
 \.
 
 
@@ -675,10 +693,11 @@ COPY public.responsable (id, nombre, correo, telefono) FROM stdin;
 3	Samuel Betancur Velasquez	Samuel@example.com	3128352
 4	Emmanuel Echeverry Arboleda	Emmanuel@example.com	31152332
 33	Santiago Cardona Morales	ejemplo@ejemplo.mx	3128452150
-1	Brian Cardona	brian@gmail.com	340578623
 37	Responsable File	responsable@gmail.com	3125432789
 38	File	responsable@gmail.com	3016667544
 39	Responsable prueba	responsable@gmail.com	3122564388
+43	Jeronimo	aasdasdads@hola.com	21312312
+1	Brian Cardona	brian@gmail.com	340578626
 \.
 
 
@@ -707,6 +726,8 @@ COPY public.sede (id, nombre, direccion, telefono) FROM stdin;
 42	Medellín	cr37#29-50	3122564388
 47	La ceja	cll37#56a65	3125432789
 48	Rionegro	cll28#56a65	3016667544
+51	Medellín	calle 41a #25c10	3825754328
+53	Jeronimo Cardona	asdasd	231323
 \.
 
 
@@ -722,7 +743,6 @@ COPY public.ubicacion (id, nombre, id_sede, id_producto) FROM stdin;
 42	operacion ceja cesde 	1	4
 43	operacion medellin auteco	42	5
 44	operacion medellin auteco	2	20
-45	Cafeteria	1	20
 \.
 
 
@@ -736,15 +756,16 @@ COPY public.usuarios (id, nombre, correo, hashed_password, estado, fecha_creacio
 10	Daniel	dani@gmail.com	$2b$12$N1sWgcgeVfR4LWELhcfn8.a3tCYTHiC9V/rWRv0Bsoc9FQKWiZFLy	inactivo	2024-08-16	2
 24	Santiago Cardona Moreno	jeronimocardona@gmail.com	$2b$12$bBxqzYq0KgemLUlcpR3yp.y6Zu14Q8l0F7bG8A1ISzrkdYdTU5YV2	inactivo	2024-08-30	2
 22	Sergio Andre Editado	prueba@gmail.com	$2b$12$KZamtbSxOVHu/XsLo/lNXO/VhM7rgLwl05I7XtyvBjYO4Va2ucvKq	inactivo	2024-09-09	1
-7	pelucheuno	peluche1@gmail.com	$2b$12$U9AHeJqfTEJA8bG4nlmKPeDFzgPCz4dVIpvg9wWSscPJJYuv7z75.	activo	2024-07-31	1
-32	Usuario prueba edit	prueba@gmail.com	$2b$12$Wya8Ij/HiqxDfFvtTbTkdufaHkZ.YK4yDBBPcG5PIvGZNGPCJC1US	inactivo	2024-09-04	1
-54	Jeronimo Cardona G	jeronimocardona@gmail.com	$2b$12$zjG9l7IvkvQ7hGqPmC3pR.Twqjiomrhhbb7gPKLPHocSW5ijErH22	activo	2024-10-02	2
-53	Jeronimo Cardona	jeronimocardona@gmail.com	$2b$12$VL3Gq/zL1PasQjdBjpvhC.lE/Fo2WIEzzL2FY.nG/zevo18PKoNBC	activo	2024-10-02	1
-37	User test	user@gmail.com	$2b$12$p3b47O/E7Ahm7m.8C0j3wORWb5L7MkRZMfrA5xIFMUTnXaFK9iiKa	activo	2024-04-26	2
 1	Jeronimo Cardona edit	corre@exmaple.com	$2b$12$fND5LOKICmmWLKLKFvAGo.W5oEg/eMHqTXbemZqVAVZGYOmOrzoA.	inactivo	2024-07-05	1
-52	Joir	corre@gmail.com	$2b$12$LnXSliP9GAgnmE.4ef8a3uys/pGLk4l6mDl8XCq9IqoA3shKwd2Pe	activo	2024-09-25	2
-9	UsuarioTest	test@gmail.com	$2b$12$ik4CLmbC9gU.Io6aa.0GaeAajKMaKJBlsPBuDCY6n/FmMSgVQgXqK	activo	2024-07-31	2
+32	Usuario prueba edit	prueba@gmail.com	$2b$12$Wya8Ij/HiqxDfFvtTbTkdufaHkZ.YK4yDBBPcG5PIvGZNGPCJC1US	inactivo	2024-09-04	1
+37	User test	user@gmail.com	$2b$12$p3b47O/E7Ahm7m.8C0j3wORWb5L7MkRZMfrA5xIFMUTnXaFK9iiKa	activo	2024-04-26	2
 6	Jeronimo Henaods	peluche@gmail.com	$2b$12$OXcVL007scpFv9QUwsj94eEySv79Vq0OR6e4SKVLlbCmmHsFRlHoy	inactivo	2024-07-31	2
+54	Jeronimo Cardona G	jeronimocardona@gmail.com	$2b$12$zjG9l7IvkvQ7hGqPmC3pR.Twqjiomrhhbb7gPKLPHocSW5ijErH22	inactivo	2024-10-02	2
+53	Jeronimo Cardona	jeronimocardona@gmail.com	$2b$12$VL3Gq/zL1PasQjdBjpvhC.lE/Fo2WIEzzL2FY.nG/zevo18PKoNBC	inactivo	2024-10-02	1
+7	pelucheuno	peluche1@gmail.com	$2b$12$U9AHeJqfTEJA8bG4nlmKPeDFzgPCz4dVIpvg9wWSscPJJYuv7z75.	inactivo	2024-07-31	1
+9	UsuarioTest	test@gmail.com	$2b$12$ik4CLmbC9gU.Io6aa.0GaeAajKMaKJBlsPBuDCY6n/FmMSgVQgXqK	inactivo	2024-07-31	2
+52	Joir	corre@gmail.com	$2b$12$LnXSliP9GAgnmE.4ef8a3uys/pGLk4l6mDl8XCq9IqoA3shKwd2Pe	activo	2024-09-25	2
+55	nallely	nallelymarin@gmail.com	$2b$12$fRyuDdgnK1yUK9F6cM4xsOOZKJAtY.d11XvYMJk.5fC34SCUJcUSe	activo	2024-10-17	1
 \.
 
 
@@ -752,77 +773,77 @@ COPY public.usuarios (id, nombre, correo, hashed_password, estado, fecha_creacio
 -- Name: categoria_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.categoria_id_seq', 36, true);
+SELECT pg_catalog.setval('public.categoria_id_seq', 44, true);
 
 
 --
 -- Name: mantenimiento_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.mantenimiento_id_seq', 30, true);
+SELECT pg_catalog.setval('public.mantenimiento_id_seq', 31, true);
 
 
 --
 -- Name: producto_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.producto_id_seq', 149, true);
+SELECT pg_catalog.setval('public.producto_id_seq', 161, true);
 
 
 --
 -- Name: producto_proveedores_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.producto_proveedores_id_seq', 31, true);
+SELECT pg_catalog.setval('public.producto_proveedores_id_seq', 40, true);
 
 
 --
 -- Name: proveedor_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.proveedor_id_seq', 14, true);
+SELECT pg_catalog.setval('public.proveedor_id_seq', 16, true);
 
 
 --
 -- Name: proveedormantenimiento_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.proveedormantenimiento_id_seq', 20, true);
+SELECT pg_catalog.setval('public.proveedormantenimiento_id_seq', 22, true);
 
 
 --
 -- Name: responsable_id_seq1; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.responsable_id_seq1', 42, true);
+SELECT pg_catalog.setval('public.responsable_id_seq1', 44, true);
 
 
 --
 -- Name: roles_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.roles_id_seq', 32, true);
+SELECT pg_catalog.setval('public.roles_id_seq', 40, true);
 
 
 --
 -- Name: sede_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.sede_id_seq', 50, true);
+SELECT pg_catalog.setval('public.sede_id_seq', 53, true);
 
 
 --
 -- Name: ubicacion_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.ubicacion_id_seq', 45, true);
+SELECT pg_catalog.setval('public.ubicacion_id_seq', 46, true);
 
 
 --
 -- Name: usuarios_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.usuarios_id_seq', 54, true);
+SELECT pg_catalog.setval('public.usuarios_id_seq', 55, true);
 
 
 --
