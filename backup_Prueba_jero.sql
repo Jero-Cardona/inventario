@@ -757,6 +757,7 @@ COPY public.usuarios (id, nombre, correo, hashed_password, estado, fecha_creacio
 24	Santiago Cardona Moreno	jeronimocardona@gmail.com	$2b$12$bBxqzYq0KgemLUlcpR3yp.y6Zu14Q8l0F7bG8A1ISzrkdYdTU5YV2	inactivo	2024-08-30	2
 22	Sergio Andre Editado	prueba@gmail.com	$2b$12$KZamtbSxOVHu/XsLo/lNXO/VhM7rgLwl05I7XtyvBjYO4Va2ucvKq	inactivo	2024-09-09	1
 1	Jeronimo Cardona edit	corre@exmaple.com	$2b$12$fND5LOKICmmWLKLKFvAGo.W5oEg/eMHqTXbemZqVAVZGYOmOrzoA.	inactivo	2024-07-05	1
+56	Prueba User New	user@gmail.com	$2b$12$.zOREQyJopaMWhV4p64Do.Ff5RRKyJypbvRe6A0SEnBhWP9RQAHhW	activo	2024-10-18	1
 32	Usuario prueba edit	prueba@gmail.com	$2b$12$Wya8Ij/HiqxDfFvtTbTkdufaHkZ.YK4yDBBPcG5PIvGZNGPCJC1US	inactivo	2024-09-04	1
 37	User test	user@gmail.com	$2b$12$p3b47O/E7Ahm7m.8C0j3wORWb5L7MkRZMfrA5xIFMUTnXaFK9iiKa	activo	2024-04-26	2
 6	Jeronimo Henaods	peluche@gmail.com	$2b$12$OXcVL007scpFv9QUwsj94eEySv79Vq0OR6e4SKVLlbCmmHsFRlHoy	inactivo	2024-07-31	2
@@ -843,7 +844,7 @@ SELECT pg_catalog.setval('public.ubicacion_id_seq', 46, true);
 -- Name: usuarios_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.usuarios_id_seq', 55, true);
+SELECT pg_catalog.setval('public.usuarios_id_seq', 56, true);
 
 
 --

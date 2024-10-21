@@ -3,25 +3,37 @@ document.addEventListener("DOMContentLoaded", function() {
     const tableBodies = document.querySelectorAll(".tables-body"); // Seleccionar todos los tbody
     const paginationContainers = document.querySelectorAll(".pagination"); // Seleccionar todos los contenedores de paginación
     const rowsPerPageSelects = document.querySelectorAll(".rowsPerPage"); // Seleccionar todos los selects de "filas por página"
+    const cardContainers = document.querySelectorAll(".cards-responsive"); // Seleccionar todos los contenedores de tarjetas
 
     tableBodies.forEach((tableBody, index) => {
         let currentPage = 1;  // Página actual para cada tabla
         let rowsPerPage = parseInt(rowsPerPageSelects[index].value); // Número de filas por página inicial por tabla
         const rows = Array.from(tableBody.querySelectorAll("tr")); // Selecciona filas del tbody actual
+        const cards = Array.from(cardContainers[index]?.children || []); // Selecciona tarjetas del contenedor actual, si existe
 
+        // Función para mostrar la página actual, ya sea en la tabla o en las tarjetas
         function showPage(page) {
             const start = (page - 1) * rowsPerPage;
             const end = start + rowsPerPage;
 
+            // Ocultar o mostrar filas de la tabla
             rows.forEach((row, rowIndex) => {
                 row.style.display = (rowIndex >= start && rowIndex < end) ? "" : "none";
             });
+
+            // Ocultar o mostrar tarjetas si hay un contenedor de tarjetas asociado
+            if (cards.length > 0) {
+                cards.forEach((card, cardIndex) => {
+                    card.style.display = (cardIndex >= start && cardIndex < end) ? "" : "none";
+                });
+            }
         }
 
+        // Función para crear la paginación
         function createPagination() {
             const paginationContainer = paginationContainers[index]; // Contenedor de paginación correspondiente
-            paginationContainer.innerHTML = ""; 
-            const totalRows = rows.length; 
+            paginationContainer.innerHTML = "";
+            const totalRows = rows.length; // Total de filas en la tabla
             const totalPages = Math.ceil(totalRows / rowsPerPage);
 
             // Botón "Primero"
@@ -49,7 +61,7 @@ document.addEventListener("DOMContentLoaded", function() {
             });
             paginationContainer.appendChild(prevButton);
 
-            // Cálculo del rango de botones visibles
+            // Rango de botones visibles
             let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
             let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
 
@@ -57,14 +69,14 @@ document.addEventListener("DOMContentLoaded", function() {
                 startPage = Math.max(1, endPage - maxVisiblePages + 1);
             }
 
-            // Crear botones de página visibles
+            // Crear botones de paginación
             for (let i = startPage; i <= endPage; i++) {
                 const button = document.createElement("button");
                 button.textContent = i;
                 button.classList.add("px-4", "py-2", "border", "border-gray-400", "bg-gray-50", "hover:bg-green-200", "rounded-md", "max-sm:text-sm", "max-sm:px-2", "hidden", "md:block");
                 if (i === currentPage) {
                     button.classList.remove("bg-gray-50", "hover:bg-green-200");
-                    button.classList.add("bg-[#13A438]", "text-white", "hover:bg-green-600");
+                    button.classList.add("bg-Andes", "text-white", "hover:bg-green-600");
                 }
                 button.addEventListener("click", () => {
                     currentPage = i;
@@ -100,7 +112,7 @@ document.addEventListener("DOMContentLoaded", function() {
             paginationContainer.appendChild(lastButton);
         }
 
-        // Inicializar la primera página para esta tabla
+        // Inicializar la primera página para esta tabla y sus tarjetas
         showPage(currentPage);
         createPagination();
 
