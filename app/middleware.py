@@ -24,16 +24,17 @@ class VerifyUserActive(BaseHTTPMiddleware):
         "/login/",
         "/",
         "/bloquear-usuario",
-        "/activar-usuario",
         "/static",
         "/docs",
         "/openapi.json",
-        "/favicon.ico"
+        "/favicon.ico",
+        "/crear-user-default",
     ]
 
     # Agregamos aquí la ruta dinámica a las rutas excluidas
     dynamic_route_patterns = [
-        re.compile(r"^/producto-obtener-qr-section/\d+$")  # Ruta con producto_id numérico
+        re.compile(r"^/producto-obtener-qr-section/\d+$"),
+        # re.compile(r"^/activar-usuario/\d+$")
     ]
 
     async def dispatch(self, request: Request, call_next):
@@ -89,13 +90,15 @@ class AdminUser(BaseHTTPMiddleware):
     default_routes = [
         "/login/", "/", "/salir", "/bloquear-usuario", "/activar-usuario",
         "/static", "/docs", "/openapi.json", "/inicio", "/favicon.ico",
-        "/productos-all-fk/", "/productos-all/", "/productos-imagen-qr"
+        "/productos-all-fk/", "/productos-all/", "/productos-imagen-qr",
+        "/crear-user-default", 
     ]
 
     # Rutas dinámicas para manejar parámetros
     dynamic_route_patterns = [
         re.compile(r"^/generar-codigoqr-producto/\d+$"),
         re.compile(r"^/producto-obtener-qr-section/\d+$"),
+        # re.compile(r"^/activar-usuario/\d+$"),
     ]
     
     @classmethod

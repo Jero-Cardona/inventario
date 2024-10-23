@@ -469,7 +469,7 @@ def depreciacion_categorias(db: Session):
     depreciacion_por_categoria = {categoria.id:0 for categoria in categorias}
     suma_costos_categoria = {categoria.id:0 for categoria in categorias}
     
-    
+    resultado = []
     for producto in productos:
         valor_actual = calcular_valor_actual(producto)
         

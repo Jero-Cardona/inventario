@@ -144,7 +144,7 @@ aria-label="Sidebar">
         <div class="px-3 py-3 lg:px-5 lg:pl-3">
             <div class="flex items-center justify-between">
                 <!-- contenedor menu -->
-                <div @click.away="open = false" class="relative md:hidden inline-block text-left" x-data="{ open: false }">
+                <div @click.away="open = false" class="relative md:hidden z-30 inline-block text-left" x-data="{ open: false }">
                     <button @click="open = !open" class="text-3xl text-white md:hidden">
                         <i class="fa-solid fa-bars"></i>
                     </button>
@@ -168,7 +168,7 @@ aria-label="Sidebar">
                 <p class="font-bold text-sm italic max-sm:text-sm text-white">{{request.session["rol"]}}</p>
                 </div>
                 <!-- contenedor configuracion -->
-                <div @click.away="open = false" class="relative" x-data="{ open: false }">
+                <div @click.away="open = false" class="relative z-30" x-data="{ open: false }">
                     <button @click="open = !open" class="flex flex-row items-center w-full px-4 py-2 mt-2 text-sm font-semibold text-left bg-transparent rounded-lg md:w-auto md:inline md:mt-0 md:ml-4 hover:text-gray-900 focus:text-gray-900 hover:bg-Andes focus:bg-green-600 focus:outline-none focus:shadow-outline max-[400px]:bg-white">
                         <span class="text-white font-bold max-[400px]:hidden">Configuracion</span>
                         <svg fill="currentColor" viewBox="0 0 20 20" :class="{'rotate-180': open, 'rotate-0': !open}" class="inline w-4 h-4 mt-1 ml-1 transition-transform duration-200 transform md:-mt-1 max-[400px]:hidden">
@@ -250,10 +250,30 @@ aria-label="Sidebar">
         </a>
     </div>
 </footer>
+<!-- contenedor loader js -->
+<!-- <div id="loader" class="hidden fixed top-0 left-0 w-full h-full items-center justify-center bg-gray-900 bg-opacity-50 z-50">
+    <div class="animate-spin rounded-full h-32 w-32 border-t-4 border-b-4 border-green-500"></div>
+</div> -->
+<!-- Loader inicial -->
+<div id="loader" class="fixed inset-0 z-40 flex justify-center items-center bg-gray-900 bg-opacity-75">
+    <div class="flex flex-col items-center z-50">
+        <div class="flex flex-row gap-2 mb-4">
+            <div class="w-8 h-8 rounded-full bg-[#4ade80] animate-bounce"></div>
+            <div class="w-8 h-8 rounded-full bg-[#28a745] animate-bounce [animation-delay:-.3s]"></div>
+            <div class="w-8 h-8 rounded-full bg-[#4ade80] animate-bounce [animation-delay:-.5s]"></div>
+        </div>
+        <p class="font-bold text-lg animate-pulse text-white">Cargando...</p>
+    </div>
+</div>
+
 
 <!-- scripts necesarios en el aplicativo -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+
 <script src="//unpkg.com/alpinejs" defer></script>
-<script src="../static/js/main.js"></script>
 <script src="../static/js/route.js"></script>
+<script src="../static/js/loader.js"></script>
+<script src="../static/js/main.js"></script>
 </body>
 </html>

@@ -47,6 +47,33 @@ app.add_middleware(SessionMiddleware, secret_key="!secret_key!")
 app.add_middleware(VerifyUserActive)
 app.add_middleware(AdminUser)
 
+# endpoint user default bd
+@app.post("/crear-user-default", response_model=schemas.Usuarios, tags=["Users"])
+async def create_default_user(db: Session = Depends(get_db)):
+
+    admin_role = db.query(models.Roles).filter(models.Roles.id == 1).first()
+    if not admin_role:
+        # Crear el rol "Administrador" si no existe
+        admin_role = models.Roles(id=1, nombre="Administrador")
+        db.add(admin_role)
+        db.commit()
+        db.refresh(admin_role)
+
+    existing_user = crud.get_user_by_username(db, nombre="Usuario Admin")
+    if existing_user:
+        raise HTTPException(status_code=400, detail="El usuario por defecto ya existe.")
+
+    # Crear el usuario por defecto
+    usuario_data = schemas.UsuariosCreate(
+        nombre="Usuario Admin",
+        correo="admin@example.com",
+        hashed_password="12345",
+        estado="activo",
+        fecha_creacion=date.today(),
+        id_rol=admin_role.id
+    )
+    return crud.create_user(db=db, usuario=usuario_data)
+
 @app.post("/bloquear-usuario", tags=["Users"])
 async def bloquear_usuario(username: str, db: Session = Depends(get_db)):
     user = crud.get_user_by_username(db, nombre=username)
