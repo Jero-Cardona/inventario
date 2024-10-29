@@ -70,6 +70,7 @@ def login_for_access_token(request: Request, db: Session = Depends(get_db), form
     request.session['nombre'] = usuario.nombre
     request.session['correo'] = usuario.correo
     request.session['rol'] = usuario.rol.nombre
+    request.session['id'] = usuario.id
     access_token = security.create_access_token(data={"sub": usuario.nombre})
     max_age = ACCESS_TOKEN_EXPIRE_MINUTES * 60
     return RedirectResponse(

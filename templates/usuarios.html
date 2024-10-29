@@ -7,89 +7,75 @@
 {% endblock %}
 <!-- contendio que varia del aplicativo -->
 {% block content %}
-  <h2 class="font-bold text-xl">Seccion de Usuarios</h2>
-  <div class="flex justify-center items-center w-full">
-    <!-- component -->
-    <div class="mx-2 w-full my-2 py-2 px-3 overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 pr-10 lg:px-8 flex flex-col justify-center items-center">
-        <div class="align-middle rounded-tl-lg rounded-tr-lg w-full py-4 overflow-hidden bg-white shadow-lg px-8">
-            <!-- div del buscador y la secion de arriba -->
-            <div class="flex justify-between items-center w-full px-2">
-              <!-- Div del botón Agregar -->
-              <div class="flex items-center space-x-2 bg-gray-100 p-2 rounded-md shadow-md">
-                  <span class="text-sm font-semibold text-gray-800">Registrar Usuario</span>
-                  <button
-                    title="Add New"
-                    class="open_modal group cursor-pointer outline-none hover:rotate-90 duration-300"
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="40px"
-                      height="40px"
-                      viewBox="0 0 24 24"
-                      class="stroke-zinc-400 fill-none group-hover:fill-zinc-800 group-active:stroke-zinc-200 group-active:fill-zinc-600 group-active:duration-0 duration-300"
-                    >
-                      <path
-                        d="M12 22C17.5 22 22 17.5 22 12C22 6.5 17.5 2 12 2C6.5 2 2 6.5 2 12C2 17.5 6.5 22 12 22Z"
-                        stroke-width="1.5"
-                      ></path>
-                      <path d="M8 12H16" stroke-width="1.5"></path>
-                      <path d="M12 16V8" stroke-width="1.5"></path>
-                    </svg>
-                  </button>
-              </div>
-          
-        <!-- Div del botón Cargue masivo -->
-        <div class="flex items-center space-x-2 bg-gray-100 p-2 rounded-md shadow-md">
-            <span class="text-sm font-semibold text-gray-800">Cargue masivo</span>
-            <label class="flex items-center cursor-pointer px-2 group outline-none hover:rotate-90 duration-300">
-            <input type="file" title="cargar archivos" class="hidden" id="fileInput" data-endpoint="Usuarios"/>
-            <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="40px"
-                height="40px"
-                viewBox="0 0 24 24"
-                class="stroke-zinc-400 fill-none group-hover:fill-zinc-800 group-active:stroke-zinc-200 group-active:fill-zinc-600 group-active:duration-0 duration-300"
-            >
-                <path
-                d="M12 22C17.5 22 22 17.5 22 12C22 6.5 17.5 2 12 2C6.5 2 2 6.5 2 12C2 17.5 6.5 22 12 22Z"
-                stroke-width="1.5"
-                ></path>
-                <path d="M8 12H16" stroke-width="1.5"></path>
-                <path d="M12 16V8" stroke-width="1.5"></path>
-            </svg>
-            </label>
-        </div>
-          
-              <!-- Div del buscador -->
-              <div class="flex border rounded-lg w-1/2 h-12 bg-white shadow-md">
-                  <div class="flex items-center w-full h-full bg-white px-4">
-                      <span class="flex items-center leading-normal bg-transparent rounded-l-lg text-grey-dark text-lg">
-                          <svg width="18" height="18" class="w-4 lg:w-auto" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                              <path d="M8.11086 15.2217C12.0381 15.2217 15.2217 12.0381 15.2217 8.11086C15.2217 4.18364 12.0381 1 8.11086 1C4.18364 1 1 4.18364 1 8.11086C1 12.0381 4.18364 15.2217 8.11086 15.2217Z" stroke="#455A64" stroke-linecap="round" stroke-linejoin="round" />
-                              <path d="M16.9993 16.9993L13.1328 13.1328" stroke="#455A64" stroke-linecap="round" stroke-linejoin="round" />
-                          </svg>
-                      </span>
-                      <input type="text" class="flex-shrink flex-1 leading-normal tracking-wide border-none rounded-r-lg px-3 focus:outline-none text-xs text-gray-500" placeholder="Buscar Usuarios">
-                  </div>
-              </div>
-          </div>
-          
-        </div>
-        
-        <div class="align-middle w-full flex flex-col shadow overflow-hidden bg-white shadow-dashboard px-12 pt-3 rounded-bl-lg rounded-br-lg">
-            <table class="max-w-full">
+<div class="flex px-4 h-auto space-x-4">
+    <a href="#mantenimientos" class="block max-w-screen-xl p-6 h-auto bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
+        <!-- incon font awsome por si acaso -->
+        <!-- <i class="fa-solid fa-circle-info fa-xl absolute right-20"></i> -->
+        <h1 class="font-bold text-black text-3xl mb-4">Sección de Usuarios del sistema</h1>
+        <p class="font-normal text-sm text-gray-700 dark:text-gray-400 text-justify">
+            En esta sección del aplicativo web encontrarás los usuarios registrados. Como administrador, podrás gestionar usuarios realizando funciones como crear, editar, eliminar, cargar y desactivar cuentas en el sistema. Los usuarios inactivos serán bloqueados para su acceso y navegación en la plataforma.
+             Al crear un nuevo usuario, es importante que el nombre de usuario sea único, ya que no se permitirá la duplicación de nombres. Asimismo, al cargar usuarios, verifica que no se repitan los nombres para evitar duplicados.
+        </p>
+    </a>
+</div>
+<main class="flex justify-center items-center w-full">
+    <!-- conponente -->
+    <div class="w-full mb-8 sm:px-2 overflow-x-auto sm:-mx-6 lg:px-4 flex-col justify-center items-center flex">
+        <div class="align-middle rounded-tl-lg rounded-tr-lg w-full py-4 overflow-hidden bg-white border border-gray-500 shadow-lg px-2 lg:px-4">
+            <!-- Responsive layout for the search bar and buttons -->
+            <div class="flex flex-wrap justify-between items-center w-full max-sm:space-y-4 space-y-2 md:space-y-0 md:flex-nowrap">
+                <!-- Div del botón Agregar -->
+                <div class="flex items-center mx-4 space-x-2 bg-gray-100 border border-gray-400 p-2 rounded-md shadow-md w-full sm:w-1/2">
+                    <span class="text-sm font-semibold text-gray-800">Agregar usuarios</span>
+                    <button title="Add New" class="open_modal px-2 group cursor-pointer outline-none hover:rotate-90 duration-300" data-id="usuarios-form">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="30px" height="30px" viewBox="0 0 24 24" class="stroke-zinc-400 fill-none group-hover:fill-zinc-800 group-active:stroke-zinc-200 group-active:fill-zinc-600 group-active:duration-0 duration-300">
+                            <path d="M12 22C17.5 22 22 17.5 22 12C22 6.5 17.5 2 12 2C6.5 2 2 6.5 2 12C2 17.5 6.5 22 12 22Z" stroke-width="1.5"></path>
+                            <path d="M8 12H16" stroke-width="1.5"></path>
+                            <path d="M12 16V8" stroke-width="1.5"></path>
+                        </svg>
+                    </button>
+                </div>
+                <!-- Div del botón Cargue masivo -->
+                <div class="flex items-center mx-4 space-x-2 bg-gray-100 border border-gray-400 p-3 rounded-md shadow-md w-full sm:w-1/2">
+                    <span class="text-sm font-semibold text-gray-800">Cargue masivo de usuarios</span>
+                    <label class="flex items-center cursor-pointer px-2 group outline-none hover:rotate-90 duration-300">
+                        <input type="file" title="cargar archivos" class="hidden fileInput" data-endpoint="Usuarios"/>
+                        <i class="fa-solid fa-file-arrow-up fa-xl"></i>
+                    </label>
+                </div>
+                <!-- Buscador de registros -->
+                <div class="flex items-center mx-4 w-full relative">
+                    <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                        <i class="fa-solid fa-magnifying-glass text-gray-400"></i>
+                    </div>
+                    <input type="search" class="searchInput block w-full p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Buscar usuarios" required />
+                </div>
+                <!-- Selector de filas por página -->
+                <div class="flex items-center mx-4 max-sm:w-full max-sm:pb-6">
+                    <label for="rowsPerPage" class="mr-2 bg-green-100 p-2 rounded-lg text-gray-700 italic border border-gray-300 font-semibold">Mostrar:</label>
+                    <select id="rowsPerPage" class="border rowsPerPage bg-green-100 border-gray-300 rounded-md p-2 focus:outline-none ">
+                        <option value="5">5</option>
+                        <option value="10">10</option>
+                        <option value="15">15</option>
+                        <option value="20">20</option>
+                        <option value="30">30</option>
+                    </select>
+                </div>
+            </div>
+        <div id="usuarios" class="align-middle w-full flex-col overflow-hidden bg-white shadow-dashboard pt-3 rounded-bl-lg rounded-br-lg hidden md:block">
+            <table class="w-full m-auto">
                 <thead>
                     <tr>
-                        <th class="px-2 py-3 border-b-2 border-gray-300 text-center leading-4 text-blue-500 tracking-wider">ID</th>
-                        <th class="px-2 py-3 border-b-2 border-gray-300 text-center text-sm leading-4 text-blue-500 tracking-wider">Usuario</th>
-                        <th class="px-2 py-3 border-b-2 border-gray-300 text-center text-sm leading-4 text-blue-500 tracking-wider">Email</th>
-                        <th class="px-2 py-3 border-b-2 border-gray-300 text-center text-sm leading-4 text-blue-500 tracking-wider">Estado</th>
-                        <th class="px-2 py-3 border-b-2 border-gray-300 text-center text-sm leading-4 text-blue-500 tracking-wider">Fecha de creacion</th>
-                        <th class="px-2 py-3 border-b-2 border-gray-300 text-center text-sm leading-4 text-blue-500 tracking-wider">Rol</th>
-                        <th class="px-2 py-3 border-b-2 border-gray-300 text-center text-sm leading-4 text-blue-500 tracking-wider">Acciones Administrador</th>
+                        <th class="py-3 px-2 border-b-2 border-gray-300 text-center leading-4 text-green-500 tracking-wider">ID</th>
+                        <th class="py-3 px-2 border-b-2 border-gray-300 text-center text-sm leading-4 text-green-500 tracking-wider">Usuario</th>
+                        <th class="py-3 px-2 border-b-2 border-gray-300 text-center text-sm leading-4 text-green-500 tracking-wider">Email</th>
+                        <th class="py-3 px-2 border-b-2 border-gray-300 text-center text-sm leading-4 text-green-500 tracking-wider">Estado</th>
+                        <th class="py-3 px-2 border-b-2 border-gray-300 text-center text-sm leading-4 text-green-500 tracking-wider">Fecha de creacion</th>
+                        <th class="py-3 px-2 border-b-2 border-gray-300 text-center text-sm leading-4 text-green-500 tracking-wider">Rol</th>
+                        <th class="py-3 px-2 border-b-2 border-gray-300 text-center text-sm leading-4 text-green-500 tracking-wider">Acciones Administrador</th>
                     </tr>
                 </thead>
-                <tbody class="bg-white">
+                <tbody class="bg-white tables-body">
                     {% for usuario in usuarios %}
                         <tr class="odd:bg-gray-100">
                             <td class="px-2 py-4 text-center whitespace-no-wrap border-b border-gray-500">
@@ -99,120 +85,196 @@
                                     </div>
                                 </div>
                             </td>
-                            <td class="px-1 py-4 text-center whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5">{{usuario.nombre}}</td>
-                            <td class="px-1 py-4 text-center whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5">{{usuario.correo}}</td>
-                            <td class="px-1 py-4 font-bold text-center whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5">{{usuario.estado}}</td>
-                            <td class="px-1 py-4 text-center whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5">{{usuario.fecha_creacion}}</td>
-                            <td class="px-1 py-4 text-center whitespace-no-wrap border-b text-blue-900 border-gray-500 text-sm leading-5">{{usuario.rol.nombre}}</td>
-                            <td class="px-1 py-4 m-auto place-items-center items-center whitespace-no-wrap border-b border-gray-500 text-sm leading-5">
-                                <button class="editar px-4 py-2 text-white bg-Andes rounded transition duration-300 hover:bg-green-800 hover:text-white focus:outline-none" data-endpoint="usuario" data-id="{{ usuario.id }}">Editar</button>
-                                <form id="delete-form-{{ usuario.id }}" class="inline-flex" action="/usuario-deleted/{{ usuario.id }}" method="post">
+                            <td class="py-4 px-1 text-center whitespace-no-wrap border-b text-gray-900 border-gray-500 text-sm leading-8 font-semibold">{{usuario.nombre}}</td>
+                            <td class="py-4 px-1 text-center whitespace-no-wrap border-b text-gray-900 border-gray-500 text-sm leading-5">{{usuario.correo}}</td>
+                            <td class="py-4 px-1 font-bold text-center whitespace-no-wrap border-b text-gray-900 border-gray-500 text-sm leading-5">{{usuario.estado}}</td>
+                            <td class="py-4 px-1 text-center whitespace-no-wrap border-b text-gray-900 border-gray-500 text-sm leading-5">{{usuario.fecha_creacion}}</td>
+                            <td class="py-4 px-1 text-center whitespace-no-wrap border-b text-gray-900 border-gray-500 text-sm leading-5">{{usuario.rol.nombre}}</td>
+                            <td class="py-4 px-1 m-auto place-items-center items-center text-center whitespace-no-wrap border-b border-gray-500 text-sm leading-5">
+                                <button class="editar px-4 py-2 text-white bg-Andes rounded transition duration-300 hover:bg-green-500 hover:text-white focus:outline-none" data-endpoint="usuario" data-id="{{ usuario.id }}">
+                                    <i class="fas fa-edit mr-2"></i> Editar
+                                </button>
+                                {% if request.session["id"] == usuario.id %}
+                                <form id="from-deleted-up-{{ usuario.id }}" class="inline-flex" action="/usuario-deleted/{{ usuario.id }}" method="post">
                                     <input type="hidden" name="_method" value="DELETE">
-                                    <button type="submit" class="delete px-4 py-2 bg-gray-500 rounded text-white transition duration-400 hover:bg-orange-800 hover:text-white focus:outline-none">
-                                        Eliminar
-                                    </button>
-                                </form>
-                                {% if usuario.estado == "inactivo" %}
-                                <form id="active-user-{{ usuario.id }}" class="inline-flex" action="/activar-usuario/{{ usuario.id }}" method="post">
-                                    <button type="submit" class="estado px-4 py-2 bg-orange-500 rounded text-white transition duration-400 hover:bg-orange-800 hover:text-white focus:outline-none">
-                                        Activar
+                                    <button type="submit" class="delete px-4 py-2 bg-[#5B5C5C] rounded pointer-events-none opacity-50 text-white transition duration-400 hover:bg-gray-800 hover:text-white focus:outline-none">
+                                        <i class="fas fa-trash mr-2"></i> Eliminar
                                     </button>
                                 </form>
                                 {% else %}
-                                <form id="desactivate-user-{{ usuario.id }}" class="inline-flex" action="/desactivar-usuario/{{ usuario.id }}" method="post">
-                                    <button type="submit" class="estado px-4 py-2 bg-blue-500 rounded text-white transition duration-400 hover:bg-blue-800 hover:text-white focus:outline-none">
-                                        Desactivar
+                                <form id="from-deleted-{{ usuario.id }}" class="inline-flex" action="/usuario-deleted/{{ usuario.id }}" method="post">
+                                    <input type="hidden" name="_method" value="DELETE">
+                                    <button type="submit" class="delete px-4 py-2 bg-[#5B5C5C] rounded text-white transition duration-400 hover:bg-gray-800 hover:text-white focus:outline-none">
+                                        <i class="fas fa-trash mr-2"></i> Eliminar
                                     </button>
                                 </form>
                                 {% endif %}
+                            {% if request.session["id"] == usuario.id %}
+                                {% if usuario.estado == "inactivo" %}
+                                <form id="user-active-{{ usuario.id }}" class="inline-flex" action="/activar-usuario/{{ usuario.id }}" method="post">
+                                    <button type="submit" class="estado pointer-events-none opacity-50 px-4 py-2 bg-[#084F21] rounded text-white transition duration-400 hover:bg-green-600 hover:text-white focus:outline-none">
+                                        <i class="fa-regular fa-circle-check mr-2"></i>Activar
+                                    </button>
+                                </form>
+                                {% else %}
+                                <form id="user-desactive-up-{{ usuario.id }}" class="inline-flex" action="/desactivar-usuario/{{ usuario.id }}" method="post">
+                                    <button type="submit" class="estado pointer-events-none opacity-50 px-4 py-2 bg-gray-400 rounded text-white transition duration-400 hover:bg-gray-600 hover:text-white focus:outline-none">
+                                        <i class="fa-solid fa-power-off ml-0 mr-2"></i>Inactivar
+                                    </button>
+                                </form>
+                                {% endif %}
+                            {% else %}    
+                                {% if usuario.estado == "inactivo" %}
+                                <form id="user-active-{{ usuario.id }}" class="inline-flex" action="/activar-usuario/{{ usuario.id }}" method="post">
+                                    <button type="submit" class="estado px-4 py-2 bg-[#084F21] rounded text-white transition duration-400 hover:bg-green-600 hover:text-white focus:outline-none">
+                                        <i class="fa-regular fa-circle-check mr-2"></i>Activar
+                                    </button>
+                                </form>
+                                {% else %}
+                                <form id="user-desactive-{{ usuario.id }}" class="inline-flex" action="/desactivar-usuario/{{ usuario.id }}" method="post">
+                                    <button type="submit" class="estado px-4 py-2 bg-gray-400 rounded text-white transition duration-400 hover:bg-gray-600 hover:text-white focus:outline-none text-sm">
+                                        <i class="fa-solid fa-power-off ml-0 mr-2"></i>Inactivar
+                                    </button>
+                                </form>
+                                {% endif %}
+                            {% endif %}
                             </td>
                         </tr>
                     {% endfor %}
                 </tbody>
             </table>
-        <div class="sm:flex-1 sm:flex sm:items-center sm:justify-between mt-4 work-sans">
-    <div>
-    <p class="text-sm leading-5 text-blue-700">
-        Mostrando
-        <span class="font-medium">1</span>
-        hasta
-        <span class="font-medium">5</span>
-        de
-        <span class="font-medium">20</span>
-        Resultados
-    </p>
-    </div>
-    <div>
-    <nav class="relative p-4 z-0 inline-flex shadow-sm">
-        <div>
-            <a href="#" class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm leading-5 font-medium text-gray-500 hover:text-gray-400 focus:z-10 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-gray-100 active:text-gray-500 transition ease-in-out duration-150" aria-label="Previous" v-on:click.prevent="changePage(pagination.current_page - 1)">
-                <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                    <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
-                </svg>
-            </a>
         </div>
-        <div>
-            <a href="#" class="-ml-px relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm leading-5 font-medium text-blue-700 focus:z-10 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-tertiary active:text-gray-700 transition ease-in-out duration-150 hover:bg-tertiary">
-                1
-            </a>
-        <a href="#" class="-ml-px relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm leading-5 font-medium text-blue-600 focus:z-10 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-tertiary active:text-gray-700 transition ease-in-out duration-150 hover:bg-tertiary">
-                2
-            </a>
-        <a href="#" class="-ml-px relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm leading-5 font-medium text-blue-600 focus:z-10 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-tertiary active:text-gray-700 transition ease-in-out duration-150 hover:bg-tertiary">
-                3
-            </a>
+        <!-- design of the records responsive -->
+        <div class="cards-responsive grid grid-cols-1 gap-6 md:hidden">
+            {% for usuario in usuarios %}
+            <div class="bg-white p-6 rounded-lg shadow-lg border border-gray-200">
+                <!-- Producto Header con color -->
+                <h2 class="text-2xl font-semibold text-[#084F21] mb-4">Usuario ID: {{ usuario.id }}</h2>
+                <!-- Informacion del Producto -->
+                <div class="grid grid-cols-2 gap-2 text-sm">
+                    <div class="flex flex-col">
+                        <span class="text-gray-500 font-bold">Nombre del Usuario</span>
+                        <span class="text-gray-900">{{ usuario.nombre }}</span>
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-gray-500 font-bold">Correo:</span>
+                        <span class="text-gray-900">{{ usuario.correo }}</span>
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-gray-500 font-bold">Estado:</span>
+                        <span class="text-gray-900">{{ usuario.estado }}</span>
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-gray-500 font-bold">Fecha creacion:</span>
+                        <span class="text-gray-900">{{ usuario.fecha_creacion }}</span>
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-gray-500 font-bold">Rol usuario:</span>
+                        <span class="text-gray-900">{{ usuario.rol.nombre }}</span>
+                    </div>
+                </div>
+                <!-- contenedor de las acciones -->
+                <div class="flex justify-left items-center mt-6 space-x-2">
+                    <button class="editar flex items-center px-4 py-2 text-sm font-medium bg-Andes text-white rounded-lg shadow-md hover:bg-green-600 transition duration-300 ease-in-out" data-endpoint="usuario" data-id="{{ usuario.id }}">
+                        <i class="fas fa-edit mr-2"></i> Editar
+                    </button>
+                    {% if request.session["id"] == usuario.id %}
+                    <form id="from-deleted-{{ usuario.id }}" class="inline-flex" action="/usuario-deleted/{{ usuario.id }}" method="post">
+                        <input type="hidden" name="_method" value="DELETE">
+                        <button type="submit" class="delete max-[320px]:text-none flex items-center px-4 py-2 text-sm font-medium bg-[#5B5C5C] text-white rounded-lg shadow-md hover:bg-gray-700 opacity-50 pointer-events-none transition duration-300 ease-in-out">
+                            <i class="fas fa-trash mr-2"></i> Eliminar
+                        </button>
+                    </form>
+                    {% else %}
+                    <form id="from-deleted-{{ usuario.id }}" class="inline-flex" action="/usuario-deleted/{{ usuario.id }}" method="post">
+                        <input type="hidden" name="_method" value="DELETE">
+                        <button type="submit" class="delete max-[320px]:text-none flex items-center px-4 py-2 text-sm font-medium bg-[#5B5C5C] text-white rounded-lg shadow-md hover:bg-gray-700 transition duration-300 ease-in-out">
+                            <i class="fas fa-trash mr-2"></i> Eliminar
+                        </button>
+                    </form>
+                    {% endif %}
+                {% if request.session["id"] == usuario.id %}
+                    {% if usuario.estado == "inactivo" %}
+                    <form id="user-active-{{ usuario.id }}" class="inline-flex" action="/activar-usuario/{{ usuario.id }}" method="post">
+                        <button type="submit" class="estado pointer-events-none opacity-50 px-4 py-2 bg-[#084F21] rounded text-white transition duration-400 hover:bg-green-600 hover:text-white focus:outline-none text-sm ">
+                            <i class="fa-regular fa-circle-check mr-2"></i>Activar
+                        </button>
+                    </form>
+                    {% else %}
+                    <form id="user-desactive-{{ usuario.id }}" class="inline-flex" action="/desactivar-usuario/{{ usuario.id }}" method="post">
+                        <button type="submit" class="estado pointer-events-none opacity-50 px-4 py-2 bg-gray-400 rounded text-white transition duration-400 hover:bg-gray-600 hover:text-gray-300 focus:outline-none text-sm">
+                            <i class="fa-solid fa-power-off ml-0 mr-2"></i>Inactivar
+                        </button>
+                    </form>
+                    {% endif %}
+                {% else %}    
+                    {% if usuario.estado == "inactivo" %}
+                    <form id="user-active-{{ usuario.id }}" class="inline-flex" action="/activar-usuario/{{ usuario.id }}" method="post">
+                        <button type="submit" class="estado px-4 py-2 bg-[#084F21] rounded text-white transition duration-400 hover:bg-green-600 hover:text-white focus:outline-none text-sm">
+                            <i class="fa-regular fa-circle-check mr-2"></i>Activar
+                        </button>
+                    </form>
+                    {% else %}
+                    <form id="user-desactive-{{ usuario.id }}" class="inline-flex" action="/desactivar-usuario/{{ usuario.id }}" method="post">
+                        <button type="submit" class="estado px-4 py-2 bg-gray-400 rounded text-white transition duration-400 hover:bg-gray-600 hover:text-gray-300 focus:outline-none text-sm">
+                            <i class="fa-solid fa-power-off ml-0 mr-2"></i>Inactivar
+                        </button>
+                    </form>
+                    {% endif %}
+                {% endif %}
+                </div>
+            </div>
+            {% endfor %}
         </div>
-        <div v-if="pagination.current_page < pagination.last_page">
-            <a href="#" class="-ml-px relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm leading-5 font-medium text-gray-500 hover:text-gray-400 focus:z-10 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-gray-100 active:text-gray-500 transition ease-in-out duration-150" aria-label="Next">
-                <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                    <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
-                </svg>
-            </a>
-        </div>
-    </nav>
+    <div class="pagination flex justify-center mt-6 space-x-2 max-sm:space-x-1"></div>
+    <p class="font-semibold text-base max-sm:m-auto max-sm:mt-4 max-sm:mx-4">Total de registros  <strong>{{usuarios|count}}</strong></p>
+
     </div>
     </div>
-        </div>
-    </div>
-    </div>
+</main>
+<script src="../static/js/search.js"></script>
+<script src="../static/js/forms.js"></script>
+<script src="../static/js/tables.js"></script>
 {% endblock content %}
 {% block forms %}
-<h2 class="text-2xl font-bold text-gray-800 mb-4">Nuevo Usuario</h2>
-<form id="form-usuarios" method="post" action="/crear-usuario/" class="flex flex-col">
-    <input placeholder="Nombre del usuario" class="bg-gray-100 lg:w-96 text-gray-800 border-0 rounded-md p-2 mb-4 focus:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150" 
+<div class="hidden modal__form" id="usuarios-form">
+<h2 class="text-2xl font-bold text-center text-gray-800 mb-4">Nuevo Usuario</h2>
+<form id="form-usuarios" method="post" action="/crear-usuario/" class="form flex flex-col">
+    <input placeholder="Nombre del usuario" class="bg-gray-200 lg:w-96 text-gray-800 border-0 rounded-md p-2 mb-4 focus:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150" 
     type="text" required name="nombre"/>
-    <input placeholder="correo electronico" class="bg-gray-100 lg:w-96 text-gray-800 border-0 rounded-md p-2 mb-4 focus:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150" 
+    <input placeholder="correo electronico" class="bg-gray-200 lg:w-96 text-gray-800 border-0 rounded-md p-2 mb-4 focus:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150" 
     type="email" required name="correo"/>
-    <input placeholder="contraseña" class="bg-gray-100 lg:w-96 text-gray-800 border-0 rounded-md p-2 mb-4 focus:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150" 
+    <input placeholder="contraseña" class="bg-gray-200 lg:w-96 text-gray-800 border-0 rounded-md p-2 mb-4 focus:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150" 
     type="password" id="password" required name="hashed_password"/>
     <button type="button" id="togglePassword" class="absolute right-14 bottom-44 top-40 text-gray-500 focus:outline-none">
         <i class="fas fa-eye"></i>
     </button>
-    <select required name="estado" class="bg-gray-100 lg:w-96 text-gray-800 border-0 rounded-md p-2 mb-4 focus:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150" id="estados">
+    <select required name="estado" class="bg-gray-200 lg:w-96 text-gray-800 border-0 rounded-md p-2 mb-4 focus:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150" id="estados">
         <option value="" disabled selected class="bg-white">Escoge un estado</option>
         <option value="activo">Activo</option>
         <option value="inactivo">Inactivo</option>
     </select>
-    <select required name="id_rol" class="bg-gray-100 lg:w-96 text-gray-800 border-0 rounded-md p-2 mb-4 focus:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150" id="roles">
+    <select required name="id_rol" class="bg-gray-200 lg:w-96 text-gray-800 border-0 rounded-md p-2 mb-4 focus:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150" id="roles">
         <option value="" disabled selected class="bg-white">Escoge un rol</option>
         {% for rol in roles %}
             <option value="{{ rol.id }}">{{ rol.nombre }}</option>
         {% endfor %}
     </select>
     <input type="hidden" value="{{fecha_creacion}}" required name="fecha_creacion"/>
-    <button class="bg-gradient-to-r from-indigo-500 to-blue-500 text-white font-bold py-2 px-4 rounded-md mt-4 hover:bg-indigo-600 hover:to-blue-600 transition ease-in-out duration-150" type="submit">
+    <button class="bg-gradient-to-r bg-[#084F21] text-white font-bold py-2 px-4 rounded-md mt-4 hover:bg-green-600 transition ease-in-out duration-150" type="submit">
         Enviar Datos
     </button>
 </form>
+</div>
 <script id="password">
     const togglePassword = document.getElementById('togglePassword');
-        const passwordInput = document.getElementById('password');
+    const passwordInput = document.getElementById('password');
 
-        togglePassword.addEventListener('click', function () {
-            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-            passwordInput.setAttribute('type', type);
+    togglePassword.addEventListener('click', function () {
+        const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+        passwordInput.setAttribute('type', type);
 
-            this.innerHTML = type === 'password' ? '<i class="fas fa-eye"></i>' : '<i class="fas fa-eye-slash"></i>';
-        });
+        this.innerHTML = type === 'password' ? '<i class="fas fa-eye"></i>' : '<i class="fas fa-eye-slash"></i>';
+    });
 </script>
 {% endblock forms %}

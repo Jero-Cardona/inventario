@@ -18,10 +18,9 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
     const swaledits = document.querySelectorAll('.editar');
-    const swalldownloand = document.querySelectorAll('.descargar');
     
     document.querySelectorAll('.delete').forEach(button => {
-        button.addEventListener('click', function (e) {
+        button.addEventListener('click', async function (e) {
             e.preventDefault();
     
             const form = this.closest('form');
@@ -36,14 +35,16 @@ document.addEventListener('DOMContentLoaded', function () {
                 cancelButtonText: 'Cancelar',
                 confirmButtonColor: '#13A438',
                 cancelButtonColor: '#084F21',
-            }).then((result) => {
+            }).then(async (result) => {
                 if (result.isConfirmed) {
-                    fetch(url, {
-                        method: 'DELETE',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                    }).then(response => {
+                    try {
+                        const response = await fetch(url, {
+                            method: 'DELETE',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                        });
+    
                         if (response.ok) {
                             Swal.fire({
                                 title: "Listo!",
@@ -57,22 +58,35 @@ document.addEventListener('DOMContentLoaded', function () {
                                 window.location.reload(); 
                             });
                         } else {
+                            const errorData = await response.json();
                             Swal.fire({
-                                title: "Error",
-                                text: "No se logro eliminar el registro",
-                                icon: "error",
+                                title: 'Error',
+                                text: errorData.detail || 'Hubo un problema al eliminar el registro',
+                                icon: 'error',
                                 confirmButtonText: 'Entendido',
-                                confirmButtonColor: '#13A438',
+                                confirmButtonColor: '#13A438', 
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    window.location.reload();
+                                }
                             });
                         }
-                    });
+                    } catch (err) {
+                        Swal.fire({
+                            title: "Error",
+                            text: "Ocurrió un problema al eliminar el registro",
+                            icon: "error",
+                            confirmButtonText: 'Entendido',
+                            confirmButtonColor: '#13A438',
+                        });
+                    }
                 }
             });
         });
     });
-
+    
     document.querySelectorAll('.estado').forEach(button => {
-        button.addEventListener('click', function (e) {
+        button.addEventListener('click', async function (e) {
             e.preventDefault();
     
             const form = this.closest('form');
@@ -87,14 +101,14 @@ document.addEventListener('DOMContentLoaded', function () {
                 cancelButtonText: 'Cancelar',
                 confirmButtonColor: '#13A438',
                 cancelButtonColor: '#084F21',
-            }).then((result) => {
+            }).then( async (result) => {
                 if (result.isConfirmed) {
                     fetch(url, {
                         method: 'PUT',
                         headers: {
                             'Content-Type': 'application/json',
                         },
-                    }).then(response => {
+                    }).then( async (response) => {
                         if (response.ok) {
                             Swal.fire({
                                 title: "Listo!",
@@ -108,12 +122,17 @@ document.addEventListener('DOMContentLoaded', function () {
                                 window.location.reload(); 
                             });
                         } else {
+                            const errorData = await response.json();
                             Swal.fire({
-                                title: "Error",
-                                text: "No se logro activar el usuario, algo salio mal",
-                                icon: "error",
+                                title: 'Error',
+                                text: errorData.detail || 'No se logro activar el usuario, algo salio mal',
+                                icon: 'error',
                                 confirmButtonText: 'Entendido',
-                                confirmButtonColor: '#13A438',
+                                confirmButtonColor: '#13A438', 
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    window.location.reload();
+                                }
                             });
                         }
                     });
@@ -121,6 +140,7 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         });
     });
+    // text: "No se logro activar el usuario, algo salio mal",
     
     swaledits.forEach(button => {
         button.addEventListener('click', async function(e) {
@@ -138,6 +158,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 'categoria': `/categoria-obtener/${id}`,
                 'mantenimiento': `/mantenimiento-obtener/${id}`,
                 'rol': `/rol-obtener/${id}`,
+                'ubicacion': `/ubicacion-obtener/${id}`,
+                'proveedor_mante': `/proveedor-mantenimiento-obtener/${id}`,
             };
     
             const foreignKeyEndpoints = {
@@ -169,7 +191,26 @@ document.addEventListener('DOMContentLoaded', function () {
                 if (result.isConfirmed) {
                     try {
                         const datosResponse = await fetch(fetchUrl);
-                        if (!datosResponse.ok) throw new Error('Error al obtener los datos');
+                        
+                        if (!datosResponse.ok) {
+                            const errorData = await datosResponse.json();  // Aseguramos que estamos esperando la respuesta de manera correcta
+                            
+                            Swal.fire({
+                                toast: true,
+                                icon: 'error',
+                                text: errorData.detail || 'Solo Admins',
+                                position: 'top',
+                                showConfirmButton: false,
+                                timer: 3000,
+                                timerProgressBar: true,
+                                didOpen: (toast) => {
+                                    toast.addEventListener('mouseenter', Swal.stopTimer);
+                                    toast.addEventListener('mouseleave', Swal.resumeTimer);
+                                }
+                            });
+                            
+                            return;
+                        }
                         const datos = await datosResponse.json();
                         
                         let formInputs = '';
@@ -190,7 +231,7 @@ document.addEventListener('DOMContentLoaded', function () {
                                 const selectClasses = endpoint === 'producto' && key === 'id_responsable' ? 
                                     'bg-gray-200 text-gray-800 border-0 rounded-md p-2 focus:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150 col-span-1 md:col-span-2' :
                                     (endpoint === 'producto'?  'bg-gray-200 text-gray-800 border-0 rounded-md p-2 focus:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150' :
-                                        'bg-gray-100 text-gray-800 border-0 lg:w-96 rounded-md p-2 mb-4 focus:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150'
+                                        'bg-gray-200 text-gray-800 border-0 lg:w-96 rounded-md p-2 mb-4 focus:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150'
                                     );
                                     
                                 formInputs += `
@@ -212,24 +253,22 @@ document.addEventListener('DOMContentLoaded', function () {
                             } else if (key === 'observacion') {
                                 const textareaClasses = endpoint === 'producto' ? 
                                     'bg-gray-200 text-gray-800 border-0 rounded-md p-2 focus:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150 col-span-1 md:col-span-2' :
-                                    'bg-gray-100 text-gray-800 border-0 lg:w-96 rounded-md p-2 mb-4 focus:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150';
+                                    'bg-gray-200 text-gray-800 border-0 lg:w-96 rounded-md p-2 mb-4 focus:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150';
                                     
-                                formInputs += `
-                                    <textarea 
+                                    formInputs += 
+                                    `<textarea 
                                         name="${key}" 
                                         required 
                                         placeholder="${key}" 
                                         class="${textareaClasses}"
-                                    >
-                                        ${datos[key] || ''}
-                                    </textarea>
-                                `;
+                                    >${(datos[key] || '').trim()}</textarea>`
+                                ;
                             } else if (endpoint === 'usuario' && key === 'estado') {
                                 formInputs += `
                                     <select 
                                         name="${key}" 
                                         required 
-                                        class="bg-gray-100 text-gray-800 border-0 lg:w-96 rounded-md p-2 mb-4 focus:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150">
+                                        class="bg-gray-200 text-gray-800 border-0 lg:w-96 rounded-md p-2 mb-4 focus:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150">
                                         <option value="" disabled>Selecciona una opción</option>
                                         <option value="activo" ${datos[key] === 'activo' ? 'selected' : ''}>Activo</option>
                                         <option value="inactivo" ${datos[key] === 'inactivo' ? 'selected' : ''}>Inactivo</option>
@@ -248,9 +287,10 @@ document.addEventListener('DOMContentLoaded', function () {
                                             <input
                                                 placeholder="${key === 'hashed_password' ? 'Nueva contraseña' : key}"
                                                 name="${key}"
+                                                id="${key}"
                                                 value="${inputValue}"
                                                 required
-                                                class="bg-gray-100 text-gray-800 border-0 lg:w-96 rounded-md p-2 mb-4 focus:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150"
+                                                class="bg-gray-200 text-gray-800 border-0 lg:w-96 rounded-md p-2 mb-4 focus:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150 w-full"
                                                 type="${inputType}"
                                                 id="${key === 'hashed_password' ? 'passwordInput' : ''}"
                                             />
@@ -266,9 +306,10 @@ document.addEventListener('DOMContentLoaded', function () {
                                         <input
                                             placeholder="${key === 'hashed_password' ? 'Nueva contraseña' : key}"
                                             name="${key}"
+                                            id="${key}"
                                             value="${inputValue}"
                                             required
-                                            class="bg-gray-200 text-gray-800 border-0 rounded-md p-2 focus:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150"
+                                            class="bg-gray-200 text-gray-800 border-0 rounded-md p-2 focus:bg-gray-200 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150 w-full"
                                             type="${inputType}"
                                             id="${key === 'hashed_password' ? 'passwordInput' : ''}"
                                         />
@@ -285,15 +326,17 @@ document.addEventListener('DOMContentLoaded', function () {
                         let nuevoFormularioHtml = '';
                         if (endpoint === 'producto'){
                             nuevoFormularioHtml = `
-                            <section id="form-container-editar" class="modal fixed inset-0 bg-[#111111bd] flex opacity-0 pointer-events-none">
-                                <div class="modal__container m-auto w-9/10 max-w-[800px] max-h-[90%] bg-white rounded-[6px] p-[3em_2.5em] grid gap-[1em] place-items-center shadow-md relative">
-                                    <button onclick="closeFormEdit()" class="modal__close absolute top-4 right-4 w-10 h-10 flex justify-center items-center cursor-pointer text-gray-600 hover:text-gray-900">✖</button>
-                                    <h2 class="text-2xl font-bold text-gray-800 mb-1">Editar ${endpoint}</h2>
+                            <section id="form-container-editar" class="modal fixed inset-0 bg-[#111111bd] flex opacity-0 pointer-events-none z-50">
+                                <div class="modal__container m-auto max-w-[800px] max-h-[90%] bg-white rounded-[6px] p-[3em_2.5em] grid gap-[1em] place-items-center shadow-md relative overflow-y-auto">
+                                    <button onclick="closeFormEdit()" class="modal__close absolute top-4 right-4 w-10 h-10 flex justify-center items-center cursor-pointer text-gray-600 hover:text-gray-900">
+                                        <i class="fa-regular fa-circle-xmark fa-2xl"></i>
+                                    </button>
+                                    <h2 class="text-2xl font-bold text-gray-800">Editar ${endpoint}</h2>
                                     <div id="form-datos-back-edit">
-                                        <form id="form-edit" class="grid grid-cols-1 md:grid-cols-2 gap-2 w-full">
+                                        <form id="form-edit" class="form grid grid-cols-1 md:grid-cols-2 gap-2 w-full">
                                         ${formInputs}
                                         ${hiddenInputs}
-                                            <button class="bg-gradient-to-r bg-Andes text-white font-bold py-2 px-4 rounded-md mt-4 hover:bg-green-700 transition ease-in-out duration-150 col-span-1 md:col-span-2" type="submit">
+                                            <button class="bg-gradient-to-r text-center bg-Andes text-white font-bold py-2 px-4 rounded-md mt-4 hover:bg-green-700 transition ease-in-out duration-150 col-span-1 md:col-span-2" type="submit">
                                             Actualizar Datos
                                             </button>
                                         </form>
@@ -302,15 +345,17 @@ document.addEventListener('DOMContentLoaded', function () {
                             </section>`;
                         }else{
                             nuevoFormularioHtml = `
-                                <section id="form-container-editar" class="modal fixed inset-0 bg-[#111111bd] flex opacity-0 pointer-events-none">
-                                    <div class="modal__container m-auto w-9/10 max-w-[800px] max-h-[90%] bg-white rounded-[6px] p-[3em_2.5em] grid gap-[1em] place-items-center shadow-md relative">
-                                        <button onclick="closeFormEdit()" class="modal__close absolute top-4 right-4 w-10 h-10 flex justify-center items-center cursor-pointer text-gray-600 hover:text-gray-900">✖</button>
-                                        <h2 class="text-2xl font-bold text-gray-800 mb-1">Editar ${endpoint}</h2>
+                                <section id="form-container-editar" class="modal fixed inset-0 bg-[#111111bd] flex opacity-0 pointer-events-none z-50">
+                                    <div class="modal__container m-auto max-w-[800px] max-h-[90%] bg-white rounded-[6px] p-[3em_2.5em] grid gap-[1em] place-items-center shadow-md relative overflow-y-auto">
+                                        <button onclick="closeFormEdit()" class="modal__close absolute top-4 right-4 w-10 h-10 flex justify-center items-center cursor-pointer text-gray-600 hover:text-gray-900">
+                                            <i class="fa-regular fa-circle-xmark fa-2xl"></i>
+                                        </button>
+                                        <h2 class="text-2xl font-bold text-gray-800 mb-1">Editar ${endpoint === 'proveedor_mante' ? 'mantenimiento de proveedor' : endpoint}</h2>
                                         <div id="form-datos-back-edit">
-                                            <form id="form-edit" class="flex flex-col">
+                                            <form id="form-edit" class="form flex flex-col">
                                             ${formInputs}
                                             ${hiddenInputs}
-                                                <button class="bg-gradient-to-r m-auto w-full items-center flex bg-Andes text-white font-bold py-2 px-4 rounded-md mt-4 hover:bg-green-700 transition ease-in-out duration-150" type="submit">
+                                                <button class="bg-gradient-to-r m-auto w-full text-center bg-Andes text-white font-bold py-2 px-4 rounded-md mt-4 hover:bg-green-700 transition ease-in-out duration-150" type="submit">
                                                 Actualizar Datos
                                                 </button>
                                             </form>
@@ -350,13 +395,34 @@ document.addEventListener('DOMContentLoaded', function () {
     
                             try {
                                 const response = await fetch(url, { method: 'PUT' });
-                                if (!response.ok) throw new Error(`Error al actualizar los datos: ${await response.text()}`);
-    
+                                if (!response.ok) {
+                                    const errorData = await response.json();
+                                    if (response.status === 422){
+                                        Toast.fire({
+                                            icon: 'error',
+                                            title: 'Hubo un problema al procesar la solicitud, intenta de nuevo'
+                                        });
+                                    } else {
+                                        Swal.fire({
+                                            title: 'Error',
+                                            text: errorData.detail || 'Hubo un problema al actualizar los datos',
+                                            icon: 'error',
+                                            confirmButtonText: 'Entendido',
+                                            confirmButtonColor: '#13A438', 
+                                        }).then((result) => {
+                                            if (result.isConfirmed) {
+                                                window.location.reload(); 
+                                            }
+                                        });
+                                        return
+                                    }
+                                }
+                            
                                 const result = await response.json();
                                 window.location.reload();
                                 console.log('Datos actualizados:', result);
-    
-                                closeFormEdit(); 
+                            
+                                closeFormEdit();
                             } catch (error) {
                                 console.error('Error en la actualización:', error);
                             }
@@ -380,54 +446,63 @@ document.addEventListener('DOMContentLoaded', function () {
                             });
                         }
                     } catch (error) {
-                        console.error('Error al obtener los datos:', error);
+                        console.error('Error al obtener los datos para la contraseña:', error);
                     }
                 }
             });
         });
     });
-    
-    swalldownloand.forEach(button => {
-        button.addEventListener('click', function(e){
-            e.preventDefault();
-            const url = this.getAttribute('href');
-            Swal.fire({
-                title: 'Descargar csv',
-                text: 'Al aceptar descargaras todos los registros de esta tabla',
-                icon: 'Info',
-                showCancelButton: true,
-                confirmButtonText: 'Descargar',
-                cancelButtonText: 'Cancelar',
-                confirmButtonColor: '#13A438',
-                cancelButtonColor: '#084F21',
-            }).then((result) => {
-                // Si se hace clic en 'Editar'
-                if (result.isConfirmed) {
-                    window.location.href = url;
-                }
-            });
-        });
-    });
-
-    const openModal = document.querySelector('.open_modal');
     const modal = document.querySelector('.modal');
     const closeModal = document.querySelector('.modal__close');
     
-    if (openModal && modal && closeModal) {
-        openModal.addEventListener('click', (e) => {
-            e.preventDefault();
-            modal.style.opacity = '1';
-            modal.style.pointerEvents = 'unset';
-            modal.style.transition = 'opacity .2s .4s';
+    // Selecciona todos los botones que abren el modal
+    const openModalButtons = document.querySelectorAll('.open_modal');
+    
+    // Valida que los elementos clave existan en el DOM
+    if (modal && closeModal && openModalButtons.length > 0) {
+        // Itera sobre todos los botones con la clase 'open_modal'
+        openModalButtons.forEach(button => {
+            button.addEventListener('click', (e) => {
+                e.preventDefault();
+    
+                // Obtener el valor del data-id
+                const dataId = button.getAttribute('data-id');
+    
+                // Validar que el data-id exista
+                if (dataId) {
+                    // Buscar el contenido del modal basado en el ID
+                    const modalContent = document.querySelector(`#${dataId}`);
+                    
+                    // Validar que el contenido del modal exista
+                    if (modalContent) {
+                        // Ocultar otros formularios y mostrar el seleccionado
+                        document.querySelectorAll('.modal__form').forEach(form => {
+                            form.classList.add('hidden');
+                        });
+    
+                        // Mostrar el contenido del modal
+                        modalContent.classList.remove('hidden');
+                        modal.style.opacity = '1';
+                        modal.style.pointerEvents = 'unset';
+                        modal.style.transition = 'opacity .2s .4s';
+                    } else {
+                        console.error(`No se encontró contenido para el ID: ${dataId}`);
+                    }
+                } else {
+                    console.error('El botón no tiene un atributo data-id.');
+                }
+            });
         });
-
+    
+        // Manejar el cierre del modal
         closeModal.addEventListener('click', (e) => {
             e.preventDefault();
             closeForm();
         });
     } else {
-        console.error('Uno o más elementos no se encuentran en el DOM.');
+        console.error('Uno o más elementos no se encuentran en el DOM o no hay botones para abrir el modal.');
     }
+    
 
     var visualizarButton = document.getElementById('Visualizar');
     if (visualizarButton) {
@@ -446,181 +521,145 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         
             // Cambiar el texto del botón
-            if (this.textContent === 'Mostrar más columnas') {
-                this.textContent = 'Mostrar menos columnas';
+            if (this.textContent === 'Más columnas') {
+                this.textContent = 'Menos columnas';
             } else {
-                this.textContent = 'Mostrar más columnas';
+                this.textContent = 'Más columnas';
             }
         });
     }
 
-    // funcion para ver mas sobre la observcion
+    // Función para manejar el comportamiento de "Ver más" y "Ver menos"
     var descripciones = document.querySelectorAll('.descripcion');
     descripciones.forEach(function(descripcion) {
-        var contenido = descripcion.textContent;
-        var limiteCaracteres = 50; // Cambia este valor al límite de caracteres deseado
-    
+        var contenido = descripcion.textContent.trim();
+        var limiteCaracteres = 50;
+
         if (contenido.length > limiteCaracteres) {
             var textoCorto = contenido.substring(0, limiteCaracteres) + '...';
             var textoCompleto = contenido;
-            descripcion.innerHTML = textoCorto + ' <a href="#" class="ver-mas ">Ver más</a>';
-    
-            var verMas = descripcion.querySelector('.ver-mas');
-            verMas.addEventListener('click', function(event) {
+
+            // Guardamos el contenido completo como un atributo 'data'
+            descripcion.setAttribute('data-texto-completo', textoCompleto);
+            descripcion.setAttribute('data-texto-corto', textoCorto);
+
+            // Mostrar el texto corto inicialmente
+            descripcion.innerHTML = textoCorto + ' <a href="#" class="ver-mas font-bold text-blue-600">Ver más</a>';
+
+            // Añadir listener de clic a "Ver más"
+            descripcion.querySelector('.ver-mas').addEventListener('click', function(event) {
                 event.preventDefault();
-                if (descripcion.innerHTML === textoCorto + ' <a href="#" class="ver-mas ">Ver más</a>') {
-                    descripcion.innerHTML = textoCompleto + ' <a href="#" class="ver-menos ">Ver menos</a>';
-                } else {
-                    descripcion.innerHTML = textoCorto + ' <a href="#" class="ver-mas ">Ver más</a>';
-                }
+                toggleDescripcion(descripcion);
             });
         }
     });
-    
-    // Agregamos el evento click para "Ver menos"
-    document.addEventListener("click", function(event) {
-        if (event.target.classList.contains("ver-menos")) {
-            event.preventDefault();
-            var descripcion = event.target.parentNode;
-            var contenido = descripcion.textContent.replace('Ver menos', '').trim();
-            var limiteCaracteres = 50; // Asegúrate de que este valor coincida con el de arriba
-            var textoCorto = contenido.substring(0, limiteCaracteres) + '...';
-            descripcion.innerHTML = textoCorto + ' <a href="#" class="ver-mas ">Ver más</a>';
-        }
-    });
 
-    if (document.getElementById("default-table") && typeof simpleDatatables.DataTable !== 'undefined') {
-        const dataTable = new simpleDatatables.DataTable("#default-table", {
-            searchable: false,
-            perPageSelect: false
-        });
-    }
+    // Función para alternar entre "Ver más" y "Ver menos"
+    function toggleDescripcion(descripcion) {
+        var textoCompleto = descripcion.getAttribute('data-texto-completo');
+        var textoCorto = descripcion.getAttribute('data-texto-corto');
 
-    // modal codigo qr
-    const qrButtons = document.querySelectorAll('.codigoQR');
-    const qrModal = document.getElementById('qrModal');
-    const qrImage = document.getElementById('qrImage');
-    const closeModalQR = document.getElementById('closeModalQR');
-
-    // Función para mostrar la modal
-    const showModal = () => {
-            qrModal.classList.remove('opacity-0', 'pointer-events-none');
-            qrModal.classList.add('opacity-100');
-    };
-
-    // Función para ocultar la modal
-    const hideModal = () => {
-            qrModal.classList.add('opacity-0', 'pointer-events-none');
-            qrModal.classList.remove('opacity-100');
-    };
-
-    // Añadir eventos de clic a los botones de QR
-    qrButtons.forEach(button => {
-        button.addEventListener('click', async function () {
-            const producto_id = this.getAttribute('data-id');
-
-            try {
-                // Hacer la petición para obtener el QR
-                const response = await fetch(`/generar-codigoqr-producto/${producto_id}`);
-
-                if (response.ok) {
-                    // Actualizar la imagen del QR
-                    const blob = await response.blob();
-                    const imageUrl = URL.createObjectURL(blob);
-                    qrImage.src = imageUrl;
-
-                    // Mostrar la modal
-                    showModal();
-                } else {
-                    console.error('Error al obtener el QR');
-                }
-            } catch (error) {
-                console.error('Error:', error);
-            }
-        });
-    });
-
-    closeModalQR.addEventListener('click', hideModal);
-    function downloadQRImage() {
-        const qrImage = document.getElementById('qrImage');
-        const qrImageUrl = qrImage.src;  
-
-        if (qrImageUrl) {
-            const link = document.createElement('a');
-            link.href = qrImageUrl;
-            link.download = `productoQR.png`; 
-
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
+        if (descripcion.classList.contains('expanded')) {
+            descripcion.innerHTML = textoCorto + ' <a href="#" class="ver-mas font-extrabold text-blue-600">Ver más</a>';
+            descripcion.classList.remove('expanded');
         } else {
-            console.error('URL de imagen no disponible');
+            descripcion.innerHTML = textoCompleto + ' <a href="#" class="ver-menos font-extrabold text-blue-600">Ver menos</a>';
+            descripcion.classList.add('expanded');
         }
+
+        var nuevoEnlace = descripcion.querySelector('a');
+        nuevoEnlace.addEventListener('click', function(event) {
+            event.preventDefault();
+            toggleDescripcion(descripcion);
+        });
     }
-    document.getElementById('downloadQrImage').addEventListener('click', downloadQRImage);
 
+    // Selecciona todos los elementos que tengan la clase o id 'fileInput'
+    const fileInputs = document.querySelectorAll('.fileInput'); // Cambia por el selector adecuado si es una clase o un id
 
+    // Itera sobre todos los elementos 'fileInput'
+    fileInputs.forEach(fileInput => {
+        if (fileInput) {
+            fileInput.addEventListener('change', async (event) => {
+                const file = event.target.files[0];
+                const modelName = fileInput.getAttribute('data-endpoint');
+                console.log(modelName);
 
-    // Seleccionar el input file
-    const fileInput = document.getElementById('fileInput');
+                if (file) {
+                    Swal.fire({
+                        title: '¿Estás seguro?',
+                        text: "Estás a punto de cargar el archivo. Esta acción no puede deshacerse.",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonText: 'Sí, cargar',
+                        cancelButtonText: 'Cancelar',
+                        confirmButtonColor: '#13A438',
+                        cancelButtonColor: '#084F21',
+                    }).then(async (result) => {
+                        if (result.isConfirmed) {
+                            
+                            const formData = new FormData();
+                            formData.append('file', file);
+                            formData.append('nombre_modelo', modelName); 
 
-    // Escuchar cuando el archivo cambia (se selecciona un archivo)
-    fileInput.addEventListener('change', async (event) => {
-        const file = event.target.files[0];
-        const modelName = fileInput.getAttribute('data-endpoint'); // Suponiendo que el input tiene este atributo
-        console.log(modelName);
+                            try {
+                                const response = await fetch('/cargue-archivos', {
+                                    method: 'POST',
+                                    body: formData, 
+                                });
 
-        if (file) {
-            // Mostrar alerta de confirmación con SweetAlert
-            Swal.fire({
-                title: '¿Estás seguro?',
-                text: "Estás a punto de cargar el archivo. Esta acción no puede deshacerse.",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonText: 'Sí, cargar',
-                cancelButtonText: 'Cancelar',
-                confirmButtonColor: '#13A438',
-                cancelButtonColor: '#084F21',
-            }).then(async (result) => {
-                if (result.isConfirmed) {
-                    
-                    const formData = new FormData();
-                    formData.append('file', file);
-                    formData.append('model_name', modelName); 
-
-                    try {
-                        // Hacer la petición al endpoint con fetch
-                        const response = await fetch('/cargue-archivos', {
-                            method: 'POST',
-                            body: formData, 
-                        });
-
-                        if (response.ok) {
-                            Swal.fire('Cargado', 'El archivo se ha cargado exitosamente', 'success').then((result) => {
-                                if (result.isConfirmed){
-                                    window.location.reload();
+                                if (response.ok) {
+                                    Swal.fire('Cargado', 'El archivo se ha cargado exitosamente', 'success').then((result) => {
+                                        if (result.isConfirmed){
+                                            window.location.reload();
+                                        }
+                                    });
+                                } else {
+                                    const errorData = await response.json(); 
+                                    Swal.fire('Error', errorData.detail || 'Hubo un problema al cargar el archivo', 'error').then((result) => {
+                                        if (result.isConfirmed){
+                                            window.location.reload();
+                                        }
+                                    });
                                 }
-                            });
+                            } catch (error) {
+                                Swal.fire('Error', 'Error en la solicitud: ' + error.message, 'error');
+                            }
                         } else {
-                            const errorData = await response.json(); 
-                            Swal.fire('Error', errorData.detail || 'Hubo un problema al cargar el archivo', 'error').then((result) => {
+                            Swal.fire('Cancelado', 'La carga de archivo fue cancelada', 'info').then((result) => {
                                 if (result.isConfirmed){
                                     window.location.reload();
                                 }
                             });
-                        }
-                    } catch (error) {
-                        Swal.fire('Error', 'Error en la solicitud: ' + error.message, 'error');
-                    }
-                } else {
-                    Swal.fire('Cancelado', 'La carga de archivo fue cancelada', 'info').then((result) => {
-                        if (result.isConfirmed){
-                            window.location.reload();
                         }
                     });
                 }
             });
         }
+    });
+
+    // Obtener referencia al botón
+    const scrollToTopBtn = document.getElementById("scrollToTopBtn");
+    window.onscroll = function() {
+        showScrollToTopBtn();
+    };
+
+    function showScrollToTopBtn() {
+        if (document.body.scrollTop > 600 || document.documentElement.scrollTop > 600) {
+            scrollToTopBtn.classList.remove('hidden');
+            scrollToTopBtn.classList.add('block');
+        } else {
+            scrollToTopBtn.classList.remove('block');
+            scrollToTopBtn.classList.add('hidden');
+        }
+    }
+
+    // Cuando el usuario haga clic en el botón, scrollear hacia arriba suavemente
+    scrollToTopBtn.addEventListener('click', function() {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
     });
 
 // cierre del DOM

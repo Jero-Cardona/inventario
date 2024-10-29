@@ -47,6 +47,18 @@ def obtener_mantenimiento(mantenimiento_id: int, db: Session = Depends(get_db)):
 def obtener_rol(rol_id: int, db: Session = Depends(get_db)):
         return crud.get_rol(rol_id, db)
 
+@routes.get("/ubicacion-obtener/{ubicacion_id}", response_model=schemas.Ubicacion, tags=['Routes get record'])
+def obtener_ubiacacion(ubicacion_id: int, db: Session = Depends(get_db)):
+        return crud.get_ubicacion(ubicacion_id, db)
+
+@routes.get("/producto-proveedor-obtener/{id_consult}", response_model=schemas.ProductoProveedores, tags=['Routes get record'])
+def obtener_p_proveedor(id_consult: int, db: Session = Depends(get_db)):
+        return crud.get_producto_proveedor(id_consult, db)
+
+@routes.get("/proveedor-mantenimiento-obtener/{id_consult}", response_model=schemas.ProveedorMantenimiento, tags=['Routes get record'])
+def obtener_prov_mantenimiento(id_consult: int, db: Session = Depends(get_db)):
+        return crud.get_proveedor_mantenimiento(id_consult, db)
+
 # endpoints obtener todos los registros
 
 @routes.get("/responsables-all/", tags=['Routes get all'])
@@ -56,6 +68,10 @@ def responsables_all(db: Session = Depends(get_db)):
 @routes.get("/productos-all/", tags=['Routes get all'])
 def productos_all(db: Session = Depends(get_db)):
         return crud.get_all_productos(db)
+
+@routes.get("/productos-all-fk/", tags=['Routes get all'])
+def productos_all_w_fk(db: Session = Depends(get_db)):
+        return crud.get_all_productos_for_qr(db)
 
 @routes.get("/usuarios-all/", tags=['Routes get all'])
 def usuarios_all(db: Session = Depends(get_db)):
@@ -80,3 +96,7 @@ def roles_all(db: Session = Depends(get_db)):
 @routes.get("/mantenimientos-all/", tags=['Routes get all'])
 def mantenimientos_all(db: Session = Depends(get_db)):
         return crud.get_all_mantenimientos(db)
+
+@routes.get("/ubicaciones-all/", tags=['Routes get all'])
+def ubicaciones_all(db: Session = Depends(get_db)):
+        return crud.get_all_ubicaciones(db)

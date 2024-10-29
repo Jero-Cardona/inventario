@@ -7,6 +7,7 @@ from ..database import SessionLocal, engine
 from ..security import get_password_hash
 from ..crud import get_cod_producto, get_user_by_username
 import logging
+from sqlalchemy import String, cast
 
 # Inicializar logger
 logging.basicConfig(level=logging.INFO)
@@ -104,20 +105,27 @@ MODEL_CONFIG = {
             'id_producto': 'cod_producto',
         }
     },
+    'ProductoProveedores':{
+        'model':models.ProductoProveedores,
+        'columns': {
+            'id_producto': 'producto',
+            'id_proveedor': 'proveedor',
+        }
+    },
 }
 
 
 
-@cargue.post("/cargue-archivos", tags=['Route Cargue'])
-def cargar(file: UploadFile = File(...), model_name: str = Form(...), db: Session = Depends(get_db)):
+@cargue.post("/cargue-archivos", tags=['Routes Pandas'])
+def cargar(file: UploadFile = File(...), nombre_modelo: str = Form(...), db: Session = Depends(get_db)):
 
     if file.content_type not in ["application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "application/vnd.ms-excel"]:
         raise HTTPException(status_code=400, detail="El archivo debe ser un Excel")
 
-    if model_name not in MODEL_CONFIG:
-        raise HTTPException(status_code=400, detail=f"Modelo {model_name} no configurado")
+    if nombre_modelo not in MODEL_CONFIG:
+        raise HTTPException(status_code=400, detail=f"Modelo {nombre_modelo} no configurado")
 
-    model_config = MODEL_CONFIG[model_name]
+    model_config = MODEL_CONFIG[nombre_modelo]
     expected_columns = model_config['columns'].values()
 
     try:
@@ -129,9 +137,14 @@ def cargar(file: UploadFile = File(...), model_name: str = Form(...), db: Sessio
         raise HTTPException(status_code=400, detail=f"El archivo debe contener las siguientes columnas: {', '.join(expected_columns)}")
     
     # mapeo de id a traves del nombre
-    def get_foreign_key_id(model, value, db, model_name, field='nombre'):
-        if model_name == 'Producto' and hasattr(model, 'codigo'):
+    def get_foreign_key_id(model, value, db, nombre_modelo, field='nombre'):
+
+        if pd.isna(value) or value is None:
+            return None
+
+        if nombre_modelo == 'Producto' and hasattr(model, 'codigo'):
             field = 'codigo'
+            value = str(value)
         else:
             field = 'nombre'
         entity = db.query(model).filter(getattr(model, field) == value).first()
@@ -145,7 +158,7 @@ def cargar(file: UploadFile = File(...), model_name: str = Form(...), db: Sessio
 
         for index, row in df_archivos.iterrows():
             record_data = {}
-
+            
             for attr, col in column_mapping.items():
                 if attr == 'id_responsable':
                     record_data[attr] = get_foreign_key_id(models.Responsable, row[col], db, 'Responsable')
@@ -164,19 +177,26 @@ def cargar(file: UploadFile = File(...), model_name: str = Form(...), db: Sessio
                 elif attr == 'hashed_password':
                     record_data[attr] = get_password_hash(row[col])
                 elif attr == 'codigo':
-                    if get_cod_producto(db, row[col]):
+                    if get_cod_producto(db, str(row[col])):
                         raise HTTPException(status_code=400, detail=f"El código '{row[col]}' ya existe en la base de datos.")
-                    record_data[attr] = row[col]
+                    record_data[attr] = str(row[col])
                 else:
                     record_data[attr] = row[col]
-
+            
+            # Crear la instancia del modelo (Producto, Usuario, etc.)
             new_record = model(**record_data)
-            logger.info(f'Datos del registro a insertar: {new_record}')
             db.add(new_record)
-        
+            db.commit()  # Primero, insertar el producto
+            db.refresh(new_record)  # Refrescar para obtener el id generado
+
+            if isinstance(new_record, models.Producto) and record_data.get('id_proveedor') is not None:
+                producto_proveedor = models.ProductoProveedores(
+                    id_producto=new_record.id,
+                    id_proveedor=record_data['id_proveedor']
+                )
+                db.add(producto_proveedor)
+            
         db.commit()
-        db.refresh(new_record)
     except Exception as e:
         raise HTTPException(status_code=400, detail=f'Error al insertar en la base de datos: {e}')
-    
     return {"message": "Archivo cargado y registros creados correctamente"}

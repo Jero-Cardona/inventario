@@ -7,6 +7,7 @@ from fastapi import Form
 # Modelo Categoria
 class CategoriaBase(BaseModel):
     nombre: str
+    depreciacion: float
 
 class CategoriaCreate(CategoriaBase):
     pass
@@ -139,7 +140,7 @@ class ProductoBase(BaseModel):
     modo: Optional[str] = Field(None, alias="modo")
     observacion: Optional[str] = Field(None, alias="observacion")
     id_categoria: int = Field(..., alias="id_categoria")
-    id_proveedor: int = Field(..., alias="id_proveedor")
+    id_proveedor: Optional[int] = Field(None, alias="id_proveedor")
     fecha_ingreso: Optional[date] = Field(..., alias="fecha_ingreso")
     
 
@@ -157,7 +158,7 @@ class ProductoBase(BaseModel):
         modo: Optional[str] = Form(None),
         observacion: Optional[str] = Form(None),
         id_categoria: int = Form(...),
-        id_proveedor: int = Form(...),
+        id_proveedor: Optional[int] = Form(None),
         fecha_ingreso: Optional[date] = Form(...)
     ):
         return cls(
@@ -184,7 +185,7 @@ class Producto(ProductoBase):
     responsable: Responsable
     sede: Sede
     categoria: Categoria
-    proveedor: Proveedor
+    proveedor: Optional[Proveedor]
     
     class Config:
         from_attributes = True
@@ -193,6 +194,7 @@ class Producto(ProductoBase):
 class UbicacionBase(BaseModel):
     nombre: str
     id_sede: int
+    id_producto: int
 
 class UbicacionCreate(UbicacionBase):
     pass
@@ -200,6 +202,7 @@ class UbicacionCreate(UbicacionBase):
 class Ubicacion(UbicacionBase):
     id: int
     sede: Sede
+    producto: Producto
     
     class Config:
         from_attributes = True
@@ -222,18 +225,17 @@ class ProductoProveedores(Producto_ProvBase):
 
 # Modelo Proveedor_Mantenimiento
 class Proveedor_MBase(BaseModel):
-    nombre: str
-    direccion: Optional[str] = None
     contacto: Optional[str] = None
-    telefono: Optional[str] = None
     id_producto: int
+    id_proveedor: int
 
 class Proveedor_MCreate(Proveedor_MBase):
     pass
 
-class Proveedor_M(Proveedor_MBase):
+class ProveedorMantenimiento(Proveedor_MBase):
     id: int
     producto: Producto
+    proveedor: Proveedor
     
     class Config:
         from_attributes = True
@@ -255,3 +257,7 @@ class Mantenimiento(MantenimientoBase):
     
     class Config:
         from_attributes = True
+
+# configuracion de rutas
+class RoutesConfig(BaseModel):
+    routes: List[str] = Form(...)

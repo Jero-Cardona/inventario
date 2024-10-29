@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session, joinedload
 from fastapi import FastAPI, Depends, HTTPException, APIRouter, status, Response, Request, Form
 from . import models, schemas 
-from typing import List
+from typing import List, Optional
 from sqlalchemy.exc import IntegrityError
 from .security import get_password_hash
 from datetime import datetime, date
@@ -39,6 +39,16 @@ def get_producto_for_qr(producto_id: int, db: Session):
         raise HTTPException(status_code=404, detail='Product not found')
     return producto
 
+def get_all_productos_for_qr(db: Session) -> List[models.Producto]:
+    productos = db.query(models.Producto).options(
+        joinedload(models.Producto.responsable), joinedload(models.Producto.sede),
+        joinedload(models.Producto.categoria), joinedload(models.Producto.proveedor)).order_by(
+            models.Producto.id
+        ).all()
+    if not productos:
+        raise HTTPException(status_code=404, detail='Error Products not founds')
+    return productos
+
 def get_proveedor(proveedor_id: int, db: Session):
     proveedor = db.query(models.Proveedor).filter(models.Proveedor.id == proveedor_id).first()
     if not proveedor:
@@ -69,30 +79,51 @@ def get_rol(rol_id: int, db: Session):
         raise HTTPException(status_code=404, detail='Rol not found')
     return rol
 
+def get_ubicacion(ubicacion_id: int, db: Session):
+    ubicacion = db.query(models.Ubicacion).filter(models.Ubicacion.id == ubicacion_id).first()
+    if not ubicacion:
+        raise HTTPException(status_code=404, detail='Ubicacacion not found')
+    return ubicacion
+
+def get_producto_proveedor(id_consult: int, db: Session):
+    producto_proveedor = db.query(models.ProductoProveedores).filter(models.ProductoProveedores.id == id_consult).first()
+    if not producto_proveedor:
+        raise HTTPException(status_code=404, detail='Product and Proveedor not found')
+    return producto_proveedor
+
+def get_proveedor_mantenimiento(id_consult: int, db: Session):
+    proveedor_mantenimiento = db.query(models.Proveedormantenimiento).filter(models.Proveedormantenimiento.id == id_consult).first()
+    if not proveedor_mantenimiento:
+        raise HTTPException(status_code=404, detail='Product and Proveedor not found')
+    return proveedor_mantenimiento
+
 # obtener todos los registros
 def get_all_responsables(db: Session) -> List[models.Responsable]:
-    return db.query(models.Responsable).order_by(models.Responsable.id).all()
+    return db.query(models.Responsable).order_by(models.Responsable.id.asc()).all()
 
 def get_all_productos(db: Session) -> List[models.Producto]:
-    return db.query(models.Producto).order_by(models.Producto.id).all()
+    return db.query(models.Producto).order_by(models.Producto.id.asc()).all()
 
 def get_all_usuarios(db: Session) -> List[models.Usuarios]:
-    return db.query(models.Usuarios).order_by(models.Usuarios.id).all()
+    return db.query(models.Usuarios).order_by(models.Usuarios.id.asc()).all()
 
 def get_all_categorias(db: Session) -> List[models.Categoria]:
-    return db.query(models.Categoria).order_by(models.Categoria.id).all()
+    return db.query(models.Categoria).order_by(models.Categoria.id.asc()).all()
 
 def get_all_sedes(db: Session) -> List[models.Sede]:
-    return db.query(models.Sede).order_by(models.Sede.id).all()
+    return db.query(models.Sede).order_by(models.Sede.id.asc()).all()
 
 def get_all_proveedores(db: Session) -> List[models.Proveedor]:
-    return db.query(models.Proveedor).order_by(models.Proveedor.id).all()
+    return db.query(models.Proveedor).order_by(models.Proveedor.id.asc()).all()
 
 def get_all_roles(db: Session) -> List[models.Roles]:
-    return db.query(models.Roles).order_by(models.Roles.id).all()
+    return db.query(models.Roles).order_by(models.Roles.id.asc()).all()
 
 def get_all_mantenimientos(db: Session) -> List[models.Mantenimiento]:
-    return db.query(models.Mantenimiento).order_by(models.Mantenimiento.id).all()
+    return db.query(models.Mantenimiento).order_by(models.Mantenimiento.id.asc()).all()
+
+def get_all_ubicaciones(db: Session) -> list[models.Ubicacion]:
+    return db.query(models.Ubicacion).order_by(models.Ubicacion.id.asc()).all()
 
 # Funciones de Actualizar Datos
 def update_responsable(db: Session, responsable_id: int, nombre: str, correo: str, telefono: str):
@@ -126,6 +157,21 @@ def update_m(db: Session, mantenimiento_id: int, fecha_mantenimiento: date, obse
         db.rollback()  
         raise e  
 
+def update_ubication(db: Session, ubicacion_id: int, nombre: str, id_sede: int, id_producto: int):
+    try:
+        ubicacion = db.query(models.Ubicacion).filter(models.Ubicacion.id == ubicacion_id).first()
+        if ubicacion:
+            ubicacion.nombre = nombre
+            ubicacion.id_sede = id_sede
+            ubicacion.id_producto = id_producto
+            db.commit()
+            db.refresh(ubicacion)
+            return ubicacion
+        return None
+    except Exception as e:
+        db.rollback()
+        raise e
+
 def update_user(db: Session, usuario_id: int, nombre: str, correo: str, hashed_password: str,
                 estado: str, fecha_creacion: date, id_rol: int):
     db_user = db.query(models.Usuarios).filter(models.Usuarios.id == usuario_id).first()
@@ -154,9 +200,10 @@ def update_proveedor(db: Session, proveedor_id: int, nombre: str, direccion: str
     return None
 
 def update_producto(db: Session, producto_id: int, id_responsable: int, codigo: str, id_sede: int, cantidad: int, uso: str, 
-            estado: str, fecha_mantenimiento: date, costo_inicial: float, modo: str, observacion: str,
-            id_categoria: int, id_proveedor: int, fecha_ingreso: date):
+                    estado: str, fecha_mantenimiento: date, costo_inicial: float, modo: str, observacion: str,
+                    id_categoria: int, fecha_ingreso: date, id_proveedor: Optional[int] = None):
     db_producto = db.query(models.Producto).filter(models.Producto.id == producto_id).first()
+
     if db_producto:
         db_producto.id_responsable = id_responsable
         db_producto.codigo = codigo
@@ -169,12 +216,44 @@ def update_producto(db: Session, producto_id: int, id_responsable: int, codigo: 
         db_producto.modo = modo
         db_producto.observacion = observacion
         db_producto.id_categoria = id_categoria
-        db_producto.id_proveedor = id_proveedor
         db_producto.fecha_ingreso = fecha_ingreso
+
+        if id_proveedor is not None:
+            db_producto.id_proveedor = id_proveedor
+
+            db_proveedor = db.query(models.ProductoProveedores).filter(
+                models.ProductoProveedores.id_producto == producto_id).first()
+
+            if db_proveedor:
+                db_proveedor.id_proveedor = id_proveedor
+                db.commit()
+                db.refresh(db_proveedor)
+            else:
+                new_producto_proveedor = models.ProductoProveedores(
+                    id_producto=producto_id,
+                    id_proveedor=id_proveedor
+                )
+                db.add(new_producto_proveedor)
+                db.commit()
+                db.refresh(new_producto_proveedor)
+
+        elif db_producto.id_proveedor is not None:
+            db_proveedor = db.query(models.ProductoProveedores).filter(
+                models.ProductoProveedores.id_producto == producto_id).first()
+
+            if db_proveedor:
+                db.delete(db_proveedor)
+                db.commit()
+
+            db_producto.id_proveedor = None
+
         db.commit()
         db.refresh(db_producto)
+
         return db_producto
+
     return None
+
 
 def update_sede(db: Session, sede_id: int, nombre: str, direccion: str, telefono: str):
     sede = db.query(models.Sede).filter(models.Sede.id == sede_id).first()
@@ -187,14 +266,43 @@ def update_sede(db: Session, sede_id: int, nombre: str, direccion: str, telefono
         return sede
     return None
 
-def update_categoria(db: Session, categoria_id: int, nombre: str):
+def update_categoria(db: Session, categoria_id: int, nombre: str, depreciacion: float):
     try:
         categoria = db.query(models.Categoria).filter(models.Categoria.id == categoria_id).first()
         if categoria:
             categoria.nombre = nombre
+            categoria.depreciacion = depreciacion
             db.commit()
             db.refresh(categoria)
             return categoria
+        return None
+    except Exception as e:
+        db.rollback()
+        raise e
+
+def update_proveedor_m(db: Session, proveedor_mante_id: int, contacto: str, id_proveedor:int, id_producto: int):
+    try:
+        proveedor_mante = db.query(models.Proveedormantenimiento).filter(models.Proveedormantenimiento.id == proveedor_mante_id).first()
+        if proveedor_mante:
+            proveedor_mante.contacto = contacto
+            proveedor_mante.id_proveedor = id_proveedor
+            proveedor_mante.id_producto = id_producto
+            db.commit()
+            db.refresh(proveedor_mante)
+            return proveedor_mante
+        return None
+    except Exception as e:
+        db.rollback()
+        raise e
+
+def update_rol(db: Session, rol_id: int, nombre: str):
+    try:
+        rol = db.query(models.Roles).filter(models.Roles.id == rol_id).first()
+        if rol:
+            rol.nombre = nombre
+            db.commit()
+            db.refresh(rol)
+            return rol
         return None
     except Exception as e:
         db.rollback()
@@ -204,9 +312,9 @@ def update_categoria(db: Session, categoria_id: int, nombre: str):
 def delete_responsable(db: Session, responsable_id: int):
     try:
         result = db.query(models.Responsable).filter(models.Responsable.id == responsable_id).delete(synchronize_session=False)
-        db.commit()
         if result == 0:
             return "Not Found"
+        db.commit()
         return "Deleted Responsable"
     except IntegrityError:
         db.rollback()
@@ -215,9 +323,9 @@ def delete_responsable(db: Session, responsable_id: int):
 def delete_rol(db: Session, rol_id: int):
     try:
         result = db.query(models.Roles).filter(models.Roles.id == rol_id).delete(synchronize_session=False)
-        db.commit()
         if result == 0:
             return "Not found"
+        db.commit()
         return "Deleted Rol"
     except IntegrityError:
         db.rollback()
@@ -226,20 +334,20 @@ def delete_rol(db: Session, rol_id: int):
 def delete_producto(db: Session, producto_id: int):
     try:
         result = db.query(models.Producto).filter(models.Producto.id == producto_id).delete(synchronize_session=False)
-        db.commit()
         if result == 0:
             return "Not found"
+        db.commit()
         return "Deleted Producto"
-    except IntegrityError:
+    except IntegrityError as e:
         db.rollback()
-        return "ForeignKeyViolation"
+        return e
 
 def delete_categoria(db: Session, categoria_id: int):
     try:
         result = db.query(models.Categoria).filter(models.Categoria.id == categoria_id).delete(synchronize_session=False)
-        db.commit()
         if result == 0:
             return "Not found"
+        db.commit()
         return "Deleted Categoria"
     except IntegrityError:
         db.rollback()
@@ -248,9 +356,9 @@ def delete_categoria(db: Session, categoria_id: int):
 def delete_sede(db: Session, sede_id: int):
     try:
         result = db.query(models.Sede).filter(models.Sede.id == sede_id).delete(synchronize_session=False)
-        db.commit()
         if result == 0:
             return "Not found"
+        db.commit()
         return "Deleted Sede"
     except IntegrityError:
         db.rollback()
@@ -259,9 +367,9 @@ def delete_sede(db: Session, sede_id: int):
 def delete_mantenimiento(db: Session, mantenimiento_id: int):
     try:
         result = db.query(models.Mantenimiento).filter(models.Mantenimiento.id == mantenimiento_id).delete(synchronize_session=False)
-        db.commit()
         if result == 0:
             return "Not found"
+        db.commit()
         return "Deleted Mantenimiento"
     except IntegrityError:
         db.rollback()
@@ -270,9 +378,9 @@ def delete_mantenimiento(db: Session, mantenimiento_id: int):
 def delete_proveedor(db: Session, proveedor_id: int):
     try:
         result = db.query(models.Proveedor).filter(models.Proveedor.id == proveedor_id).delete(synchronize_session=False)
-        db.commit()
         if result == 0:
             return "Not found"
+        db.commit()
         return "Deleted Proveedor"
     except IntegrityError:
         db.rollback()
@@ -281,9 +389,9 @@ def delete_proveedor(db: Session, proveedor_id: int):
 def delete_ubicacion(db: Session, ubicacion_id: int):
     try:
         result = db.query(models.Ubicacion).filter(models.Ubicacion.id == ubicacion_id).delete(synchronize_session=False)
-        db.commit()
         if result == 0:
             return "Not found"
+        db.commit()
         return "Deleted Ubicacion"
     except IntegrityError:
         db.rollback()
@@ -292,10 +400,21 @@ def delete_ubicacion(db: Session, ubicacion_id: int):
 def delete_usuario(db: Session, usuario_id: int):
     try:
         result = db.query(models.Usuarios).filter(models.Usuarios.id == usuario_id).delete(synchronize_session=False)
-        db.commit()
         if result == 0:
             return "Not found"
+        db.commit()
         return "Deleted Usuario"
+    except IntegrityError:
+        db.rollback()
+        return "ForeignKeyViolation"
+
+def delete_proveedor_mante(db: Session, proveedor_mante_id: int):
+    try:
+        result = db.query(models.Proveedormantenimiento).filter(models.Proveedormantenimiento.id == proveedor_mante_id).delete(synchronize_session=False)
+        if result == 0:
+            return "Not found"
+        db.commit()
+        return "Deleted Mantenimiento del proveedor"
     except IntegrityError:
         db.rollback()
         return "ForeignKeyViolation"
@@ -320,4 +439,50 @@ def create_user(db: Session, usuario: schemas.UsuariosCreate):
     db.add(db_user)
     db.commit()
     db.refresh(db_user)
-    return RedirectResponse(url="/usuario-section", status_code=status.HTTP_303_SEE_OTHER) 
+    return RedirectResponse(url="/usuario-section", status_code=status.HTTP_303_SEE_OTHER)
+
+# calcular la depreciacion de un producto
+def calcular_valor_actual(producto):
+    # Datos importantes
+    fecha_ingreso = producto.fecha_ingreso
+    costo_inicial = producto.costo_inicial
+    porcentaje_m = producto.categoria.depreciacion  # Depreciación mensual en porcentaje 
+    
+    fecha_actual = datetime.now().date()
+    days_pass = (fecha_actual - fecha_ingreso).days
+    years_pass = (fecha_actual - fecha_ingreso).days / 365.25  # Considera años bisiestos
+    
+    depreciacion_acumulada = ((porcentaje_m * 12) / 100) * costo_inicial * years_pass
+    valor_actual = costo_inicial - depreciacion_acumulada
+    
+    if valor_actual < 0:
+        valor_actual = 0
+        
+    valor = round(valor_actual, 1)
+    return valor
+
+# funcion para el calculo de cada categoria
+def depreciacion_categorias(db: Session):
+    productos = db.query(models.Producto).all()
+    categorias = db.query(models.Categoria).all()
+    
+    depreciacion_por_categoria = {categoria.id:0 for categoria in categorias}
+    suma_costos_categoria = {categoria.id:0 for categoria in categorias}
+    
+    resultado = []
+    for producto in productos:
+        valor_actual = calcular_valor_actual(producto)
+        
+        if producto.id_categoria:
+            depreciacion_por_categoria[producto.id_categoria] += valor_actual
+        
+        resultado = []
+        for categoria in categorias:
+            total_valor_actual = f"{depreciacion_por_categoria[categoria.id]:,.2f}"
+            resultado.append({
+                "categoria": categoria.nombre,
+                "total_valor_actual": total_valor_actual
+            })
+    # costos actuales
+    return resultado
+

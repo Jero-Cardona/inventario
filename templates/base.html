@@ -8,18 +8,23 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="../static/public/output.css">
+    <!-- <link rel="icon" href="../static/imagenes/icon.jpg" type="image/x-icon"> -->
+    <link rel="apple-touch-icon" sizes="180x180" href="../static/imagenes/">
+    <link rel="icon" type="image/png" sizes="32x32" href="../static/imagenes//favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../static/imagenes//favicon-16x16.png">
+    <!-- <link rel="manifest" href="/site.webmanifest"> -->
 </head>
-<body class="bg-gray-300 h-full flex flex-row ">
+<body class="bg-[#DDDDDD] h-full md:flex md:flex-row">
 <aside id="logo-sidebar"
-class="w-1/6 py-3 flex flex-col items-center gap-14 transition-transform -translate-x-full bg-white border-r border-gray-200 sm:translate-x-0 max-sm:hidden max-md:hidden dark:border-gray-400"
+class="w-1/6 py-3 flex flex-col items-center gap-14 transition-transform esa -translate-x-full bg-white border-r border-gray-400 sm:translate-x-0 max-sm:hidden max-md:hidden dark:border-gray-400"
 style="height: auto;"
 aria-label="Sidebar">
-    <img src="/static/imagenes/imglogo2.png" alt="Logo" width="150px" height="50px">
-    <div class="h-full w-full pl-2 overflow-y-auto bg-white dark:bg-white">
-        <ul class="space-y-2 font-medium">
+<img src="/static/imagenes/imglogo2.png" class="" alt="Logo" width="150px" height="50px">
+<div class="h-full w-full pl-2 overflow-y-auto bg-white dark:bg-white">
+        <ul class="space-y-2 font-semibold">
         <li>
             <a href="../inicio"
-                class="flex items-center p-2 text-Nac rounded-lg dark:text-black hover:bg-gray-100 dark:hover:bg-Andes group">
+                class="route flex items-center p-2 text-green-800 rounded-lg dark:text-black hover:bg-green-200 dark:hover:bg-Andes group">
                 <svg
                     class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-Nac dark:group-hover:text-white"
                     aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
@@ -30,7 +35,7 @@ aria-label="Sidebar">
             </a>
         </li>
         <li>
-            <a href="../producto-section" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-black hover:bg-gray-100 dark:hover:bg-Andes group">
+            <a href="../producto-section" class="route flex items-center p-2 text-green-800 rounded-lg dark:text-black hover:bg-green-200 dark:hover:bg-Andes group">
             <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
                 <path d="M184 48H328c4.4 0 8 3.6 8 8V96H176V56c0-4.4 3.6-8 8-8zm-56 8V96H64C28.7 96 0 124.7 0 160v96H192 320 512V160c0-35.3-28.7-64-64-64H384V56c0-30.9-25.1-56-56-56H184c-30.9 0-56 25.1-56 56zM512 288H320v32c0 17.7-14.3 32-32 32H224c-17.7 0-32-14.3-32-32V288H0V416c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V288z"/></svg>
                 <span class="flex-1 ms-3 whitespace-nowrap">Inventario</span>
@@ -38,7 +43,7 @@ aria-label="Sidebar">
         </li> 
         <li>
             <a href="../mantenimiento-section"
-                class="flex items-center p-2 text-gray-900 rounded-lg dark:text-black hover:bg-gray-100 dark:hover:bg-Andes group">
+                class="route flex items-center p-2 text-green-800 rounded-lg dark:text-black hover:bg-green-200 dark:hover:bg-Andes group">
                 <svg
                     class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-Nac dark:group-hover:text-white"
                     aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
@@ -49,20 +54,8 @@ aria-label="Sidebar">
             </a>
         </li>
         <li>
-            <a href="#"
-                class="flex items-center p-2 text-gray-900 rounded-lg dark:text-black hover:bg-gray-100 dark:hover:bg-Andes group">
-                <svg
-                    class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
-                    aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-                    <path
-                    d="M96 0C60.7 0 32 28.7 32 64V448c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V64c0-35.3-28.7-64-64-64H96zM208 288h64c44.2 0 80 35.8 80 80c0 8.8-7.2 16-16 16H144c-8.8 0-16-7.2-16-16c0-44.2 35.8-80 80-80zm-32-96a64 64 0 1 1 128 0 64 64 0 1 1 -128 0zM512 80c0-8.8-7.2-16-16-16s-16 7.2-16 16v64c0 8.8 7.2 16 16 16s16-7.2 16-16V80zM496 192c-8.8 0-16 7.2-16 16v64c0 8.8 7.2 16 16 16s16-7.2 16-16V208c0-8.8-7.2-16-16-16zm16 144c0-8.8-7.2-16-16-16s-16 7.2-16 16v64c0 8.8 7.2 16 16 16s16-7.2 16-16V336z" />
-                </svg>
-                <span class="flex-1 ms-3 whitespace-nowrap">Contactos</span>
-            </a>
-        </li>
-        <li>
             <a href="../reportes-section"
-                class="flex items-center p-2 text-gray-900 rounded-lg dark:text-black hover:bg-gray-100 dark:hover:bg-Andes group">
+                class="route flex items-center p-2 text-green-800 rounded-lg dark:text-black hover:bg-green-200 dark:hover:bg-Andes group">
                 <svg
                     class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
                     aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
@@ -74,7 +67,7 @@ aria-label="Sidebar">
         </li>
         <li>
             <a href="../usuario-section"
-                class="flex items-center p-2 text-gray-900 rounded-lg dark:text-black hover:bg-gray-100 dark:hover:bg-Andes group">
+                class="route flex items-center p-2 text-green-800 rounded-lg dark:text-black hover:bg-green-200 dark:hover:bg-Andes group">
                 <svg
                     class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
                     aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512">
@@ -86,7 +79,7 @@ aria-label="Sidebar">
         </li>
         <li>
             <a href="../rol-section"
-                class="flex items-center p-2 text-gray-900 rounded-lg dark:text-black hover:bg-gray-100 dark:hover:bg-Andes group">
+                class="route flex items-center p-2 text-green-800 rounded-lg dark:text-black hover:bg-green-200 dark:hover:bg-Andes group">
                 <svg
                     class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
                     aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
@@ -98,7 +91,7 @@ aria-label="Sidebar">
         </li>
         <li>
             <a href="../sede-section"
-                class="flex items-center p-2 text-gray-900 rounded-lg dark:text-black hover:bg-gray-100 dark:hover:bg-Andes group">
+                class="route flex items-center p-2 text-green-800 rounded-lg dark:text-black hover:bg-green-200 dark:hover:bg-Andes group">
                 <svg
                     class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
                     aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
@@ -110,7 +103,7 @@ aria-label="Sidebar">
         </li>
         <li>
             <a href="../responsable-section"
-                class="flex items-center p-2 text-gray-900 rounded-lg dark:text-black hover:bg-gray-100 dark:hover:bg-Andes group">
+                class="route flex items-center p-2 text-green-800 rounded-lg dark:text-black hover:bg-green-200 dark:hover:bg-Andes group">
                 <svg
                     class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
                     aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
@@ -122,7 +115,7 @@ aria-label="Sidebar">
         </li>
         <li>
             <a href="../proveedor-section"
-                class="flex items-center p-2 text-gray-900 rounded-lg dark:text-black hover:bg-gray-100 dark:hover:bg-Andes group">
+                class="route flex items-center p-2 text-green-800 rounded-lg dark:text-black hover:bg-green-200 dark:hover:bg-Andes group">
                 <svg
                     class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
                     aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512">
@@ -134,18 +127,16 @@ aria-label="Sidebar">
         </li>
         <li>
             <a href="../categoria-section"
-                class="flex items-center p-2 text-gray-900 rounded-lg dark:text-black hover:bg-gray-100 dark:hover:bg-Andes group">
-                <svg
-                    class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
-                    aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512">
-                    <path
-                    d="M96 128a128 128 0 1 1 256 0A128 128 0 1 1 96 128zM0 482.3C0 383.8 79.8 304 178.3 304h91.4C368.2 304 448 383.8 448 482.3c0 16.4-13.3 29.7-29.7 29.7H29.7C13.3 512 0 498.7 0 482.3zM609.3 512H471.4c5.4-9.4 8.6-20.3 8.6-32v-8c0-60.7-27.1-115.2-69.8-151.8c2.4-.1 4.7-.2 7.1-.2h61.4C567.8 320 640 392.2 640 481.3c0 17-13.8 30.7-30.7 30.7zM432 256c-31 0-59-12.6-79.3-32.9C372.4 196.5 384 163.6 384 128c0-26.8-6.6-52.1-18.3-74.3C384.3 40.1 407.2 32 432 32c61.9 0 112 50.1 112 112s-50.1 112-112 112z" />
-                </svg>
+                class="route flex items-center p-2 text-green-800 rounded-lg dark:text-black hover:bg-green-200 dark:hover:bg-Andes group">
+                <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" 
+                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M264.5 5.2c14.9-6.9 32.1-6.9 47 0l218.6 101c8.5 3.9 13.9 12.4 13.9 21.8s-5.4 17.9-13.9 21.8l-218.6 101c-14.9 6.9-32.1 6.9-47 0L45.9 149.8C37.4 145.8 32 137.3 32 128s5.4-17.9 13.9-21.8L264.5 5.2zM476.9 209.6l53.2 24.6c8.5 3.9 13.9 12.4 13.9 21.8s-5.4 17.9-13.9 21.8l-218.6 101c-14.9 6.9-32.1 6.9-47 0L45.9 277.8C37.4 273.8 32 265.3 32 256s5.4-17.9 13.9-21.8l53.2-24.6 152 70.2c23.4 10.8 50.4 10.8 73.8 0l152-70.2zm-152 198.2l152-70.2 53.2 24.6c8.5 3.9 13.9 12.4 13.9 21.8s-5.4 17.9-13.9 21.8l-218.6 101c-14.9 6.9-32.1 6.9-47 0L45.9 405.8C37.4 401.8 32 393.3 32 384s5.4-17.9 13.9-21.8l53.2-24.6 152 70.2c23.4 10.8 50.4 10.8 73.8 0z"/></svg>
                 <span class="flex-1 ms-3 whitespace-nowrap">Categorias</span>
             </a>
         </li>
         </ul>
     </div>
+    <!-- <a href="../salir" class="bg-Andes px-6 py-3 rounded-lg hover:bg-green-800 m-auto text-white text-center font-bold">Salir </a> -->
+    <p class="text-md text-gray-700 text-center mt-16 font-rubi"><i class="fa-regular fa-copyright fa-lg mr-2"></i> 2024 AndesBPO</p>
 </aside>
 <!-- contenedor central -->
 <div class="flex flex-col w-full gap-4 items-center ">
@@ -153,54 +144,60 @@ aria-label="Sidebar">
         <div class="px-3 py-3 lg:px-5 lg:pl-3">
             <div class="flex items-center justify-between">
                 <!-- contenedor menu -->
-                <div @click.away="open = false" class="relative md:hidden" x-data="{ open: false }">
+                <div @click.away="open = false" class="relative md:hidden z-30 inline-block text-left" x-data="{ open: false }">
                     <button @click="open = !open" class="text-3xl text-white md:hidden">
                         <i class="fa-solid fa-bars"></i>
                     </button>
-                    <div x-show="open" x-transition:enter="transition ease-out duration-100" x-transition:enter-start="transform opacity-1 scale-95" x-transition:enter-end="transform opacity-100 scale-100" x-transition:leave="transition ease-in duration-75" x-transition:leave-start="transform opacity-100 scale-100" x-transition:leave-end="transform opacity-0 scale-95" class="absolute right-0 w-full mt-2 origin-top-right rounded-md shadow-lg z-50">
-                        <div class="px-2 py-2 bg-white rounded-md shadow dark-mode:bg-gray-800">
-                            <a href="/inicio" class="block px-4 py-2 mt-2 text-sm font-semibold bg-transparent rounded-lg dark-mode:bg-transparent dark-mode:hover:bg-gray-600 dark-mode:focus:bg-gray-600 dark-mode:focus:text-white dark-mode:hover:text-white dark-mode:text-gray-200 md:mt-0 hover:text-gray-900 focus:text-gray-900 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none focus:shadow-outline">
-                                Inicio
-                            </a>
-                            <a href="/producto-section" class="block px-4 py-2 mt-2 text-sm font-semibold bg-transparent rounded-lg dark-mode:bg-transparent dark-mode:hover:bg-gray-600 dark-mode:focus:bg-gray-600 dark-mode:focus:text-white dark-mode:hover:text-white dark-mode:text-gray-200 md:mt-0 hover:text-gray-900 focus:text-gray-900 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none focus:shadow-outline">
-                                Inventario
-                            </a>
-                            <a href="/mantenimiento-section" class="block px-4 py-2 mt-2 text-sm font-semibold bg-transparent rounded-lg dark-mode:bg-transparent dark-mode:hover:bg-gray-600 dark-mode:focus:bg-gray-600 dark-mode:focus:text-white dark-mode:hover:text-white dark-mode:text-gray-200 md:mt-0 hover:text-gray-900 focus:text-gray-900 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none focus:shadow-outline">
-                                Mantenimiento
-                            </a>
-                            <a href="/categorias-section" class="block px-4 py-2 mt-2 text-sm font-semibold bg-transparent rounded-lg dark-mode:bg-transparent dark-mode:hover:bg-gray-600 dark-mode:focus:bg-gray-600 dark-mode:focus:text-white dark-mode:hover:text-white dark-mode:text-gray-200 md:mt-0 hover:text-gray-900 focus:text-gray-900 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none focus:shadow-outline">
-                                Categorías
-                            </a>
-                            <a href="/salir" class="block px-4 py-2 mt-2 text-sm font-semibold bg-transparent rounded-lg dark-mode:bg-transparent dark-mode:hover:bg-gray-600 dark-mode:focus:bg-gray-600 dark-mode:focus:text-white dark-mode:hover:text-white dark-mode:text-gray-200 md:mt-0 hover:text-gray-900 focus:text-gray-900 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none focus:shadow-outline">
-                                Salir
-                            </a>
+                    <div x-show="open" x-transition:enter="transition ease-out duration-100" x-transition:enter-start="transform opacity-0 scale-95" x-transition:enter-end="transform opacity-100 scale-100" x-transition:leave="transition ease-in duration-75" x-transition:leave-start="transform opacity-100 scale-100" x-transition:leave-end="transform opacity-0 scale-95" class="absolute left-0 w-56 mt-2 bg-white rounded-md shadow-lg z-50">
+                        <div class="py-1" role="none">
+                            <a href="/inicio" class="route block px-4 py-2 text-sm text-gray-700 hover:bg-green-200"><i class="fa-solid fa-house mr-2"></i>Inicio</a>
+                            <a href="/producto-section" class="route block px-4 py-2 text-sm text-gray-700 hover:bg-green-200"><i class="fa-solid fa-briefcase mr-2"></i>Inventario</a>
+                            <a href="/mantenimiento-section" class="route block px-4 py-2 text-sm text-gray-700 hover:bg-green-200"><i class="fa-solid fa-microchip mr-2"></i>Mantenimiento</a>
+                            <a href="/reportes-section" class="route block px-4 py-2 text-sm text-gray-700 hover:bg-green-200"><i class="fa-solid fa-list-check mr-2"></i>Reportes</a>
+                            <a href="/usuario-section" class="route block px-4 py-2 text-sm text-gray-700 hover:bg-green-200"><i class="fa-solid fa-users mr-2"></i>Usuarios</a>
+                            <a href="/rol-section" class="route block px-4 py-2 text-sm text-gray-700 hover:bg-green-200"><i class="fa-solid fa-user mr-2"></i>Roles</a>
+                            <a href="/sede-section" class="route block px-4 py-2 text-sm text-gray-700 hover:bg-green-200"><i class="fa-solid fa-warehouse mr-2"></i>Sedes</a>
+                            <a href="/responsable-section" class="route block px-4 py-2 text-sm text-gray-700 hover:bg-green-200"><i class="fa-solid fa-user-tie mr-2"></i>Responsables</a>
+                            <a href="/proveedor-section" class="route block px-4 py-2 text-sm text-gray-700 hover:bg-green-200"><i class="fa-solid fa-user-group mr-2"></i>Proveedores</a>
+                            <a href="/categoria-section" class="route block px-4 py-2 text-sm text-gray-700 hover:bg-green-200"><i class="fa-solid fa-layer-group mr-2"></i>Categorías</a>
                         </div>
                     </div>
                 </div>
-                <div class="relative">
-                <h4 class="font-extrabold text-xl text-white">{% block usuario%} Usuario Default {% endblock usuario%}</h4>
-                <p class="font-bold text-sm text-white">{{request.session["rol"]}}</p>
+                <div class="max-md:absolute max-md:ml-10">
+                <h4 class="font-extrabold text-xl max-sm:text-base text-white">{% block usuario%} Usuario Default {% endblock usuario%}</h4>
+                <p class="font-bold text-sm italic max-sm:text-sm text-white">{{request.session["rol"]}}</p>
                 </div>
-                <div @click.away="open = false" class="relative" x-data="{ open: false }">
-                    <button @click="open = !open" class="flex flex-row items-center w-full px-4 py-2 mt-2 text-sm font-semibold text-left bg-transparent rounded-lg dark-mode:bg-transparent dark-mode:focus:text-white dark-mode:hover:text-white dark-mode:focus:bg-gray-600 dark-mode:hover:bg-gray-600 md:w-auto md:inline md:mt-0 md:ml-4 hover:text-gray-900 focus:text-gray-900 hover:bg-Andes focus:bg-green-600 focus:outline-none focus:shadow-outline">
-                        <span class="text-white font-bold">Configuracion</span>
-                        <svg fill="currentColor" viewBox="0 0 20 20" :class="{'rotate-180': open, 'rotate-0': !open}" class="inline w-4 h-4 mt-1 ml-1 transition-transform duration-200 transform md:-mt-1">
+                <!-- contenedor configuracion -->
+                <div @click.away="open = false" class="relative z-30" x-data="{ open: false }">
+                    <button @click="open = !open" class="flex flex-row items-center w-full px-4 py-2 mt-2 text-sm font-semibold text-left bg-transparent rounded-lg md:w-auto md:inline md:mt-0 md:ml-4 hover:text-gray-900 focus:text-gray-900 hover:bg-Andes focus:bg-green-600 focus:outline-none focus:shadow-outline max-[400px]:bg-white">
+                        <span class="text-white font-bold max-[400px]:hidden">Configuracion</span>
+                        <svg fill="currentColor" viewBox="0 0 20 20" :class="{'rotate-180': open, 'rotate-0': !open}" class="inline w-4 h-4 mt-1 ml-1 transition-transform duration-200 transform md:-mt-1 max-[400px]:hidden">
                             <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path>
                         </svg>
+                        <i class="fa-solid fa-gear mr-2 text-gray-900 max-[400px]:inline hidden"></i>
                     </button>
-                    <div x-show="open" x-transition:enter="transition ease-out duration-100" x-transition:enter-start="transform opacity-1 scale-95" x-transition:enter-end="transform opacity-100 scale-100" x-transition:leave="transition ease-in duration-75" x-transition:leave-start="transform opacity-100 scale-100" x-transition:leave-end="transform opacity-0 scale-95" class="absolute right-0 w-full mt-2 origin-top-right rounded-md shadow-lg md:w-48 z-50">
+                    <div x-show="open" x-transition:enter="transition ease-out duration-100" x-transition:enter-start="transform opacity-1 scale-95" x-transition:enter-end="transform opacity-100 scale-100" x-transition:leave="transition ease-in duration-75" x-transition:leave-start="transform opacity-100 scale-100" x-transition:leave-end="transform opacity-0 scale-95" class="absolute right-0 w-80 mt-2 origin-top-right rounded-md shadow-lg md:w-80 z-50">
                         <div class="px-2 py-2 bg-white rounded-md shadow dark-mode:bg-gray-800">
-                            <div class="px-4 py-3" role="none">
-                                <p class="text-sm text-gray-900 dark:text-white" role="none">
-                                    {{request.session["nombre"]}}
-                                </p>
-                                <p class="text-sm font-medium text-gray-900 truncate dark:text-gray-300" role="none">
-                                    {{request.session["correo"]}}
-                                </p>
+                            <div class="px-4 py-3 inline-flex items-center" role="none">
+                                <i class="fa-solid fa-user-check fa-lg mr-3 rounded-lg items-center text-center content-center m-auto bg-green-200 w-12 border border-Andes h-12"></i>
+                                <div>
+                                    <p class="text-sm text-gray-900 dark:text-white" role="none">
+                                        {{request.session["nombre"]}}
+                                    </p>
+                                    <p class="text-sm font-medium text-gray-900 truncate dark:text-gray-300 italic" role="none">
+                                        {{request.session["correo"]}}
+                                    </p>
+                                </div>
                             </div>
-                            <a class="block px-4 py-2 mt-2 text-sm font-semibold bg-transparent rounded-lg dark-mode:bg-transparent dark-mode:hover:bg-gray-600 dark-mode:focus:bg-gray-600 dark-mode:focus:text-white dark-mode:hover:text-white dark-mode:text-gray-200 md:mt-0 hover:text-gray-900 focus:text-gray-900 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none focus:shadow-outline" href="#">Reportar bug</a>
-                            <a class="block px-4 py-2 mt-2 text-sm font-semibold bg-transparent rounded-lg dark-mode:bg-transparent dark-mode:hover:bg-gray-600 dark-mode:focus:bg-gray-600 dark-mode:focus:text-white dark-mode:hover:text-white dark-mode:text-gray-200 md:mt-0 hover:text-gray-900 focus:text-gray-900 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none focus:shadow-outline" href="#">Ayuda</a>
-                            <a class="block px-4 py-2 mt-2 text-sm font-semibold bg-transparent rounded-lg dark-mode:bg-transparent dark-mode:hover:bg-gray-600 dark-mode:focus:bg-gray-600 dark-mode:focus:text-white dark-mode:hover:text-white dark-mode:text-gray-200 md:mt-0 hover:text-gray-900 focus:text-gray-900 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none focus:shadow-outline" href="/salir">salir</a>
+                            <a class="block px-4 py-2 mt-2 text-sm font-semibold bg-transparent rounded-lg dark-mode:bg-transparent dark-mode:hover:bg-gray-600 dark-mode:focus:bg-gray-600 dark-mode:focus:text-white dark-mode:hover:text-white dark-mode:text-gray-200 md:mt-0 hover:text-gray-900 focus:text-gray-900 hover:bg-green-200 focus:bg-gray-200 focus:outline-none focus:shadow-outline" href="#">
+                                <i class="fa-solid fa-bug mr-3"></i>Reportar bug
+                            </a>
+                            <a class="block px-4 py-2 mt-2 text-sm font-semibold bg-transparent rounded-lg dark-mode:bg-transparent dark-mode:hover:bg-gray-600 dark-mode:focus:bg-gray-600 dark-mode:focus:text-white dark-mode:hover:text-white dark-mode:text-gray-200 md:mt-0 hover:text-gray-900 focus:text-gray-900 hover:bg-green-200 focus:bg-gray-200 focus:outline-none focus:shadow-outline" href="#">
+                                <i class="fa-solid fa-question mr-3"></i>Ayuda
+                            </a>
+                            <a class="block px-4 py-2 mt-2 text-sm font-semibold bg-transparent rounded-lg dark-mode:bg-transparent dark-mode:hover:bg-gray-600 dark-mode:focus:bg-gray-600 dark-mode:focus:text-white dark-mode:hover:text-white dark-mode:text-gray-200 md:mt-0 hover:text-gray-900 focus:text-gray-900 hover:bg-green-200 focus:bg-gray-200 focus:outline-none focus:shadow-outline" href="/salir">
+                                <i class="fa-solid fa-right-from-bracket mr-3"></i>salir
+                            </a>
                         </div>
                     </div>
                 </div>   
@@ -212,21 +209,71 @@ aria-label="Sidebar">
     {% endblock content %}
 </div>
 <!-- modal para los formularios -->
-<section id="form-container" class="modal fixed inset-0 bg-[#111111bd] flex opacity-0 pointer-events-none">
-<div class="modal__container m-auto w-9/10 max-w-[800px] max-h-[90%] bg-white rounded-[6px] p- p-[3em_2.5em] grid gap-[1em] place-items-center shadow-md relative">
+<section id="form-container" class="modal fixed inset-0 bg-[#111111bd] flex opacity-0 pointer-events-none z-50">
+<div class="modal__container m-auto max-w-[800px] max-h-[90%] bg-white rounded-[6px] p-[3em_2.5em] grid gap-[1em] place-items-center shadow-md relative overflow-y-auto">
     <button onclick="closeForm()" class="modal__close absolute top-4 right-4 w-10 h-10 flex justify-center items-center cursor-pointer text-gray-600 hover:text-gray-900">
-        ✖
+        <i class="fa-regular fa-circle-xmark fa-2xl"></i>
     </button>
 {% block forms%}
 
 {% endblock forms%}
 </div>
 </section>
-<!-- contenedor de los formularios de editar -->
+<!-- Botón de Scroll to Top -->
+<button id="scrollToTopBtn" class="hidden fixed bottom-16 right-6 opacity-90 z-40 p-3 rounded-lg bg-[#084F21] text-white hover:bg-green-500 focus:outline-none focus:ring-2 focus:ring-green-700 md:bottom-14 md:right-8 md:p-4 lg:bottom-10 lg:right-12 lg:p-4">
+    <i class="fa-solid fa-angles-up font-extrabold fa-xl"></i>
+</button>
 <div id="form-container-edits"></div>
+<footer class="bg-gray-50 md:hidden h-20 mt-8 flex items-center justify-between px-6 md:px-12 shadow-lg">
+    <!-- Texto con derechos reservados -->
+    <p class="text-md text-gray-700 font-rubi flex items-center">
+        <i class="fa-regular fa-copyright fa-lg mr-2"></i> 
+        2024 AndesBPO
+    </p>
+
+    <!-- Contenedor de redes sociales -->
+    <div class="flex space-x-4">
+        <a target="_blank" href="https://x.com/andesbpo" class="hover:opacity-80 transition duration-300">
+            <svg fill="#084F21" xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 512 512">
+                <path d="M389.2 48h70.6L305.6 224.2 487 464H345L233.7 318.6 106.5 464H35.8L200.7 275.5 26.8 48H172.4L272.9 180.9 389.2 48zM364.4 421.8h39.1L151.1 88h-42L364.4 421.8z"/>
+            </svg>
+        </a>
+        <a target="_blank" href="https://www.facebook.com/AndesBPO/?locale=es_LA" class="hover:opacity-80 transition duration-300">
+            <svg fill="#084F21" xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24">
+                <path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z"/>
+            </svg>
+        </a>
+        <a target="_blank" href="https://www.instagram.com/andes_bpo/" class="hover:opacity-80 transition duration-300">
+            <svg fill="#084F21" xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24">
+                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+            </svg>
+        </a>
+    </div>
+</footer>
+<!-- contenedor loader js -->
+<!-- <div id="loader" class="hidden fixed top-0 left-0 w-full h-full items-center justify-center bg-gray-900 bg-opacity-50 z-50">
+    <div class="animate-spin rounded-full h-32 w-32 border-t-4 border-b-4 border-green-500"></div>
+</div> -->
+<!-- Loader inicial -->
+<div id="loader" class="fixed inset-0 z-40 flex justify-center items-center bg-gray-900 bg-opacity-75">
+    <div class="flex flex-col items-center z-50">
+        <div class="flex flex-row gap-2 mb-4">
+            <div class="w-8 h-8 rounded-full bg-[#4ade80] animate-bounce"></div>
+            <div class="w-8 h-8 rounded-full bg-[#28a745] animate-bounce [animation-delay:-.3s]"></div>
+            <div class="w-8 h-8 rounded-full bg-[#4ade80] animate-bounce [animation-delay:-.5s]"></div>
+        </div>
+        <p class="font-bold text-lg animate-pulse text-white">Cargando...</p>
+    </div>
+</div>
+
+
 <!-- scripts necesarios en el aplicativo -->
-<script src="https://cdn.jsdelivr.net/npm/simple-datatables@9.0.3"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+
 <script src="//unpkg.com/alpinejs" defer></script>
+<script src="../static/js/route.js"></script>
+<script src="../static/js/loader.js"></script>
 <script src="../static/js/main.js"></script>
 </body>
 </html>
