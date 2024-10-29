@@ -2,246 +2,264 @@
 {% block title %}
     Resportes
 {% endblock %}
+{% block usuario %}
+   {{request.session['nombre']}}
+{% endblock %}
 <!-- contendido que varia del aplicativo -->
 {% block content %}
-<h3 class="text-center font-bold text-xl">Seccion de resportes del Inventario</h3>
-<p class="text-sm">Aqui es la seccion donde puedes seleccionar sobre que modulo necesitas 
-reporte de los registros o seguimientos de los mismos, etc. continua con la seccion de reportes ._.</p>
-<div class="grid items-center gap-4 px-5 sm:grid-cols-2 lg:grid-cols-3">
-   <!-- cards y su contenido -->
-    <div class="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-        <a href="/inicio">
-            <img class="rounded-t-lg w-full m-auto" src="/static/imagenes/tecnologia.jfif" alt="image" />
-        </a>
-        <div class="p-5 text-justify">
-            <a href="/inicio">
-                <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Modulo Productos</h5>
-            </a>
-            <p class="mb-3 text-justify text-sm font-normal text-gray-900 dark:text-gray-400">En esta sección encontrarás todos los productos del inventario, independientemente de la categoría o estado.</p>
-            <div class="flex justify-between">
-                <a href="/inicio" class="descargar inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-Andes rounded-lg hover:bg-green-950 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                    Descargar csv
-                    <svg class="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
-                    </svg>
-                </a>
-                <a href="/inicio" class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-Andes rounded-lg hover:bg-green-950 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                    Filtrar
-                    <svg class="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
-                    </svg>
-                </a>
-            </div>
-        </div>
-    </div>
-    <!-- cards y su contenido -->
-    <div class="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-        <a href="/inicio">
-            <img class="rounded-t-lg w-full m-auto" src="/static/imagenes/prueba.jpg" alt="image" />
-        </a>
-        <div class="p-5">
-            <a href="/inicio">
-                <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Modulo Usuarios</h5>
-            </a>
-            <p class="mb-3 text-justify text-sm font-normal text-gray-900 dark:text-gray-400">En esta seccion encontraras todos los pruductos del inventario, independientemente de la categoria o estados</p>
-            <div class="flex justify-between">
-                <a href="/inicio" class="descargar inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-Andes rounded-lg hover:bg-green-950 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                    Descargar csv
-                    <svg class="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
-                    </svg>
-                </a>
-                <a href="/inicio" class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-Andes rounded-lg hover:bg-green-950 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                    Filtrar
-                    <svg class="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
-                    </svg>
-                </a>
-            </div>
-        </div>
-    </div>
-    <!-- cards y su contenido -->
-    <div class="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-        <a href="/inicio">
-            <img class="rounded-t-lg w-full" src="/static/imagenes/prueba.jpg" alt="image" />
-        </a>
-        <div class="p-5">
-            <a href="/inicio">
-                <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Modulo Responsables</h5>
-            </a>
-            <p class="mb-3 text-justify text-sm font-normal text-gray-900 dark:text-gray-400">En esta seccion encontraras todos los pruductos del inventario, independientemente de la categoria o estados</p>
-            <div class="flex justify-between">
-                <a href="/inicio" class="descargar inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-Andes rounded-lg hover:bg-green-950 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                    Descargar csv
-                    <svg class="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
-                    </svg>
-                </a>
-                <a href="/inicio" class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-Andes rounded-lg hover:bg-green-950 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                    Filtrar
-                    <svg class="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
-                    </svg>
-                </a>
-            </div>
-        </div>
-    </div>
-    <!-- cards y su contenido -->
-    <div class="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-        <a href="/inicio">
-            <img class="rounded-t-lg w-full" src="/static/imagenes/prueba.jpg" alt="image" />
-        </a>
-        <div class="p-5">
-            <a href="/inicio">
-                <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Modulo Categorias</h5>
-            </a>
-            <p class="mb-3 text-justify text-sm font-normal text-gray-900 dark:text-gray-400">En esta seccion encontraras todos los pruductos del inventario, independientemente de la categoria o estados</p>
-            <div class="flex justify-between">
-                <a href="/inicio" class="descargar inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-Andes rounded-lg hover:bg-green-950 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                    Descargar csv
-                    <svg class="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
-                    </svg>
-                </a>
-                <a href="/inicio" class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-Andes rounded-lg hover:bg-green-950 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                    Filtrar
-                    <svg class="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
-                    </svg>
-                </a>
-            </div>
-        </div>
-    </div>
-    <!-- cards y su contenido -->
-    <div class="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-        <a href="/inicio">
-            <img class="rounded-t-lg w-full" src="/static/imagenes/prueba.jpg" alt="image" />
-        </a>
-        <div class="p-5">
-            <a href="/inicio">
-                <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Modulo Sedes</h5>
-            </a>
-            <p class="mb-3 text-justify text-sm font-normal text-gray-900 dark:text-gray-400">En esta seccion encontraras todos los pruductos del inventario, independientemente de la categoria o estados</p>
-            <div class="flex justify-between">
-                <a href="/inicio" class="descargar inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-Andes rounded-lg hover:bg-green-950 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                    Descargar csv
-                    <svg class="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
-                    </svg>
-                </a>
-                <a href="/inicio" class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-Andes rounded-lg hover:bg-green-950 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                    Filtrar
-                    <svg class="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
-                    </svg>
-                </a>
-            </div>
-        </div>
-    </div>
-    <!-- cards y su contenido -->
-    <div class="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-        <a href="/inicio">
-            <img class="rounded-t-lg w-full" src="/static/imagenes/prueba.jpg" alt="image" />
-        </a>
-        <div class="p-5">
-            <a href="/inicio">
-                <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Modulo Ubicaciones</h5>
-            </a>
-            <p class="mb-3 text-justify text-sm font-normal text-gray-900 dark:text-gray-400">En esta seccion encontraras todos los pruductos del inventario, independientemente de la categoria o estados</p>
-            <div class="flex justify-between">
-                <a href="/inicio" class="descargar inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-Andes rounded-lg hover:bg-green-950 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                    Descargar csv
-                    <svg class="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
-                    </svg>
-                </a>
-                <a href="/inicio" class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-Andes rounded-lg hover:bg-green-950 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                    Filtrar
-                    <svg class="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
-                    </svg>
-                </a>
-            </div>
-        </div>
-    </div>
-    <!-- cards y su contenido -->
-    <div class="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-        <a href="/inicio">
-            <img class="rounded-t-lg w-full" src="/static/imagenes/prueba.jpg" alt="image" />
-        </a>
-        <div class="p-5">
-            <a href="/inicio">
-                <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Modulo Proveedores</h5>
-            </a>
-            <p class="mb-3 text-justify text-sm font-normal text-gray-900 dark:text-gray-400">En esta seccion encontraras todos los pruductos del inventario, independientemente de la categoria o estados</p>
-            <div class="flex justify-between">
-                <a href="/inicio" class="descargar inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-Andes rounded-lg hover:bg-green-950 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                    Descargar csv
-                    <svg class="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
-                    </svg>
-                </a>
-                <a href="/inicio" class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-Andes rounded-lg hover:bg-green-950 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                    Filtrar
-                    <svg class="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
-                    </svg>
-                </a>
-            </div>
-        </div>
-    </div>
-    <!-- cards y su contenido -->
-    <div class="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-        <a href="/inicio">
-            <img class="rounded-t-lg w-full" src="/static/imagenes/prueba.jpg" alt="image" />
-        </a>
-        <div class="p-5">
-            <a href="/inicio">
-                <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Modulo Categorias</h5>
-            </a>
-            <p class="mb-3 text-justify text-sm font-normal text-gray-900 dark:text-gray-400">En esta seccion encontraras todos los pruductos del inventario, independientemente de la categoria o estados</p>
-            <div class="flex justify-between">
-                <a href="/inicio" class="descargar inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-Andes rounded-lg hover:bg-green-950 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                    Descargar csv
-                    <svg class="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
-                    </svg>
-                </a>
-                <a href="/inicio" class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-Andes rounded-lg hover:bg-green-950 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                    Filtrar
-                    <svg class="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
-                    </svg>
-                </a>
-            </div>
-        </div>
-    </div>
-    <!-- cards y su contenido -->
-    <div class="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-        <a href="/inicio">
-            <img class="rounded-t-lg w-full" src="/static/imagenes/prueba.jpg" alt="image" />
-        </a>
-        <div class="p-5">
-            <a href="/inicio">
-                <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Modulo Roles</h5>
-            </a>
-            <p class="mb-3 text-justify text-sm font-normal text-gray-900 dark:text-gray-400">En esta seccion encontraras todos los pruductos del inventario, independientemente de la categoria o estados</p>
-            <div class="flex justify-between">
-                <a href="/inicio" class="descargar inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-Andes rounded-lg hover:bg-green-950 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                    Descargar csv
-                    <svg class="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
-                    </svg>
-                </a>
-                <a href="/inicio" class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-Andes rounded-lg hover:bg-green-950 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                    Filtrar
-                    <svg class="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
-                    </svg>
-                </a>
-            </div>
-        </div>
-    </div>
+<div class="flex px-4 h-auto space-x-4">
+    <a href="#" class="block max-w-screen-xl p-6 h-auto bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
+        <!-- incon font awsome por si acaso -->
+        <!-- <i class="fa-solid fa-circle-info fa-xl absolute right-20"></i> -->
+        <h1 class="font-bold text-black text-3xl mb-4">Sección de reportes del sistema</h1>
+        <p class="font-normal text-sm text-gray-700 dark:text-gray-400 text-justify">
+            En esta sección de la aplicación web, podrás acceder a todos los módulos o tablas de la base de datos del sistema. Tienes la opción de exportar los datos actuales de cada tabla en formatos CSV o Excel. 
+        </p>
+    </a>
 </div>
-
+<main class="grid items-center mb-6 gap-4 px-5 sm:grid-cols-2 lg:grid-cols-3 group">
+   <!-- cards y su contenido -->
+    <div class="max-w-sm bg-white border border-gray-500 shadow-xl hover:bg-gray-50 rounded-lg dark:bg-gray-800 dark:border-gray-700">
+        <div class="p-5 text-justify">
+                <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Modulo Productos</h5>
+            <p class="mb-3 text-justify text-sm font-normal text-gray-900 dark:text-gray-400 descripcion-reporte">En esta sección encontrarás todos los <strong>productos</strong> del inventario, sin importar su categoría o estado.</p>
+            <a href="/producto-section" class="route inline-flex font-medium items-center text-blue-700 text-sm mb-4 hover:underline">
+                Ir a a Seccion
+                <i class="fa-solid fa-arrow-up-right-from-square ml-2"></i>
+            </a>
+            <p class="block font-semibold items-center text-gray-600 text-sm mb-4">Descagar registros</p>
+            <div class="flex justify-between">
+                <a href="/exporte-modelos" data-tipo="archivoCSV" data-endpoint="Producto" class="descargar inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-Andes rounded-lg hover:bg-green-900 focus:ring-2 focus:outline-none focus:ring-green-300">
+                    Descargar csv
+                    <i class="fa-solid fa-download ml-2"></i>
+                </a>
+                <a href="/exporte-modelos" data-tipo="archivoExcel" data-endpoint="Producto" class="descargar inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-[#084F21] rounded-lg hover:bg-green-700 focus:ring-2 focus:outline-none focus:ring-green-300 ">
+                    Descargar excel
+                    <i class="fa-solid fa-file-excel ml-2"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+    <!-- cards y su contenido -->
+    <div class="max-w-sm bg-white border border-gray-500 shadow-xl hover:bg-gray-50 rounded-lg dark:bg-gray-800 dark:border-gray-700">
+        <div class="p-5">
+                <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Modulo Usuarios</h5>
+            <p class="mb-3 text-justify text-sm font-normal text-gray-900 dark:text-gray-400 descripcion-reporte">En esta sección podrás ver todos los <strong>usuarios</strong> del aplicativo, sin importar si su estado es <strong>activo o inactivo</strong>.</p>
+            <a href="/usuario-section" class="route inline-flex font-medium items-center text-blue-700 text-sm mb-4 hover:underline">
+            Ir a la sección
+                <i class="fa-solid fa-arrow-up-right-from-square ml-2"></i>
+            </a>
+            <p class="block font-semibold items-center text-gray-600 text-sm mb-4">Descagar registros</p>
+            <div class="flex justify-between">
+                <a href="/exporte-modelos" data-tipo="archivoCSV" data-endpoint="Usuarios" class="descargar inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-Andes rounded-lg hover:bg-green-900 focus:ring-2 focus:outline-none focus:ring-green-300">
+                    Descargar csv
+                    <i class="fa-solid fa-download ml-2"></i>
+                </a>
+                <a href="/exporte-modelos" data-tipo="archivoExcel" data-endpoint="Usuarios" class="descargar inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-[#084F21] rounded-lg hover:bg-green-700 focus:ring-2 focus:outline-none focus:ring-green-300 ">
+                    Descargar excel
+                    <i class="fa-solid fa-file-excel ml-2"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+    <!-- cards y su contenido -->
+    <div class="max-w-sm bg-white border border-gray-500 shadow-xl hover:bg-gray-50 rounded-lg dark:bg-gray-800 dark:border-gray-700">
+        <div class="p-5">
+                <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Modulo Responsables</h5>
+            <p class="mb-3 text-justify text-sm font-normal text-gray-900 dark:text-gray-400 descripcion-reporte">En esta sección encontrarás la información de todos los<strong> responsables</strong> del aplicativo, junto con los datos relacionados a cada uno.</p>
+            <a href="/responsable-section" class="route inline-flex font-medium items-center text-blue-700 text-sm mb-4 hover:underline">
+                Ir a la sección
+                <i class="fa-solid fa-arrow-up-right-from-square ml-2"></i>
+            </a>
+            <p class="block font-semibold items-center text-gray-600 text-sm mb-4">Descagar registros</p>
+            <div class="flex justify-between">
+                <a href="/exporte-modelos" data-tipo="archivoCSV" data-endpoint="Responsable" class="descargar inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-Andes rounded-lg hover:bg-green-900 focus:ring-2 focus:outline-none focus:ring-green-300">
+                    Descargar csv
+                    <i class="fa-solid fa-download ml-2"></i>
+                </a>
+                <a href="/exporte-modelos" data-tipo="archivoExcel" data-endpoint="Responsable" class="descargar inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-[#084F21] rounded-lg hover:bg-green-700 focus:ring-2 focus:outline-none focus:ring-green-300 ">
+                    Descargar excel
+                    <i class="fa-solid fa-file-excel ml-2"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+    <!-- cards y su contenido -->
+    <div class="max-w-sm bg-white border border-gray-500 shadow-xl hover:bg-gray-50 rounded-lg dark:bg-gray-800 dark:border-gray-700">
+        <div class="p-5">
+                <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Modulo Categorias</h5>
+            <p class="mb-3 text-justify text-sm font-normal text-gray-900 dark:text-gray-400 descripcion-reporte">En esta sección encontrarás todas las <strong>categorías</strong> del aplicativo, junto con la información relacionada a cada una.</p>
+            <a href="/categoria-section" class="route inline-flex font-medium items-center text-blue-700 text-sm mb-4 hover:underline">
+                Ir a la sección
+                <i class="fa-solid fa-arrow-up-right-from-square ml-2"></i>
+            </a>
+            <p class="block font-semibold items-center text-gray-600 text-sm mb-4">Descagar registros</p>
+            <div class="flex justify-between">
+                <a href="/exporte-modelos" data-tipo="archivoCSV" data-endpoint="Categoria" class="descargar inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-Andes rounded-lg hover:bg-green-900 focus:ring-2 focus:outline-none focus:ring-green-300">
+                    Descargar csv
+                    <i class="fa-solid fa-download ml-2"></i>
+                </a>
+                <a href="/exporte-modelos" data-tipo="archivoExcel" data-endpoint="Categoria" class="descargar inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-[#084F21] rounded-lg hover:bg-green-700 focus:ring-2 focus:outline-none focus:ring-green-300 ">
+                    Descargar excel
+                    <i class="fa-solid fa-file-excel ml-2"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+    <!-- cards y su contenido -->
+    <div class="max-w-sm bg-white border border-gray-500 shadow-xl hover:bg-gray-50 rounded-lg dark:bg-gray-800 dark:border-gray-700">
+        <div class="p-5">
+                <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Modulo Sedes</h5>
+            <p class="mb-3 text-justify text-sm font-normal text-gray-900 dark:text-gray-400 descripcion-reporte">En esta sección encontrarás todas las <strong>sedes</strong> del aplicativo, junto con la información relacionada a cada una.</p>
+            <a href="/sede-section" class="route inline-flex font-medium items-center text-blue-700 text-sm mb-4 hover:underline">
+                Ir a la sección
+                <i class="fa-solid fa-arrow-up-right-from-square ml-2"></i>
+            </a>
+            <p class="block font-semibold items-center text-gray-600 text-sm mb-4">Descagar registros</p>
+            <div class="flex justify-between">
+                <a href="/exporte-modelos" data-tipo="archivoCSV" data-endpoint="Sede" class="descargar inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-Andes rounded-lg hover:bg-green-900 focus:ring-2 focus:outline-none focus:ring-green-300">
+                    Descargar csv
+                    <i class="fa-solid fa-download ml-2"></i>
+                </a>
+                <a href="/exporte-modelos" data-tipo="archivoExcel" data-endpoint="Sede" class="descargar inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-[#084F21] rounded-lg hover:bg-green-700 focus:ring-2 focus:outline-none focus:ring-green-300 ">
+                    Descargar excel
+                    <i class="fa-solid fa-file-excel ml-2"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+    <!-- cards y su contenido -->
+    <div class="max-w-sm bg-white border border-gray-500 shadow-xl hover:bg-gray-50 rounded-lg dark:bg-gray-800 dark:border-gray-700">
+        <div class="p-5">
+                <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Modulo Ubicaciones</h5>
+            <p class="mb-3 text-justify text-sm font-normal text-gray-900 dark:text-gray-400 descripcion-reporte">En esta sección encontrarás todas las ubicaciones ingresadas al sistema, relacionadas con alguna <strong>sede</strong> y con la ubicación de los <strong>productos</strong>.</p>
+            <a href="/sede-section" class="route inline-flex font-medium items-center text-blue-700 text-sm mb-4 hover:underline">
+                Ir a la sección
+                <i class="fa-solid fa-arrow-up-right-from-square ml-2"></i>
+            </a>
+            <p class="block font-semibold items-center text-gray-600 text-sm mb-4">Descagar registros</p>
+            <div class="flex justify-between">
+                <a href="/exporte-modelos" data-tipo="archivoCSV" data-endpoint="Ubicacion" class="descargar inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-Andes rounded-lg hover:bg-green-900 focus:ring-2 focus:outline-none focus:ring-green-300">
+                    Descargar csv
+                    <i class="fa-solid fa-download ml-2"></i>
+                </a>
+                <a href="/exporte-modelos" data-tipo="archivoExcel" data-endpoint="Ubicacion" class="descargar inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-[#084F21] rounded-lg hover:bg-green-700 focus:ring-2 focus:outline-none focus:ring-green-300 ">
+                    Descargar excel
+                    <i class="fa-solid fa-file-excel ml-2"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+    <!-- cards y su contenido -->
+    <div class="max-w-sm bg-white border border-gray-500 shadow-xl hover:bg-gray-50 rounded-lg dark:bg-gray-800 dark:border-gray-700">
+        <div class="p-5">
+                <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Modulo Mantenimientos de productos</h5>
+            <p class="mb-3 text-justify text-sm font-normal text-gray-900 dark:text-gray-400 descripcion-reporte">En esta sección encontrarás todos los <strong>mantenimientos</strong> registrados para los productos del inventario. </p>
+            <a href="/mantenimiento-section" class="route inline-flex font-medium items-center text-blue-700 text-sm mb-4 hover:underline">
+                Ir a la sección
+                <i class="fa-solid fa-arrow-up-right-from-square ml-2"></i>
+            </a>
+            <p class="block font-semibold items-center text-gray-600 text-sm mb-4">Descagar registros</p>
+            <div class="flex justify-between">
+                <a href="/exporte-modelos" data-tipo="archivoCSV" data-endpoint="Mantenimiento" class="descargar inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-Andes rounded-lg hover:bg-green-900 focus:ring-2 focus:outline-none focus:ring-green-300">
+                    Descargar csv
+                    <i class="fa-solid fa-download ml-2"></i>
+                </a>
+                <a href="/exporte-modelos" data-tipo="archivoExcel" data-endpoint="Mantenimiento" class="descargar inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-[#084F21] rounded-lg hover:bg-green-700 focus:ring-2 focus:outline-none focus:ring-green-300 ">
+                    Descargar excel
+                    <i class="fa-solid fa-file-excel ml-2"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+    <!-- cards y su contenido -->
+    <div class="max-w-sm bg-white border border-gray-500 shadow-xl hover:bg-gray-50 rounded-lg dark:bg-gray-800 dark:border-gray-700">
+        <div class="p-5">
+                <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Modulo Proveedores</h5>
+            <p class="mb-3 text-justify text-sm font-normal text-gray-900 dark:text-gray-400 descripcion-reporte">En esta sección encontrarás todos los <strong>proveedores</strong> registrados en el sistema, junto con la información relacionada a cada uno. </p>
+            <a href="/proveedor-section" class="route inline-flex font-medium items-center text-blue-700 text-sm mb-4 hover:underline">
+                Ir a la sección
+                <i class="fa-solid fa-arrow-up-right-from-square ml-2"></i>
+            </a>
+            <p class="block font-semibold items-center text-gray-600 text-sm mb-4">Descagar registros</p>
+            <div class="flex justify-between">
+                <a href="/exporte-modelos" data-tipo="archivoCSV" data-endpoint="Proveedor" class="descargar inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-Andes rounded-lg hover:bg-green-900 focus:ring-2 focus:outline-none focus:ring-green-300">
+                    Descargar csv
+                    <i class="fa-solid fa-download ml-2"></i>
+                </a>
+                <a href="/exporte-modelos" data-tipo="archivoExcel" data-endpoint="Proveedor" class="descargar inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-[#084F21] rounded-lg hover:bg-green-700 focus:ring-2 focus:outline-none focus:ring-green-300 ">
+                    Descargar excel
+                    <i class="fa-solid fa-file-excel ml-2"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+    <!-- cards y su contenido -->
+    <div class="max-w-sm bg-white border border-gray-500 shadow-xl hover:bg-gray-50 rounded-lg dark:bg-gray-800 dark:border-gray-700">
+        <div class="p-5">
+                <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Modulo Provedores que realizan Mantenimiento</h5>
+            <p class="mb-3 text-justify text-sm font-normal text-gray-900 dark:text-gray-400 descripcion-reporte">En esta sección encontrarás los proveedores que realizan <strong>mantenimientos a los productos</strong>, junto con los detalles de cada mantenimiento. </p>
+            <a href="/proveedor-section" class="route inline-flex font-medium items-center text-blue-700 text-sm mb-4 hover:underline">
+                Ir a la sección
+                <i class="fa-solid fa-arrow-up-right-from-square ml-2"></i>
+            </a>
+            <p class="block font-semibold items-center text-gray-600 text-sm mb-4">Descagar registros</p>
+            <div class="flex justify-between">
+                <a href="/exporte-modelos" data-tipo="archivoCSV" data-endpoint="ProveedorMantenimiento" class="descargar inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-Andes rounded-lg hover:bg-green-900 focus:ring-2 focus:outline-none focus:ring-green-300">
+                    Descargar csv
+                    <i class="fa-solid fa-download ml-2"></i>
+                </a>
+                <a href="/exporte-modelos" data-tipo="archivoExcel" data-endpoint="ProveedorMantenimiento" class="descargar inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-[#084F21] rounded-lg hover:bg-green-700 focus:ring-2 focus:outline-none focus:ring-green-300 ">
+                    Descargar excel
+                    <i class="fa-solid fa-file-excel ml-2"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+    <!-- cards y su contenido -->
+    <div class="max-w-sm bg-white border border-gray-500 shadow-xl hover:bg-gray-50 rounded-lg dark:bg-gray-800 dark:border-gray-700">
+        <div class="p-5">
+                <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Modulo Roles</h5>
+            <p class="mb-3 text-justify text-sm font-normal text-gray-900 dark:text-gray-400 descripcion-reporte">En esta sección encontrarás todos los <strong>roles de usuario</strong> registrados en el sistema.</p>
+                <a href="/rol-section" class="route inline-flex font-medium items-center text-blue-700 text-sm mb-4 hover:underline">
+                    Ir a la sección
+                    <i class="fa-solid fa-arrow-up-right-from-square ml-2"></i>
+                </a>
+                <p class="block font-semibold items-center text-gray-600 text-sm mb-4">Descagar registros</p>
+            <div class="flex justify-between">
+                <a href="/exporte-modelos" data-tipo="archivoCSV" data-endpoint="Roles" class="descargar inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-Andes rounded-lg hover:bg-green-900 focus:ring-2 focus:outline-none focus:ring-green-300">
+                    Descargar csv
+                    <i class="fa-solid fa-download ml-2"></i>
+                </a>
+                <a href="/exporte-modelos" data-tipo="archivoExcel" data-endpoint="Roles" class="descargar inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-[#084F21] rounded-lg hover:bg-green-700 focus:ring-2 focus:outline-none focus:ring-green-300 ">
+                    Descargar excel
+                    <i class="fa-solid fa-file-excel ml-2"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+    <!-- cards y su contenido -->
+    <div class="max-w-sm bg-white border border-gray-500 shadow-xl hover:bg-gray-50 rounded-lg dark:bg-gray-800 dark:border-gray-700">
+        <div class="p-5">
+                <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Modulo Proveedores y Productos</h5>
+            <p class="mb-3 text-justify text-sm font-normal text-gray-900 dark:text-gray-400 descripcion-reporte">En esta sección encontrarás todos los <strong>productos que tienen un proveedor</strong> relacionado en el sistema, excluyendo aquellos que no tienen asignado un proveedor.</p>
+            <a href="/producto-section" class="route inline-flex font-medium items-center text-blue-700 text-sm mb-4 hover:underline">
+                Ir a la sección
+                <i class="fa-solid fa-arrow-up-right-from-square ml-2"></i>
+            </a>
+            <p class="block font-semibold items-center text-gray-600 text-sm mb-4">Descagar registros</p>
+            <div class="flex justify-between">
+                <a href="/exporte-modelos" data-tipo="archivoCSV" data-endpoint="ProductoProveedores" class="descargar inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-Andes rounded-lg hover:bg-green-900 focus:ring-2 focus:outline-none focus:ring-green-300">
+                    Descargar csv
+                    <i class="fa-solid fa-download ml-2"></i>
+                </a>
+                <a href="/exporte-modelos" data-tipo="archivoExcel" data-endpoint="ProductoProveedores" class="descargar inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-[#084F21] rounded-lg hover:bg-green-700 focus:ring-2 focus:outline-none focus:ring-green-300 ">
+                    Descargar excel
+                    <i class="fa-solid fa-file-excel ml-2"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</main>
+<script src="../static/js/reportes.js"></script>
 {% endblock %}

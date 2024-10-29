@@ -7,6 +7,7 @@ from fastapi import Form
 # Modelo Categoria
 class CategoriaBase(BaseModel):
     nombre: str
+    depreciacion: float
 
 class CategoriaCreate(CategoriaBase):
     pass
@@ -15,7 +16,6 @@ class Categoria(CategoriaBase):
     id: int
 
     class Config:
-        # orm_mode = True  # Cambiado en Pydantic v2
         from_attributes = True
         
 # Modelo Sede
@@ -31,7 +31,6 @@ class Sede(SedeBase):
     id: int
     
     class Config:
-        # orm_mode = True  # Cambiado en Pydantic v2
         from_attributes = True
 
 # Modelo Responsable
@@ -39,6 +38,14 @@ class ResponsableBase(BaseModel):
     nombre: str
     correo: str
     telefono: Optional[str] = None
+    
+    def __dict__(self):
+        return {
+            "id": self.id,
+            "nombre": self.nombre,
+            "email": self.email,
+            "telefono": self.telefono
+        }
 
 class ResponsableCreate(ResponsableBase):
     pass
@@ -47,7 +54,6 @@ class Responsable(ResponsableBase):
     id: int
     
     class Config:
-        # orm_mode = True  # Cambiado en Pydantic v2
         from_attributes = True
 
 # Modelo Roles
@@ -67,8 +73,8 @@ class Roles(RolesBase):
 class UsuariosBase(BaseModel):
     nombre: str = Field(..., alias="nombre")
     correo: Optional[str] = Field(None, alias="correo")
+    hashed_password: str = Field(..., alias="hashed_password")
     estado: Optional[str] = Field(None, alias="estado")
-    password: str = Field(..., alias="password")
     fecha_creacion: Optional[date] = Field(..., alias="fecha_creacion")
     id_rol: int = Field(..., alias="id_rol")
 
@@ -77,18 +83,18 @@ class UsuariosBase(BaseModel):
         cls,
         nombre: str = Form(...),
         correo: Optional[str] = Form(None),
+        hashed_password: str = Form(...),
         estado: Optional[str] = Form(None),
-        password: str = Form(...),
+        id_rol: int = Form(...),
         fecha_creacion: Optional[date] = Form(...),
-        id_rol: int = Form(...)
     ):
         return cls(
             nombre=nombre,
             correo=correo,
+            hashed_password=hashed_password,
             estado=estado,
-            password=password,
+            id_rol=id_rol,
             fecha_creacion=fecha_creacion,
-            id_rol=id_rol
         )
 
 class UsuariosCreate(UsuariosBase):
@@ -96,7 +102,7 @@ class UsuariosCreate(UsuariosBase):
 
 class Usuarios(UsuariosBase):
     id: int
-    rol: Roles  # Change to Roles type
+    rol: Roles  
 
     def dict(self, *args, **kwargs):
         data = super().dict(*args, **kwargs)
@@ -119,7 +125,6 @@ class Proveedor(ProveedorBase):
     id: int
     
     class Config:
-        # orm_mode = True  # Cambiado en Pydantic v2
         from_attributes = True
 
 # Model para producto
@@ -132,10 +137,12 @@ class ProductoBase(BaseModel):
     estado: Optional[str] = Field(None, alias="estado")
     fecha_mantenimiento: Optional[date] = Field(None, alias="fecha_mantenimiento")
     costo_inicial: Optional[float] = Field(None, alias="costo_inicial")
+    modo: Optional[str] = Field(None, alias="modo")
     observacion: Optional[str] = Field(None, alias="observacion")
     id_categoria: int = Field(..., alias="id_categoria")
-    id_proveedor: int = Field(..., alias="id_proveedor")
-    modo: Optional[str] = Field(None, alias="modo")
+    id_proveedor: Optional[int] = Field(None, alias="id_proveedor")
+    fecha_ingreso: Optional[date] = Field(..., alias="fecha_ingreso")
+    
 
     @classmethod
     def as_form(
@@ -148,10 +155,11 @@ class ProductoBase(BaseModel):
         estado: Optional[str] = Form(None),
         fecha_mantenimiento: Optional[date] = Form(None),
         costo_inicial: Optional[float] = Form(None),
+        modo: Optional[str] = Form(None),
         observacion: Optional[str] = Form(None),
         id_categoria: int = Form(...),
-        id_proveedor: int = Form(...),
-        modo: Optional[str] = Form(None)
+        id_proveedor: Optional[int] = Form(None),
+        fecha_ingreso: Optional[date] = Form(...)
     ):
         return cls(
             id_responsable=id_responsable,
@@ -162,10 +170,11 @@ class ProductoBase(BaseModel):
             estado=estado,
             fecha_mantenimiento=fecha_mantenimiento,
             costo_inicial=costo_inicial,
+            modo=modo,
             observacion=observacion,
             id_categoria=id_categoria,
             id_proveedor=id_proveedor,
-            modo=modo,
+            fecha_ingreso=fecha_ingreso
         )
 
 class ProductoCreate(ProductoBase):
@@ -176,16 +185,16 @@ class Producto(ProductoBase):
     responsable: Responsable
     sede: Sede
     categoria: Categoria
-    proveedor: Proveedor
+    proveedor: Optional[Proveedor]
     
     class Config:
-        # orm_mode = True  # Cambiado en Pydantic v2
         from_attributes = True
 
 # Modelo Ubicacion
 class UbicacionBase(BaseModel):
     nombre: str
     id_sede: int
+    id_producto: int
 
 class UbicacionCreate(UbicacionBase):
     pass
@@ -193,9 +202,9 @@ class UbicacionCreate(UbicacionBase):
 class Ubicacion(UbicacionBase):
     id: int
     sede: Sede
+    producto: Producto
     
     class Config:
-        # orm_mode = True  # Cambiado en Pydantic v2
         from_attributes = True
 
 # Modelo Producto_proveedores
@@ -212,26 +221,23 @@ class ProductoProveedores(Producto_ProvBase):
     proveedor: Proveedor
     
     class Config:
-        # orm_mode = True  # Cambiado en Pydantic v2
         from_attributes = True
 
 # Modelo Proveedor_Mantenimiento
 class Proveedor_MBase(BaseModel):
-    nombre: str
-    direccion: Optional[str] = None
     contacto: Optional[str] = None
-    telefono: Optional[str] = None
     id_producto: int
+    id_proveedor: int
 
 class Proveedor_MCreate(Proveedor_MBase):
     pass
 
-class Proveedor_M(Proveedor_MBase):
+class ProveedorMantenimiento(Proveedor_MBase):
     id: int
     producto: Producto
+    proveedor: Proveedor
     
     class Config:
-        # orm_mode = True  # Cambiado en Pydantic v2
         from_attributes = True
 
 # Modelo Mantenimento
@@ -250,5 +256,8 @@ class Mantenimiento(MantenimientoBase):
     producto: Producto
     
     class Config:
-        # orm_mode = True  # Cambiado en Pydantic v2
         from_attributes = True
+
+# configuracion de rutas
+class RoutesConfig(BaseModel):
+    routes: List[str] = Form(...)

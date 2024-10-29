@@ -3,29 +3,166 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+    <title>Iniciar sesion</title>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet" href="../static/public/output.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="apple-touch-icon" sizes="180x180" href="../static/imagenes/">
+    <link rel="icon" type="image/png" sizes="32x32" href="../static/imagenes//favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../static/imagenes//favicon-16x16.png">
+    <!-- <link rel="manifest" href="/site.webmanifest"> -->
 </head>
-<body class="bg-cover bg-opacity-20 min-h-screen flex items-center justify-center font-rubi"
-    style="background-image: url('/static/imagenes/img2.jpg'); height: 400px">
-    <form action="/login/" method="post"
-        class="backdrop-blur-sm bg-white/70 shadow-lg rounded-lg pt-14 pb-14 pl-14 pr-14 mx-auto m-8 w-full max-w-sm ">
-        <div class="flex justify-center mb-8">
-            <img src="/static/imagenes/imglogo2.png" alt="Logo" class="w-30 h-20">
+<!-- component -->
+<body class="bg-gray-300">
+    <section class="min-h-screen flex items-stretch text-white">
+        <!-- primer mitad de la seccion -->
+        <div class="lg:flex w-1/2 hidden bg-gray-500 bg-no-repeat bg-cover object-cover relative items-center" style="background-image: url('/static/imagenes/andes.jpg'); object-fit:cover">
+            <div class="absolute bg-black opacity-75 inset-0 z-0"></div>
+            <div class="w-full px-24 z-10">
+                <!-- <h1 class="text-7xl text-Andes uppercase font-black text-left tracking-wide font-rubi pointer-events-none">AndesBPO</h1> -->
+                <img src="/static/imagenes/logo-og.png" class="h-auto mb-6 max-w-lg mx-auto" alt="Logo" width="400px" height="200px">
+                <p class="text-left font-bold text-2xl my-4 font-rubi">" Creamos experiencias memorables con responsabilidad social "</p>
+            </div>
+            <div class="bottom-0 absolute p-4 text-center right-0 left-0 flex justify-center space-x-4">
+                <a target="_blankL" href="https://x.com/andesbpo">
+                <span>
+                    <svg fill="#fff" xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 512 512"><path d="M389.2 48h70.6L305.6 224.2 487 464H345L233.7 318.6 106.5 464H35.8L200.7 275.5 26.8 48H172.4L272.9 180.9 389.2 48zM364.4 421.8h39.1L151.1 88h-42L364.4 421.8z"/></svg>
+                </span>
+                </a>
+                <a target="_blankL" href="https://www.facebook.com/AndesBPO/?locale=es_LA">
+                <span>
+                    <svg fill="#fff" xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24"><path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z"/></svg>
+                </span>
+                </a>
+                <a target="_blank" href="https://www.instagram.com/andes_bpo/">
+                <span>
+                    <svg fill="#fff" xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                </span>
+                </a>
+            </div>
         </div>
-        <input class="font-rubi border border-gray-800 w-full px-3 py-2 mb-4 rounded-md  focus:outline-Andes "
-            type="text" name="username" required placeholder="Usuario">
-        <input
-            class="font-rubi border border-gray-800 w-full px-3 py-2 mb-4 rounded-md focus:outline-Andes invalid:focus:ring-red-400"
-            type="password" name="password" required placeholder="Contraseña">
-        <div class="flex items-center mb-4">
-            <input id="default-checkbox" type="checkbox" value=""
-                class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-            <label for="default-checkbox" class="ms-2 text-sm font-medium text-gray-900 dark:text-black">Recordar
-                Contraseña</label>
+        <!-- segunda mitad de la seccion -->
+        <div class="lg:w-1/2 w-full h-auto flex bg-[#161616] items-center justify-center text-center md:px-16 px-0 z-0">
+            <div class="w-full py-6 z-20">
+                <h2 class="my-6 px-2 text-Andes font-extrabold max-sm:text-5xl text-center uppercase font-rubi max-sm:block hidden">¡Bienvenido!</h2>
+                <h1 class="my-6 px-2 text-white font-bold text-5xl max-sm:text-xl text-center uppercase font-rubi">
+                    Inicio de sesión
+                </h1>
+                <p class="py-2 text-lg text-gray-100 font-rubi">
+                    inicia sesión con tus credenciales
+                </p>
+                <form onsubmit="login(event)" action="/login/" method="post" class="sm:w-2/3 w-full px-4 lg:px-0 mx-auto relative">
+                    <div class="pb-2 pt-4 font-rubi relative">
+                        <input type="text" name="username" required id="username" placeholder="Nombre usuario" class="block w-full p-4 text-lg rounded-2xl bg-black">
+                    </div>
+                    <div class="pb-2 pt-4 font-rubi relative">
+                        <input class="block w-full p-4 text-lg rounded-2xl bg-black" required type="password" name="password" id="password" placeholder="Contraseña">
+                        <button type="button" id="togglePassword" class="absolute right-7 top-9 text-gray-500 focus:outline-none">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                    <div class="px-2 pb-2 pt-4 font-rubi">
+                        <button  class="lowcase font-bold block w-full p-4 text-lg rounded-full bg-Andes hover:bg-green-800 focus:outline-none">Enviar datos</button>
+                    </div>
+                    <p class="text-md text-gray-400 text-center mt-16 font-rubi"><i class="fa-regular fa-copyright fa-xs mr-2"></i> 2024 AndesBPO</p>
+                </form>
+                <!-- contenedor botones redes sociales -->
+                <div class="bottom-0 max-sm:flex hidden absolute p-4 text-center right-0 left-0 justify-center space-x-4">
+                    <a target="_blankL" href="https://x.com/andesbpo">
+                    <span>
+                        <svg fill="#fff" xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 512 512"><path d="M389.2 48h70.6L305.6 224.2 487 464H345L233.7 318.6 106.5 464H35.8L200.7 275.5 26.8 48H172.4L272.9 180.9 389.2 48zM364.4 421.8h39.1L151.1 88h-42L364.4 421.8z"/></svg>
+                    </span>
+                    </a>
+                    <a target="_blankL" href="https://www.facebook.com/AndesBPO/?locale=es_LA">
+                    <span>
+                        <svg fill="#fff" xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24"><path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z"/></svg>
+                    </span>
+                    </a>
+                    <a target="_blank" href="https://www.instagram.com/andes_bpo/">
+                    <span>
+                        <svg fill="#fff" xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                    </span>
+                    </a>
+                </div>
+            </div>
         </div>
-        <button type="submit" class="font-rubi flex items-center justify-center text-white bg-Nac w-full p-2 hover:bg-Andes font-medium rounded-md dark:bg-Nac dark:hover:bg-Andes">Ingresar</button>
-        <p class="text-xs text-gray-600 text-center mt-8">&copy; 2024 AndesBPO</p>
-    </form>
+    </section>
+    <script>
+        let loginAttempts = 0;  
+        const togglePassword = document.getElementById('togglePassword');
+        const passwordInput = document.getElementById('password');
+
+        togglePassword.addEventListener('click', function () {
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+
+            this.innerHTML = type === 'password' ? '<i class="fas fa-eye"></i>' : '<i class="fas fa-eye-slash"></i>';
+        });
+        async function login(event) {
+            event.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+        
+            const response = await fetch('/login/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: new URLSearchParams({
+                    'username': username,
+                    'password': password
+                })
+            });
+        
+            if (response.ok) {
+                window.location.href = '/inicio';
+                loginAttempts = 0;
+            } else {
+                loginAttempts++; 
+                console.log('numero de intentos: ', loginAttempts)
+                const error = await response.json();
+        
+                if (loginAttempts >= 6) {
+                    await bloquearUsuario(username);
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Credenciales inválidas',
+                        confirmButtonColor: '#13A438',
+                        confirmButtonText: 'Entendido',
+                        text: ` ${error.detail || 'Por favor verifica tus credenciales.'} . Este es el intento ${loginAttempts} de 6`,
+                    });
+                }
+            }
+        }
+        
+        async function bloquearUsuario(username) {
+            const blockResponse = await fetch(`/bloquear-usuario?username=${encodeURIComponent(username)}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                }
+            });
+        
+            if (blockResponse.ok) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Usuario bloqueado',
+                    confirmButtonText: 'Entendido',
+                    text: 'El usuario ha sido bloqueado después de varios intentos fallidos.',
+                    confirmButtonColor: '#13A438'
+                });
+            } else {
+                const error = await blockResponse.json();
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error al bloquear',
+                    text: error.detail || 'Hubo un problema al intentar bloquear al usuario.',
+                    confirmButtonColor: '#13A438'
+                });
+            }
+        }
+        
+    </script>
 </body>
-</html>

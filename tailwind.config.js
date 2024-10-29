@@ -14,6 +14,7 @@ module.exports = {
       colors: {
         Andes: '#13A438',
         Nac: '#084F21',
+        delete: '#084F21',
         info:{
           100: '#5B5C5C',
           200: '#DDDDDD'
@@ -21,5 +22,10 @@ module.exports = {
       }
     },
   },
-  plugins: [],
+  plugins: [
+    require('flowbite/plugin')({
+        datatables: true,
+    }),
+    // ... other plugins
+  ]
 }
