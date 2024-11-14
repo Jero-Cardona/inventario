@@ -289,7 +289,7 @@ async def generar_qr(producto_id: int, db: Session = Depends(get_db)):
     producto = crud.get_producto_for_qr(producto_id, db)
 
     # Generar la URL de edición del producto
-    url_editar_producto = f"http://192.168.8.47:8000/producto-obtener-qr-section/{producto.id}"
+    url_editar_producto = f"http://3.144.188.2/producto-obtener-qr-section/{producto.id}"
 
     # información del producto en un string con el enlace para editar
     producto_info = (
@@ -318,7 +318,7 @@ async def image_qr_producto(request: Request, db: Session = Depends(get_db)):
 
     with zipfile.ZipFile(zip_buffer, 'w') as zip_file:
         for producto in productos:
-            url_editar_producto = f"http://192.168.8.47:8000/producto-obtener-qr-section/{producto.id}"
+            url_editar_producto = f"http://3.144.188.2/producto-obtener-qr-section/{producto.id}"
             producto_info = (
                 f"ID: {producto.id}\n"
                 f"Codigo producto: {producto.codigo}\n"
