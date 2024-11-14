@@ -289,21 +289,9 @@ async def generar_qr(producto_id: int, db: Session = Depends(get_db)):
     producto = crud.get_producto_for_qr(producto_id, db)
 
     # Generar la URL de edición del producto
-    url_editar_producto = f"http://3.144.188.2/producto-obtener-qr-section/{producto.id}"
+    url_informacion_producto = f"http://3.144.188.2/producto-obtener-qr-section/{producto.id}"
 
-    # información del producto en un string con el enlace para editar
-    producto_info = (
-        f"ID: {producto.id}\n"
-        f"Codigo producto: {producto.codigo}\n"
-        f"Costo inicial: {producto.costo_inicial}\n"
-        f"Modo: {producto.modo}\n"
-        f"Categoria: {producto.categoria.nombre}\n"
-        f"Proveedor: {producto.proveedor.   nombre if producto.proveedor else 'Sin proveedor'}\n"
-        f"fecha de ingreso: {producto.fecha_ingreso}\n"
-        f"\nAcciones: Para ver más información de este producto, usa al siguiente enlace:\n\n{url_editar_producto}"
-    )
-
-    qr_image = qrcode.make(producto_info)
+    qr_image = qrcode.make(url_informacion_producto)
     buf = BytesIO()
     qr_image.save(buf)
     buf.seek(0)
@@ -318,19 +306,10 @@ async def image_qr_producto(request: Request, db: Session = Depends(get_db)):
 
     with zipfile.ZipFile(zip_buffer, 'w') as zip_file:
         for producto in productos:
-            url_editar_producto = f"http://3.144.188.2/producto-obtener-qr-section/{producto.id}"
-            producto_info = (
-                f"ID: {producto.id}\n"
-                f"Codigo producto: {producto.codigo}\n"
-                f"Costo inicial: {producto.costo_inicial}\n"
-                f"Modo: {producto.modo}\n"
-                f"Categoria: {producto.categoria.nombre}\n"
-                f"Proveedor: {producto.proveedor.nombre if producto.proveedor else 'Sin proveedor'}\n"
-                f"Fecha de ingreso: {producto.fecha_ingreso}"
-                f"\nAcciones: Para ver más información de este producto, usa al siguiente enlace:\n{url_editar_producto}"
-            )
+            url_informacion_producto = f"http://3.144.188.2/producto-obtener-qr-section/{producto.id}"
+            
 
-            qr_image = qrcode.make(producto_info)
+            qr_image = qrcode.make(url_informacion_producto)
             qr_buffer = BytesIO()
             qr_image.save(qr_buffer)
             qr_buffer.seek(0)
